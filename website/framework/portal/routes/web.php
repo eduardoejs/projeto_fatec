@@ -40,7 +40,14 @@ Route::get('/teste', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::namespace('Site\Publico')->group(function () {
+    Route::get('/', 'SiteController@index')->name('site');
+});
 
-Route::get('/', 'Site\Publico\SiteController@index')->name('site');
+Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function () {
+    Route::get('/', 'AdminController@index')->name('admin');
+});
+
+
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

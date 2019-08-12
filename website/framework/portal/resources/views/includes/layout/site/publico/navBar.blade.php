@@ -117,7 +117,7 @@
                     </ul>
                 </li>  
                 <li class="nav-item ">
-                    <a class="nav-link" href="{{ route('home') }}" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="{{ route('admin') }}" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-unlock-alt"></i>
                     </a>                        
                 </li>                      

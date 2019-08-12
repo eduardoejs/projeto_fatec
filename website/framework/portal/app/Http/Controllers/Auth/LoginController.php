@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -51,7 +51,7 @@ class LoginController extends Controller
         // Checa a tentativa de login do usuário. Só será aceito, se além das informações estiverem corretas,
         // o status do usuário for true (1).
         if(\Auth::attempt(['email' => $username, 'password' => $password, 'ativo' => 'S'])){
-            return redirect()->route('home');
+            return redirect()->route('admin');
         } else {
             return redirect()->to('/login')
                     ->withErrors(['email' => 'Credenciais inválidas!'])
