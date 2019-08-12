@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -36,4 +38,29 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function login(Request $request)
+    {
+        // Valida as informações recebidas pelo Request
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+        $username = $request->email;
+        $password = $request->password;
+        // Checa a tentativa de login do usuário. Só será aceito, se além das informações estiverem corretas,
+        // o status do usuário for true (1).
+        if(\Auth::attempt(['email' => $username, 'password' => $password, 'ativo' => 'S'])){
+            return redirect()->route('home');
+        } else {
+            return redirect()->to('/login')
+                    ->withErrors(['email' => 'Credenciais inválidas!'])
+                    ->withInput(['email' => $username]);
+        }
+    }
+    public function logout()
+    {   
+        Auth::guard('web')->logout();  
+        return redirect(\URL::previous());
+    } 
 }

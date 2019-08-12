@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
 Route::get('/teste', function () {
     //$cursos = Curso::findOrFail(2)->with(['tipoCurso', 'modalidade', 'docente', 'disciplinas'])->first();    
@@ -41,3 +41,6 @@ Route::get('/teste', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/', 'Site\Publico\SiteController@index')->name('site');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
