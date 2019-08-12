@@ -9,7 +9,8 @@ class Permissao extends Model
     protected $table = 'permissoes';
     protected $fillable = ['nome', 'descricao'];
 
-    public function perfis() {
+    public function perfis() 
+    {
         return $this->belongsToMany(Perfil::class);
     }
 }

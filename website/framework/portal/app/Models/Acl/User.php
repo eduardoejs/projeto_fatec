@@ -2,8 +2,17 @@
 
 namespace App\Models\Acl;
 
+use App\Models\Sistema\Avisos;
+use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Sistema\Eventos\Inscricao;
+use App\Models\Sistema\Destaques\Destaque;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Sistema\Agendamento\Agendamento;
+use App\Models\Institucional\TiposUsuarios\Aluno;
+use App\Models\Institucional\TiposUsuarios\Docente;
+use App\Models\Institucional\TiposUsuarios\Convidado;
+use App\Models\Institucional\TiposUsuarios\Funcionario;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -37,54 +46,66 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function perfis() {
+    public function perfis() 
+    {
         return $this->belongsToMany(Perfil::class);
     }
 
-    public function inscricoes() {
+    public function inscricoes() 
+    {
         return $this->belongsToMany(Inscricao::class);
     }
 
-    public function alunos() {
+    public function alunos() 
+    {
         return $this->hasMany(Aluno::class);
     }
 
-    public function funcionarios() {
+    public function funcionarios() 
+    {
         return $this->hasMany(Funcionario::class);
     }
 
-    public function docentes() {
+    public function docentes() 
+    {
         return $this->hasMany(Docente::class);
     }
 
-    public function convidados() {
+    public function convidados() 
+    {
         return $this->hasMany(Convidado::class);
     }
 
-    public function avisos() {
+    public function avisos() 
+    {
         return $this->hasMany(Aviso::class);
     }
 
-    public function agendamentos() {
+    public function agendamentos() 
+    {
         return $this->hasMany(Agendamento::class);
     }
 
-    public function noticias() {
+    public function noticias() 
+    {
         return $this->hasMany(Noticia::class);
     }
 
-    public function destaques() {
+    public function destaques() 
+    {
         return $this->hasMany(Destaque::class);
     }
 
     //
-    public function temUmPerfilDestes($perfis) {
+    public function temUmPerfilDestes($perfis) 
+    {
         $userPerfis = $this->perfis;
         return $perfis->intersect($userPerfis)->count();
     }
 
-    public function existePerfil($perfil) {
-        if(is_string($perfil)){
+    public function existePerfil($perfil) 
+    {
+        if(is_string($perfil)) {
             $perfil = Perfil::where('nome','=',$perfil)->firstOrFail();
         }
         return (boolean) $this->perfis()->find($perfil->id);
@@ -96,7 +117,8 @@ class User extends Authenticatable
     //
 
     //Método Acessor
-    public function getNameLastnameAttribute() {
+    public function getNameLastnameAttribute() 
+    {
         switch ($this->tipo) {
             case 'A':                
                 return $this->getNomeSobrenome($this->alunos()->first()->nome);
@@ -117,7 +139,8 @@ class User extends Authenticatable
         }
     }
 
-    public function getNameAttribute() {
+    public function getNameAttribute() 
+    {
         switch ($this->tipo) {
             case 'A':                
                 return $this->alunos()->first()->nome;
@@ -138,7 +161,8 @@ class User extends Authenticatable
         }
     }
 
-    private function getNomeSobrenome($nomeCompleto) {
+    private function getNomeSobrenome($nomeCompleto) 
+    {
         $partes = explode(' ', $nomeCompleto);
         $primeiroNome = array_shift($partes); //remove e retorna o primeiro valor do array.
         $ultimoNome = array_pop($partes); //remove e retorna o último valor do array.

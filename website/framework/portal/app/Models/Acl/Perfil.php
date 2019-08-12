@@ -2,6 +2,7 @@
 
 namespace App\Models\Acl;
 
+use App\Models\Sistema\Paginas\Pagina;
 use Illuminate\Database\Eloquent\Model;
 
 class Perfil extends Model
@@ -9,15 +10,18 @@ class Perfil extends Model
     protected $table = 'perfis';
     protected $fillable = ['nome', 'descricao'];
 
-    public function users() {
+    public function users() 
+    {
         return $this->belongsToMany(User::class);
     }
 
-    public function permissoes() {
+    public function permissoes() 
+    {
         return $this->belongsToMany(Permissao::class);
     }
 
-    public function paginas() {
+    public function paginas() 
+    {
         return $this->belongsToMany(Pagina::class);
     }
 }
