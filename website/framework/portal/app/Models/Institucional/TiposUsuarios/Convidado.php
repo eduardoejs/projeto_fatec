@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Convidado extends Model
 {
-    protected $fillable = ['nome', 'cpf', 'sexo', 'fone', 'user_id'];
+    protected $fillable = [ 'fone', 'user_id'];
 
     public function login() 
     {

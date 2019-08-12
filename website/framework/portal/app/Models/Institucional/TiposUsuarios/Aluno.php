@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Aluno extends Model
 {
-    protected $fillable = ['nome', 'cpf', 'sexo', 'matricula', 'curso_id', 'user_id'];
+    protected $fillable = ['matricula', 'curso_id', 'user_id'];
     
     public function user() 
     {

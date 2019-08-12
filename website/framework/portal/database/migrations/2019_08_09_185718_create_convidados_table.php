@@ -15,9 +15,7 @@ class CreateConvidadosTable extends Migration
     {
         Schema::create('convidados', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nome');
-            $table->string('cpf', 11)->unique();            
-            $table->enum('sexo', ['M', 'F']);
+            
             
             $table->string('fone', 15)->nullable();            
 

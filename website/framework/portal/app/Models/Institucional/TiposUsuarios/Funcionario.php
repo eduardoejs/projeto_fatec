@@ -9,10 +9,10 @@ use App\Models\Institucional\Departamento;
 
 class Funcionario extends Model
 {
-    protected $fillable = ['nome', 'cpf', 'sexo', 'url_lattes', 'exibe_dados', 
+    protected $fillable = ['url_lattes', 'exibe_dados', 
                            'cargo_id', 'departamento_id', 'user_id'];
 
-    public function login() 
+    public function user() 
     {
         return $this->belongsTo(User::class);
     }
