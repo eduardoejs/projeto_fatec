@@ -14,8 +14,10 @@ class CreateDocentesTable extends Migration
     public function up()
     {
         Schema::create('docentes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            
+            $table->bigIncrements('id');            
+            $table->string('nome');
+            $table->string('cpf', 11)->unique();            
+            $table->enum('sexo', ['M', 'F']);
             $table->string('url_lattes', 255)->nullable();
             $table->string('link_compartilhado', 255)->nullable();
             $table->enum('titulacao', ['B', 'L', 'PG', 'M', 'D']); //Bacharel, Licenciatura, PosGraduado, Mestrado, Doutorado
