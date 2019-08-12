@@ -20,8 +20,8 @@ class RelacionaCursosComDisciplinasComDocentesTable extends Migration
             $table->bigInteger('disciplina_id')->unsigned();
             $table->foreign('disciplina_id')->references('id')->on('disciplinas')->onDelete('cascade');
 
-            $table->bigInteger('docente_id')->unsigned();
-            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('cascade');
+            $table->bigInteger('docente_id')->unsigned()->nullable();
+            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('set null');
 
             $table->integer('semestre')->unsigned();
             $table->integer('carga_horaria')->unsigned();
@@ -44,8 +44,8 @@ class RelacionaCursosComDisciplinasComDocentesTable extends Migration
             $table->dropColumn('docente_id');
             $table->dropForeign('curso_disciplina_docente_disciplina_id_foreign');
             $table->dropColumn('disciplina_id');
-            $table->dropForeign('curso_disciplina_docente_tipo_curso_id_foreign');
-            $table->dropColumn('tipo_curso_id');            
+            $table->dropForeign('curso_disciplina_docente_curso_id_foreign');
+            $table->dropColumn('curso_id');            
         });
         Schema::dropIfExists('curso_disciplina_docente');
     }

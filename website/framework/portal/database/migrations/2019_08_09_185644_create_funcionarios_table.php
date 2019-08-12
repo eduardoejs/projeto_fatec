@@ -15,9 +15,7 @@ class CreateFuncionariosTable extends Migration
     {
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nome', 200);
-            $table->string('cpf',11)->unique();
-            $table->enum('sexo', ['M','F']);
+            
             $table->string('url_lattes', 255)->nullable();
             $table->enum('exibe_dados', ['S','N'])->default('S');
             

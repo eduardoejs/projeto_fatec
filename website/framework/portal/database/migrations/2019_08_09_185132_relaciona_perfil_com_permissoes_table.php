@@ -14,7 +14,7 @@ class RelacionaPerfilComPermissoesTable extends Migration
     public function up()
     {
         Schema::create('perfil_permissao', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            
             $table->bigInteger('perfil_id')->unsigned();
             $table->foreign('perfil_id')->references('id')->on('perfis')->onDelete('cascade');
 
