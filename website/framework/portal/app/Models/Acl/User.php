@@ -117,49 +117,10 @@ class User extends Authenticatable
     //
 
     //Método Acessor
-    public function getNameLastnameAttribute() 
+    public function getNameAbrAttribute() 
     {
-        switch ($this->tipo) {
-            case 'A':                
-                return $this->getNomeSobrenome($this->alunos()->first()->nome);
-            break;
-            case 'F':                
-                return $this->getNomeSobrenome($this->funcionarios()->first()->nome);
-            break;
-            case 'D':
-                return $this->getNomeSobrenome($this->docentes()->first()->nome);    
-            
-            break; 
-            case 'C':
-                return $this->getNomeSobrenome($this->convidados()->first()->nome);                
-            break;
-            default:
-                Auth::logout();
-            break;
-        }
-    }
-
-    public function getNameAttribute() 
-    {
-        switch ($this->tipo) {
-            case 'A':                
-                return $this->alunos()->first()->nome;
-            break;
-            case 'F':                
-                return $this->funcionarios()->first()->nome;
-            break;
-            case 'D':
-                return $this->docentes()->first()->nome;    
-            
-            break; 
-            case 'C':
-                return $this->convidados()->first()->nome;
-            break;
-            default:
-                Auth::logout();
-            break;
-        }
-    }
+        return $this->getNomeSobrenome($this->nome);
+    }    
 
     private function getNomeSobrenome($nomeCompleto) 
     {
