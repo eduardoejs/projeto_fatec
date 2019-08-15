@@ -24,6 +24,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('site.admin.index');
+    }
+
+    public function indexACL()
+    {
+        return view('site.admin.acl.index');
     }
 }

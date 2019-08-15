@@ -24,4 +24,9 @@ class Perfil extends Model
     {
         return $this->belongsToMany(Pagina::class);
     }
+
+    public function setNomeAttribute($value)
+    {
+        $this->attributes['nome'] = strtoupper($value);
+    }
 }

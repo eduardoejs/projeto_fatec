@@ -44,6 +44,7 @@ class CreateDocentesTable extends Migration
             $table->dropForeign('docentes_user_id_foreign');
             $table->dropColumn('user_id');            
         });
+        Schema::dropIfExists('curso_disciplina_docente');
         Schema::dropIfExists('docentes');
     }
 }

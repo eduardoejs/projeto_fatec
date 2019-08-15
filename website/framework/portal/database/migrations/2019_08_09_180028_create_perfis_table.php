@@ -15,7 +15,7 @@ class CreatePerfisTable extends Migration
     {
         Schema::create('perfis', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nome', 60);
+            $table->string('nome', 60)->unique();
             $table->string('descricao')->nullable();
             $table->timestamps();
         });

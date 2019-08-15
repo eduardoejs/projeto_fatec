@@ -117,7 +117,7 @@ class User extends Authenticatable
     //
 
     //Método Acessor
-    public function getNameAbrAttribute() 
+    public function getNomeAbrAttribute() 
     {
         return $this->getNomeSobrenome($this->nome);
     }    

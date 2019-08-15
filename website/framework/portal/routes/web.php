@@ -51,6 +51,13 @@ Route::namespace('Site\Publico')->group(function () {
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
+    Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');
+
+    Route::prefix('acl')->namespace('ACL')->middleware('auth')->group(function(){        
+        Route::resource('/perfil', 'PerfilController');    
+        Route::resource('/permissao', 'PermissaoController');    
+        Route::resource('/user', 'UserController');
+    });    
 });
 
 

@@ -28,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Blade::component('componentes.modal', 'modal_component');
         Blade::component('componentes.card_aviso', 'card_aviso_component');
+        Blade::component('componentes.alert', 'alert_component');
     }
 }
