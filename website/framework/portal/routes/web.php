@@ -43,7 +43,7 @@ Route::get('/teste', function () {
     echo '<br>Aluno: '.$aluno->user->nome.' - Cursando: '.$aluno->curso->nome.' Login:'.$aluno->user->email;
 })->name('teste');
 
-Auth::routes();
+Auth::routes(['register' =>false]);
 
 Route::namespace('Site\Publico')->group(function () {
     Route::get('/', 'SiteController@index')->name('site');

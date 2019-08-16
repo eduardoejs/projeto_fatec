@@ -11,10 +11,10 @@
         }
     @endphp    
     
-    <div class="alert alert-{{ $status }} alert-dismissible fade show" role="alert">        
+    <div class="alert alert-{{ $status }}" role="alert">        
         @if ($title)
             <h4 class="alert-heading">{{ $title }}</h4>
         @endif        
-        <p>{{ $msg }}</p>        
+        {{ $msg }}
     </div>
 @endif

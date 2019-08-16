@@ -1,7 +1,7 @@
 @extends('layouts.site.admin.app')
 
 @section('conteudo')
-    <div class="row page-title-header">
+    {{--<div class="row page-title-header">
         <div class="col-12">
             <div class="page-header">
                 <h4 class="page-title">ACL - Access Control List</h4>
@@ -18,6 +18,8 @@
             </div>
         </div>
     </div>
+
+    
     <div class="row">
         <div class="col-md-4 grid-margin stretch-card">
             <a href="{{ route('perfil.index') }}" class="text-decoration-none">
@@ -111,6 +113,14 @@
                 </div>
             </div>
         </div>
+    </div>--}}
+    @pageheader_component(['pagetitle' => $pageHeaderTitle])             
+        @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
+        @endbreadcrumb_component        
+    @endpageheader_component
+    <div class="row">
+        @card_menu_component(['items' => $cards ?? []])
+        @endcard_menu_component        
     </div>
 
 @endsection

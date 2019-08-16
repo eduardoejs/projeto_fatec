@@ -25,8 +25,7 @@
                         <h4 class="alert-heading {{ $text_transform_class ?? '' }}">{{ $titulo }}</h4>
                           {!! html_entity_decode($conteudo) !!} 
                          {{-- {{ $conteudo ?? '' }} --}}
-                        {{-- {!! htmlspecialchars_decode($conteudo) !!} --}}
-                         
+                         {{-- {!! htmlspecialchars_decode($conteudo) !!} --}}                         
                         {{ $slot }}                        
                     </div>
                 </div>
