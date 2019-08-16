@@ -10,11 +10,11 @@
         
         @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
         @endalert_component
-
+       
         @bodypage_component(['body_title' => $bodyPageTitle, 'body_description' => $bodyPageDescription, 'rotaNome' => $rotaNome, 'page' => $page])
             @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST'])
                 @include('site.admin.acl.'.$rotaNome.'._form')
-                <button type="submit" class="btn btn-success btn-lg float-right"><i class="fa fa-check"></i>Adicionar</button>
+                <button type="submit" class="btn btn-success btn-lg float-right"><i class="fa fa-save"></i>Gravar</button>
             @endform_component
         @endbodypage_component
 

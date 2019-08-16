@@ -1,6 +1,6 @@
 @extends('layouts.site.admin.app')
-@section('conteudo')
 
+@section('conteudo')
     @page_component(['col' => 12, 'page' => $page])
                 
         @pageheader_component(['pagetitle' => $pageHeaderTitle])        
@@ -14,7 +14,7 @@
         @bodypage_component(['body_title' => $bodyPageTitle, 'body_description' => $bodyPageDescription, 'rotaNome' => $rotaNome, 'page' => $page])
             @form_component(['action' => route($rotaNome.'.update', $registro->id), 'method' => 'PUT'])
                 @include('site.admin.acl.'.$rotaNome.'._form')
-                <button type="submit" class="btn btn-success btn-lg float-right"><i class="fa fa-save"></i>Gravar</button>
+                <button type="submit" class="btn btn-success btn-lg float-right"><i class="fa fa-edit"></i>Alterar</button>
             @endform_component
         @endbodypage_component
 

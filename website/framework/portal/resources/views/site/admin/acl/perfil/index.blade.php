@@ -19,6 +19,6 @@
             @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome])
             @endtable_component
         @endbodypage_component
-
+                
     @endpage_component
 @endsection

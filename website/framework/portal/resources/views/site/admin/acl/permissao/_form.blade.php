@@ -18,9 +18,8 @@
             <label for="descricao">Descrição</label>
             <input type="text" name="descricao" value="{{ old('descricao') ?? ($registro->descricao ?? '') }}" class="form-control {{ $errors->has('descricao') ? ' is-invalid' : '' }}" placeholder="Ex.: Perfil de usuário do tipo Editor-Site">
         </div>
-    </div>       
-    <span class="alert alert-secondary d-block text-center">Vincular permissões para o perfil</span>
-    <div class="form-row table-responsive">
+    </div>
+    <div class="form-row">
         <table class="table table-sm">
             <thead>
                 <tr>

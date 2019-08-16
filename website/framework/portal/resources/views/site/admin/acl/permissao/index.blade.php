@@ -1,9 +1,13 @@
 @extends('layouts.site.admin.app')
-@section('conteudo')
 
+@section('conteudo')    
     @page_component(['col' => 12, 'page' => $page])
-                
-        @pageheader_component(['pagetitle' => $pageHeaderTitle])        
+        
+        @pageheader_component(['pagetitle' => $pageHeaderTitle]) 
+            @section('search')
+                @busca_component(['rotaNome' => $rotaNome, 'search' => $search, 'page' => $page])
+                @endbusca_component                
+            @endsection       
             @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
             @endbreadcrumb_component        
         @endpageheader_component
@@ -12,12 +16,9 @@
         @endalert_component
 
         @bodypage_component(['body_title' => $bodyPageTitle, 'body_description' => $bodyPageDescription, 'rotaNome' => $rotaNome, 'page' => $page])
-            @form_component(['action' => route($rotaNome.'.update', $registro->id), 'method' => 'PUT'])
-                @include('site.admin.acl.'.$rotaNome.'._form')
-                <button type="submit" class="btn btn-success btn-lg float-right"><i class="fa fa-save"></i>Gravar</button>
-            @endform_component
+            @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome])
+            @endtable_component
         @endbodypage_component
 
-@endpage_component
-    
+    @endpage_component
 @endsection
