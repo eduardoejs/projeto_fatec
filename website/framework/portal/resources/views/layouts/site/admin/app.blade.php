@@ -43,8 +43,10 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
-    @section('modais')        
-    @show
+    @hasSection ('modal')
+      @yield('modal')
+    @endif
+    
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
@@ -59,8 +61,10 @@
     <!-- Custom js for this page-->
     <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
     <!-- End custom js for this page-->
-    @section('js')
-    @show
+    
+    @hasSection ('js')
+      @yield('js')    
+    @endif
         
   </body>
 </html>
