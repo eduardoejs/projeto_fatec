@@ -1,6 +1,6 @@
 @if ($items)
     @foreach ($items as $key => $value)
-        <div class="col-md-{{$value->col}} grid-margin stretch-card">
+        <div class="col-md-{{$value->col}} grid-margin stretch-card mb-4">
                 <a href="{{ $value->route }}" class="text-decoration-none">                          
                 <div class="card">
                     <div class="card-body">

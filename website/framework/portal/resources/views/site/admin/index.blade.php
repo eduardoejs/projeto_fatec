@@ -1,6 +1,6 @@
-@extends('layouts.site.admin.app')
+@extends('layouts.site.admin.app2')
 
-@section('conteudo')
+{{--@section('conteudo')
 @include('includes.layout.site.admin.pagetitle')
 <div class="row">
     <div class="col-md-12 grid-margin">
@@ -23,4 +23,18 @@
 <div class="row">
     @include('includes.layout.site.admin.panel5')
 </div>
+@endsection--}}
+
+@section('content')
+
+        @include('includes.layout.site.admin.newlayout.pageHeading')
+        @include('includes.layout.site.admin.newlayout.cards')
+        @include('includes.layout.site.admin.newlayout.charts')
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Content Column -->
+            @include('includes.layout.site.admin.newlayout.leftColumn')
+            @include('includes.layout.site.admin.newlayout.rigthColumn')            
+        </div>
+      
 @endsection

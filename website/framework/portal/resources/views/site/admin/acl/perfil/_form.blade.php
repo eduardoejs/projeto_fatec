@@ -17,6 +17,11 @@
         <div class="form-group col-md-6">
             <label for="descricao">Descrição</label>
             <input type="text" name="descricao" value="{{ old('descricao') ?? ($registro->descricao ?? '') }}" class="form-control {{ $errors->has('descricao') ? ' is-invalid' : '' }}" placeholder="Ex.: Perfil de usuário do tipo Editor-Site">
+            @if ($errors->has('descricao'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('descricao') }}</strong>
+                </span>
+            @endif
         </div>
     </div>       
     <span class="alert alert-secondary d-block text-center">Vincular permissões para o perfil</span>
@@ -27,7 +32,7 @@
                     <th>#</th>
                     <th>Permissão</th>
                     <th>Descrição</th>
-                    <th><i class="fa fa-shield"></i></th>                                    
+                    <th><i class="fa fa-shield-alt"></i></th>                                    
                 </tr>
             </thead>
             <tbody>

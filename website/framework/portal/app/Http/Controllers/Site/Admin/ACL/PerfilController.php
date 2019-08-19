@@ -11,8 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PerfilController extends Controller
 {
-    private $route = 'perfil';
-    private $pageHeaderTitle = 'ACL - Access Control List';
+    private $route = 'perfil';    
     private $search = ['nome', 'descricao'];
 
     public function __construct()
@@ -37,20 +36,18 @@ class PerfilController extends Controller
         }else{
             $list = Perfil::all();
         }        
-        $colunas = ['id' => '#', 'nome' => 'Nome', 'descricao' => 'Descrição'];
+        $colunas = ['id' => 'ID', 'nome' => 'Nome', 'descricao' => 'Descrição'];
         
         $rotaNome = $this->route;        
-        $page = 'Perfil';
-        $pageHeaderTitle = $this->pageHeaderTitle;
-        $bodyPageTitle = 'Perfil de Usuário';
-        $bodyPageDescription = 'Gerenciamento dos perfis de usuários do sistema';
+        $page = 'Perfil';        
+        $tituloPagina = 'Perfil de Usuário';
+        $descricaoPagina = 'Gerenciamento dos perfis de usuários do sistema';
 
         $breadcrumb = [
-            (object)['url' => route('admin'), 'title' => 'Painel Controle'],
-            (object)['url' => route('admin.acl'), 'title' => 'ACL'],            
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],
             (object)['url' => '', 'title' => $page],
         ];         
-        return view('site.admin.acl.perfil.index', compact('breadcrumb', 'page', 'list', 'colunas', 'rotaNome', 'pageHeaderTitle', 'bodyPageTitle', 'bodyPageDescription', 'search'));
+        return view('site.admin.acl.perfil.index', compact('breadcrumb', 'page', 'list', 'colunas', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'search'));
     }
 
     /**
@@ -61,18 +58,17 @@ class PerfilController extends Controller
     public function create()
     {
         $page = 'Novo';
-        $rotaNome = $this->route;                
-        $pageHeaderTitle = $this->pageHeaderTitle;
-        $bodyPageTitle = 'Novo Perfil';
-        $bodyPageDescription = 'Cadastro de novo perfil de usuário do sistema';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Novo Perfil';
+        $descricaoPagina = 'Cadastro de novo perfil de usuário do sistema';
+        
         $breadcrumb = [
-            (object)['url' => route('admin'), 'title' => 'Painel Controle'],
-            (object)['url' => route('admin.acl'), 'title' => 'ACL'],            
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
             (object)['url' => route('perfil.index'), 'title' => 'Perfil'],
             (object)['url' => '', 'title' => $page],
         ]; 
         $permissoes = Permissao::all();
-        return view('site.admin.acl.perfil.create', compact('permissoes','breadcrumb', 'page', 'pageHeaderTitle', 'bodyPageTitle', 'bodyPageDescription', 'rotaNome'));
+        return view('site.admin.acl.perfil.create', compact('permissoes','breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**
@@ -138,30 +134,26 @@ class PerfilController extends Controller
             if($request->delete ?? false) {                
                 $delete = true;
                 $page = 'Excluir';
-                $rotaNome = $this->route;        
-                $pageHeaderTitle = $this->pageHeaderTitle;
-                $bodyPageTitle = '';
-                $bodyPageDescription = '';
+                $rotaNome = $this->route;
+                $tituloPagina = '';
+                $descricaoPagina = '';
                 $breadcrumb = [
-                    (object)['url' => route('admin'), 'title' => 'Painel Controle'],
-                    (object)['url' => route('admin.acl'), 'title' => 'ACL'],            
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                              
                     (object)['url' => route('perfil.index'), 'title' => 'Perfil'],
                     (object)['url' => '', 'title' => $page],
                 ];
             } else {
                 $page = 'Detalhes';
-                $rotaNome = $this->route;        
-                $pageHeaderTitle = $this->pageHeaderTitle;
-                $bodyPageTitle = 'Perfil: ' . $registro->nome;
-                $bodyPageDescription = '';
+                $rotaNome = $this->route;                        
+                $tituloPagina = 'Perfil: ' . $registro->nome;
+                $descricaoPagina = '';
                 $breadcrumb = [
-                    (object)['url' => route('admin'), 'title' => 'Painel Controle'],
-                    (object)['url' => route('admin.acl'), 'title' => 'ACL'],            
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                    
                     (object)['url' => route('perfil.index'), 'title' => 'Perfil'],
                     (object)['url' => '', 'title' => $page],
                 ];
             }
-            return view('site.admin.acl.perfil.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'pageHeaderTitle', 'bodyPageTitle', 'bodyPageDescription', 'rotaNome'));
+            return view('site.admin.acl.perfil.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
         }
         return redirect()->back();
     }
@@ -178,18 +170,16 @@ class PerfilController extends Controller
         $permissoes = Permissao::all();
 
         $page = 'Alterar';        
-        $rotaNome = $this->route;                
-        $pageHeaderTitle = $this->pageHeaderTitle;
-        $bodyPageTitle = 'Alterar Perfil: '. $registro->nome;
-        $bodyPageDescription = 'Descrição do perfil: ' . $registro->descricao;
+        $rotaNome = $this->route;
+        $tituloPagina = 'Alterar Perfil: '. $registro->nome;
+        $descricaoPagina = 'Descrição do perfil: ' . $registro->descricao;
         $breadcrumb = [
-            (object)['url' => route('admin'), 'title' => 'Painel Controle'],
-            (object)['url' => route('admin.acl'), 'title' => 'ACL'],            
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],            
             (object)['url' => route('perfil.index'), 'title' => 'Perfil'],
             (object)['url' => '', 'title' => $page],
         ];
         
-        return view('site.admin.acl.perfil.edit', compact('permissoes', 'registro', 'page', 'breadcrumb', 'pageHeaderTitle', 'bodyPageTitle', 'bodyPageDescription', 'rotaNome'));
+        return view('site.admin.acl.perfil.edit', compact('permissoes', 'registro', 'page', 'breadcrumb', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**

@@ -1,29 +1,34 @@
-@extends('layouts.site.admin.app')
+@extends('layouts.site.admin.app2')
 
-@section('conteudo')
+@section('content')
 
-    @page_component(['col' => 12, 'page' => $page])
-        
-        @pageheader_component(['pagetitle' => $pageHeaderTitle])
-            @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
-            @endbreadcrumb_component        
-        @endpageheader_component
+    @page_component(['col' => 12])
+                
+        @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
+        @endbreadcrumb_component
         
         @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
         @endalert_component
 
-        @bodypage_component(['body_title' => $bodyPageTitle, 'body_description' => $bodyPageDescription, 'rotaNome' => $rotaNome, 'page' => $page])
+        @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
         
-            @if ($delete)            
-                <h3 class="card-header bg-warning text-black">Exclusão de Registro</h3>
-                <div class="card-body">
-                    <p class="display-5">Deseja excluir definitivamente o registro abaixo?</p>
-                    <h5 class="card-title mb-0">Perfil: {{ $registro->nome }}</h5>
-                    <p class="card-text">{{ $registro->descricao }}</p>                    
-                    @form_component(['action' => route($rotaNome.'.destroy', $registro->id), 'method' => 'DELETE'])                    
-                        <button type="submit" class="btn btn-danger btn-lg float-left"><i class="fa fa-trash-o"></i>Excluir</button>
-                    @endform_component
-                </div>
+            @if ($delete)  
+                <div class="card border-warning mb-3">
+                    <h3 class="card-header bg-warning text-dark"><i class="fa fa-exclamation"></i> Atenção</h3>
+                    <div class="card-body">
+                        <span class="text-danger h5">Deseja excluir definitivamente o registro abaixo?</span>
+                        <h5 class="card-title mb-0">Perfil: {{ $registro->nome }}</h5>
+                        <p class="card-text">{{ $registro->descricao }}</p>                    
+                        @form_component(['action' => route($rotaNome.'.destroy', $registro->id), 'method' => 'DELETE'])                            
+                            <button type="submit" class="btn btn-outline-danger float-left btn-icon-split">
+                                    <span class="icon text-white bg-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                    <span class="text">Excluir</span>
+                                </button> 
+                        @endform_component
+                    </div>
+                </div>          
             @else                
                 <p class="card-text">Descrição: {{ $registro->descricao }}</p>
                 <hr>

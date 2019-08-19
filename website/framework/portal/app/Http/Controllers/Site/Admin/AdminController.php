@@ -23,7 +23,7 @@ class AdminController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
+    {           
         return view('site.admin.index');
     }
 
@@ -34,7 +34,7 @@ class AdminController extends Controller
         $bodyPageTitle = '';
         //$bodyPageDescription = 'Gerenciamento dos perfis de usuários do sistema';
         $breadcrumb = [
-            (object)['url' => route('admin'), 'title' => 'Painel Controle'],            
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],            
             (object)['url' => '', 'title' => $page],
         ];
         $cards = [
