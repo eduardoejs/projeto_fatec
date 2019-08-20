@@ -120,7 +120,33 @@ class User extends Authenticatable
     public function getNomeAbrAttribute() 
     {
         return $this->getNomeSobrenome($this->nome);
-    }    
+    } 
+    
+    public function getTipoUserAttribute() 
+    {
+        $tipo = '';
+        switch ($this->tipo) {
+            case 'A':
+                $tipo = 'Aluno';
+                break;
+            case 'D':
+                $tipo = 'Docente';
+                break;            
+            case 'F':
+                $tipo = 'Funcionário';
+                break;
+            case 'C':
+                $tipo = 'Convidado';
+                break;    
+            case 'EX':
+                $tipo = 'Ex-Aluno';
+                break;            
+            default:
+                $tipo = 'Não atribuído';
+                break;
+        }
+        return $tipo;
+    }
 
     private function getNomeSobrenome($nomeCompleto) 
     {

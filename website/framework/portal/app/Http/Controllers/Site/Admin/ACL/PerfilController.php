@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Site\Admin\ACL;
 use App\Models\Acl\Perfil;
 use Illuminate\Http\Request;
 use App\Models\Acl\Permissao;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class PerfilController extends Controller
 {
@@ -24,7 +22,7 @@ class PerfilController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {        
         $search = "";
         if(isset($request->search)){
             $search = $request->search;
@@ -47,7 +45,7 @@ class PerfilController extends Controller
             (object)['url' => route('admin'), 'title' => 'Dashboard'],
             (object)['url' => '', 'title' => $page],
         ];         
-        return view('site.admin.acl.perfil.index', compact('breadcrumb', 'page', 'list', 'colunas', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'search'));
+        return view('site.admin.acl.'.$this->route.'.index', compact('breadcrumb', 'page', 'list', 'colunas', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'search'));
     }
 
     /**
@@ -57,9 +55,9 @@ class PerfilController extends Controller
      */
     public function create()
     {
-        $page = 'Novo';
+        $page = 'Adicionar';
         $rotaNome = $this->route;
-        $tituloPagina = 'Novo Perfil';
+        $tituloPagina = 'Adicionar Perfil';
         $descricaoPagina = 'Cadastro de novo perfil de usuário do sistema';
         
         $breadcrumb = [
@@ -68,7 +66,7 @@ class PerfilController extends Controller
             (object)['url' => '', 'title' => $page],
         ]; 
         $permissoes = Permissao::all();
-        return view('site.admin.acl.perfil.create', compact('permissoes','breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
+        return view('site.admin.acl.'.$this->route.'.create', compact('permissoes','breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**
@@ -81,14 +79,14 @@ class PerfilController extends Controller
     {     
         $data = $request->all();
 
-        $validacao = Validator::make($data, [
+        $validacao = \Validator::make($data, [
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string|max:255',
         ])->validate();
 
         if($validacao) {
             
-            DB::beginTransaction();            
+            \DB::beginTransaction();            
             try{
                 $perfil = Perfil::create($request->all());                        
                 if($perfil) {
@@ -98,10 +96,10 @@ class PerfilController extends Controller
                             $perfil->permissoes()->attach($value);
                         }
                     }
-                    session()->flash('msg', 'Perfil criado com sucesso');
+                    session()->flash('msg', 'Registro criado com sucesso');
                     session()->flash('title', 'Sucesso!');
                     session()->flash('status', 'success');
-                    DB::commit();
+                    \DB::commit();
                 }
             }catch(\PDOException $e) {                
                 if($e->getCode() == '23000'){
@@ -113,7 +111,7 @@ class PerfilController extends Controller
                     session()->flash('title', 'Erro ao inserir registro no banco de dados');
                     session()->flash('status', 'error');
                 }
-                DB::rollback();
+                \DB::rollback();
             }            
         }
         return redirect()->back();
@@ -153,7 +151,7 @@ class PerfilController extends Controller
                     (object)['url' => '', 'title' => $page],
                 ];
             }
-            return view('site.admin.acl.perfil.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
+            return view('site.admin.acl.'.$this->route.'.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
         }
         return redirect()->back();
     }
@@ -179,7 +177,7 @@ class PerfilController extends Controller
             (object)['url' => '', 'title' => $page],
         ];
         
-        return view('site.admin.acl.perfil.edit', compact('permissoes', 'registro', 'page', 'breadcrumb', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
+        return view('site.admin.acl.'.$this->route.'.edit', compact('permissoes', 'registro', 'page', 'breadcrumb', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**
@@ -193,14 +191,14 @@ class PerfilController extends Controller
     {
         $data = $request->all();
 
-        $validacao = Validator::make($data, [
+        $validacao = \Validator::make($data, [
             'nome' => 'required|string|max:255',
             'descricao' => 'required|string|max:255',
         ])->validate();
 
         if($validacao) {
             
-            DB::beginTransaction();            
+            \DB::beginTransaction();            
             try{
                 $perfil = Perfil::findOrFail($id);
                 if($perfil) {                    
@@ -217,10 +215,10 @@ class PerfilController extends Controller
                         }
                     }
                     $perfil->update($data);
-                    session()->flash('msg', 'Perfil atualizado com sucesso');
+                    session()->flash('msg', 'Registro atualizado com sucesso');
                     session()->flash('title', 'Sucesso!');
                     session()->flash('status', 'success');
-                    DB::commit();
+                    \DB::commit();
                 }
             }catch(\PDOException $e){                
                 if($e->getCode() == '23000'){
@@ -232,7 +230,7 @@ class PerfilController extends Controller
                     session()->flash('title', 'Erro ao inserir registro no banco de dados');
                     session()->flash('status', 'error');
                 }
-                DB::rollback();
+                \DB::rollback();
             }            
         }
         return redirect()->back();
@@ -251,7 +249,7 @@ class PerfilController extends Controller
         try {
             if($perfil) {
                 $perfil->delete();
-                session()->flash('msg', 'Perfil excluído do banco de dados');
+                session()->flash('msg', 'Registro excluído do banco de dados');
                 session()->flash('title', 'Sucesso');
                 session()->flash('status', 'success');
             }
@@ -260,6 +258,6 @@ class PerfilController extends Controller
             session()->flash('title', 'Erro inesperado');
             session()->flash('status', 'error');
         }
-        return redirect()->route('perfil.index');
+        return redirect()->route($this->route.'.index');
     }
 }

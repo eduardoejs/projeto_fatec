@@ -15,7 +15,7 @@
     }
 @endphp
 
-<form action="{{ $action }}" method="{{ $method }}">
+<form action="{{ $action }}" method="{{ $method }}" class="{{ $class ?? '' }}">
     @csrf
     {{ $method_field }}
     {{ $slot }}

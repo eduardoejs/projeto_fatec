@@ -17,7 +17,7 @@ class Perfil extends Model
 
     public function permissoes() 
     {
-        return $this->belongsToMany(Permissao::class);
+        return $this->belongsToMany(Permissao::class)->withTimestamps();
     }
 
     public function paginas() 

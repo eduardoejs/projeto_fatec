@@ -1,101 +1,151 @@
-<!-- partial:partials/_sidebar.html -->
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
-    <ul class="nav">
-      <li class="nav-item nav-profile">
-        <a href="#" class="nav-link">
-          <div class="profile-image">
-            <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face4.jpg') }}" alt="profile image">
-            <div class="dot-indicator bg-success"></div>
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+          <div class="sidebar-brand-icon rotate-n-15">
+            {{--<i class="fas fa-tachometer-alt"></i>--}}
           </div>
-          <div class="text-wrapper">
-            <p class="profile-name">{{Auth::user()->nome_abr}}</p>
-            <p class="designation">Premium user</p>
+          <div class="sidebar-brand-text mx-3">{{config('app.name')}}</div>
+        </a>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+  
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+          <a class="nav-link" href="{{ route('admin') }}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+        </li>
+        
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading">
+          Segurança
+        </div>
+
+        @php
+            //sem clicar
+            $collapsed = 'collapsed';
+            $active = '';
+            $show = '';
+
+            //expandiu o menu
+            if(Request::segment(1) == 'admin' && Request::segment(2) == 'acl') {
+              $collapsed = '';
+              $show = 'show';
+              $active = 'active';
+            }
+        @endphp
+
+        <!-- Nav Item - Charts -->
+        <!-- Nav Item - Pages Collapse Menu -->
+          <li class="nav-item {{ $active }}">
+          <a class="nav-link {{ $collapsed }}" href="#" data-toggle="collapse" data-target="#collapseAcl" aria-expanded="true" aria-controls="collapseAcl">
+            <i class="fas fa-fw fa-user-lock"></i>
+            <span>ACL</span>
+          </a>
+          <div id="collapseAcl" class="collapse {{ $show }}" aria-labelledby="headingAcl" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Access Control List:</h6>
+              <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>
+              <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}">Permissões</a>
+              <a class="collapse-item" href="{{ route('user.index') }}">Usuários</a>              
+            </div>
           </div>
-        </a>
-      </li>
-      <li class="nav-item nav-category">Main Menu</li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin') }}">
-          <i class="menu-icon typcn typcn-document-text"></i>
-          <span class="menu-title">Dashboard</span>
-        </a>
-      </li> 
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.acl') }}">
-          <i class="menu-icon typcn typcn-document-text"></i>
-          <span class="menu-title">ACL</span>
-        </a>
-      </li> 
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-          <i class="menu-icon typcn typcn-coffee"></i>
-          <span class="menu-title">Basic UI Elements</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-basic">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/ui-features/typography.html">Typography</a>
-            </li>
-          </ul>
+        </li>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+  
+        <!-- Heading -->
+        <div class="sidebar-heading">
+          Interface
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/forms/basic_elements.html">
-          <i class="menu-icon typcn typcn-shopping-bag"></i>
-          <span class="menu-title">Form elements</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/charts/chartjs.html">
-          <i class="menu-icon typcn typcn-th-large-outline"></i>
-          <span class="menu-title">Charts</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/tables/basic-table.html">
-          <i class="menu-icon typcn typcn-bell"></i>
-          <span class="menu-title">Tables</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="pages/icons/font-awesome.html">
-          <i class="menu-icon typcn typcn-user-outline"></i>
-          <span class="menu-title">Icons</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-          <i class="menu-icon typcn typcn-document-add"></i>
-          <span class="menu-title">User Pages</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="auth">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/samples/login.html"> Login </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/samples/register.html"> Register </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/samples/error-404.html"> 404 </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="pages/samples/error-500.html"> 500 </a>
-            </li>
-          </ul>
+  
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Components</span>
+          </a>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Custom Components:</h6>
+              <a class="collapse-item" href="buttons.html">Buttons</a>
+              <a class="collapse-item" href="cards.html">Cards</a>
+            </div>
+          </div>
+        </li>
+  
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Utilities</span>
+          </a>
+          <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Custom Utilities:</h6>
+              <a class="collapse-item" href="utilities-color.html">Colors</a>
+              <a class="collapse-item" href="utilities-border.html">Borders</a>
+              <a class="collapse-item" href="utilities-animation.html">Animations</a>
+              <a class="collapse-item" href="utilities-other.html">Other</a>
+            </div>
+          </div>
+        </li>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+  
+        <!-- Heading -->
+        <div class="sidebar-heading">
+          Addons
         </div>
-      </li>
-    </ul>
-  </nav>
-  <!-- partial -->
+  
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Pages</span>
+          </a>
+          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Login Screens:</h6>
+              <a class="collapse-item" href="login.html">Login</a>
+              <a class="collapse-item" href="register.html">Register</a>
+              <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+              <div class="collapse-divider"></div>
+              <h6 class="collapse-header">Other Pages:</h6>
+              <a class="collapse-item" href="404.html">404 Page</a>
+              <a class="collapse-item" href="blank.html">Blank Page</a>
+            </div>
+          </div>
+        </li>
+  
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+          <a class="nav-link" href="charts.html">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Charts</span></a>
+        </li>
+  
+        <!-- Nav Item - Tables -->
+        <li class="nav-item">
+          <a class="nav-link" href="tables.html">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Tables</span></a>
+        </li>
+  
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+  
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+  
+      </ul>
+      <!-- End of Sidebar -->

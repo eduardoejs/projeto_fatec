@@ -1,12 +1,8 @@
 
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="nome">Nome (Tag)</label>
-            @if (isset($registro) && $registro->nome == 'ADMINISTRADOR')
-                <input type="text" name="nome" value="{{ old('nome') ?? ($registro->nome ?? '') }}" class="form-control {{ $errors->has('nome') ? ' is-invalid' : '' }}" placeholder="Ex.: Editor-Site" readonly>    
-            @else
-                <input type="text" name="nome" value="{{ old('nome') ?? ($registro->nome ?? '') }}" class="form-control {{ $errors->has('nome') ? ' is-invalid' : '' }}" placeholder="Ex.: Editor-Site">
-            @endif
+            <label for="nome">Nome (Tag)</label>            
+            <input type="text" name="nome" value="{{ old('nome') ?? ($registro->nome ?? '') }}" class="form-control {{ $errors->has('nome') ? ' is-invalid' : '' }}" placeholder="Ex.: create-user">           
             
             @if ($errors->has('nome'))
                 <span class="invalid-feedback" role="alert">
@@ -16,47 +12,53 @@
         </div>
         <div class="form-group col-md-6">
             <label for="descricao">Descrição</label>
-            <input type="text" name="descricao" value="{{ old('descricao') ?? ($registro->descricao ?? '') }}" class="form-control {{ $errors->has('descricao') ? ' is-invalid' : '' }}" placeholder="Ex.: Perfil de usuário do tipo Editor-Site">
+            <input type="text" name="descricao" value="{{ old('descricao') ?? ($registro->descricao ?? '') }}" class="form-control {{ $errors->has('descricao') ? ' is-invalid' : '' }}" placeholder="Ex.: Permite CRIAR um usuário">
+            @if ($errors->has('descricao'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('descricao') }}</strong>
+                </span>
+            @endif
         </div>
-    </div>
-    <div class="form-row">
+    </div>       
+    <span class="alert alert-secondary d-block text-center">Vincular um perfil a nova permissão</span>
+    <div class="form-row table-responsive">
         <table class="table table-sm">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Permissão</th>
+                    <th>Perfil</th>
                     <th>Descrição</th>
-                    <th><i class="fa fa-shield"></i></th>                                    
+                    <th><i class="fa fa-shield-alt"></i></th>                                    
                 </tr>
             </thead>
             <tbody>
-                @foreach ($permissoes as $permissao)
+                @foreach ($perfis as $perfil)
                     <tr>
-                        <td>{{ $permissao->id }}</td>
-                        <td>{{ $permissao->nome }}</td>
-                        <td>{{ $permissao->descricao }}</td>
+                        <td>{{ $perfil->id }}</td>
+                        <td>{{ $perfil->nome }}</td>
+                        <td>{{ $perfil->descricao }}</td>
                         <td>
                             <div class="custom-control custom-switch">                                          
                             @php
                                 $checked = '';
-                                if(old('permissions') ?? false) {
-                                    foreach(old('permissions') as $key => $id){
-                                        if($permissao->id == $id){
+                                if(old('perfis') ?? false) {
+                                    foreach(old('perfis') as $key => $id){
+                                        if($perfil->id == $id){
                                             $checked = 'checked';
                                         }
                                     }
                                 }else{
                                     if($registro ?? false){
-                                        foreach($registro->permissoes as $lista){
-                                            if($lista->id == $permissao->id){
+                                        foreach($registro->perfis as $lista){
+                                            if($lista->id == $perfil->id){
                                                 $checked = 'checked';
                                             }
                                         }
                                     }
                                 }
                             @endphp                                                                           
-                                <input {{$checked}} type="checkbox" class="custom-control-input" name="permissions[]" id="customSwitch{{ $permissao->id }}" value="{{ $permissao->id }}">
-                                <label class="custom-control-label" for="customSwitch{{ $permissao->id }}"></label>
+                                <input {{$checked}} type="checkbox" class="custom-control-input" name="perfis[]" id="customSwitch{{ $perfil->id }}" value="{{ $perfil->id }}">
+                                <label class="custom-control-label" for="customSwitch{{ $perfil->id }}"></label>
                             </div>
                         </td>
                     </tr>

@@ -52,14 +52,20 @@ Route::namespace('Site\Publico')->group(function () {
 Route::prefix('admin')->middleware('auth', 'revalidate')->namespace('Site\Admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');
+    Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');
+    
 
     Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){        
         Route::resource('/perfil', 'PerfilController');    
         Route::resource('/permissao', 'PermissaoController');    
-        Route::resource('/user', 'UserController');
+        Route::resource('/user', 'UserController');        
     });    
 });
 
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('500', function()
+{
+    abort(500);
+});

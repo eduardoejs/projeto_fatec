@@ -1,9 +1,10 @@
-<!-- partial:partials/_footer.html -->
-<footer class="footer">
-        <div class="container-fluid clearfix">
-          <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © @php echo date('Y'); @endphp <a href="http://www.fatecmarilia.edu.br" target="_blank">Fatec Marília</a>. Todos os direitos reservados.</span>
-          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Desenvolvido pela TI da Fatec Marília</i>
-          </span>
+<!-- Footer -->
+<footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto d-flex justify-content-between">
+            <span>Desenvolvido por TI Fatec Marília</span>
+            <span>Copyright &copy; 2019</span>
+          </div>
         </div>
       </footer>
-      <!-- partial -->
+      <!-- End of Footer -->

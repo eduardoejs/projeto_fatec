@@ -1,70 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{config('app.name')}} - Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/css/ionicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/typicons/src/font/typicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
-    <!-- endinject -->
-    <!-- plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
-    
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
-    <!-- End Layout styles -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
-  </head>
-  <body>
-    <div class="container-scroller">      
-        @include('includes.layout.site.admin.navbar')
-        <div class="container-fluid page-body-wrapper">        
-        @include('includes.layout.site.admin.sidebar')        
-        <div class="main-panel">
-            <div class="content-wrapper">
-              
-              @yield('conteudo')
-            
-            </div>
-            <!-- content-wrapper ends -->
-            @include('includes.layout.site.admin.footer')
-        </div>
-        <!-- main-panel ends -->
-        </div>
-        <!-- page-body-wrapper ends -->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{{config('app.name')}} - Admin</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{{asset('sbadmin/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{{asset('sbadmin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+
+  @hasSection ('css')
+    @yield('css')
+  @endif
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    @include('includes.layout.site.admin.sidebar')
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">        
+        @include('includes.layout.site.admin.topbar')
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            @hasSection ('content')                
+              @yield('content')                
+            @endif            
+        </div>  
+        <!-- /.container-fluid -->
+      </div>
+      <!-- End of Main Content -->
+      @include('includes.layout.site.admin.footer')
     </div>
-    @hasSection ('modal')
-      @yield('modal')
-    @endif
-    
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
-    <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
-    <!-- End custom js for this page-->
-    
-    @hasSection ('js')
-      @yield('js')    
-    @endif
-        
-  </body>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  @hasSection ('modal')
+    @yield('modal')
+  @endif
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{{asset('sbadmin/jquery/jquery.min.js')}}"></script>
+  <script src="{{asset('sbadmin/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{{asset('sbadmin/jquery-easing/jquery.easing.min.js')}}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{{asset('sbadmin/js/sb-admin-2.min.js')}}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{{asset('sbadmin/chart.js/Chart.min.js')}}"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="{{asset('sbadmin/js/demo/chart-area-demo.js')}}"></script>
+  <script src="{{asset('sbadmin/js/demo/chart-pie-demo.js')}}"></script>
+  @hasSection ('js')
+    @yield('js')
+  @endif
+
+</body>
+
 </html>

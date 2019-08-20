@@ -1,4 +1,4 @@
-@extends('layouts.site.admin.app2')
+@extends('layouts.site.admin.app')
 @section('content')
 
     @page_component(['col' => 12])
@@ -11,7 +11,7 @@
         @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
         @endalert_component
 
-        @bodypage_component(['tituloPagina' => $tituloPagina, 'descricaoPagina' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
+        @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
             @form_component(['action' => route($rotaNome.'.update', $registro->id), 'method' => 'PUT'])
                 @include('site.admin.acl.'.$rotaNome.'._form')                
                 <button type="submit" class="btn btn-outline-success float-right btn-icon-split">

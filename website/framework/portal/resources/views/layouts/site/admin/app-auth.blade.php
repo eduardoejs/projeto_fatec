@@ -1,51 +1,67 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{config('app.name')}} - Admin</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/ionicons/css/ionicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/typicons/src/font/typicons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.addons.css') }}">
-    <!-- endinject -->
-    <!-- plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/shared/style.css') }}">
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/demo_1/style.css') }}">
-    <!-- End Layout styles -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
-  </head>
-  <body>
-              
-    @yield('conteudo')            
-    
-    @section('modais')        
-    @show
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('assets/vendors/js/vendor.bundle.addons.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="{{ asset('assets/js/shared/off-canvas.js') }}"></script>
-    <script src="{{ asset('assets/js/shared/misc.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
-    <script src="{{ asset('assets/js/demo_1/dashboard.js') }}"></script>
-    <!-- End custom js for this page-->
-    @section('js')
-    @show
-        
-  </body>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{{config('app.name')}} - Login</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{{ asset('sbadmin/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{{ asset('/sbadmin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-secondary">
+
+  <div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">{{ config('app.name') }}</h1>
+                  </div>
+                    @hasSection ('content')                        
+                      @yield('content')                        
+                    @endif
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="{{ route('password.request') }}">Esqueci minha senha</a>
+                  </div>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{{ asset('sbadmin/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('sbadmin/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{{ asset('sbadmin/jquery-easing/jquery.easing.min.js') }}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{{ asset('sbadmin/js/sb-admin-2.min.js') }}"></script>
+
+</body>
+
 </html>

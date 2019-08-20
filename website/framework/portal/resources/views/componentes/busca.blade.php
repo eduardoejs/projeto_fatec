@@ -5,7 +5,7 @@
             <span class="icon text-white bg-success">
                 <i class="fas fa-plus"></i>
             </span>
-            <span class="text">Novo {{ $page }}</span>
+            <span class="text">Adicionar {{ $page }}</span>
         </a>            
         {{--@endcan--}}
     </div>

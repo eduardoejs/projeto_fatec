@@ -24,7 +24,7 @@
             @endif
         </div>
     </div>       
-    <span class="alert alert-secondary d-block text-center">Vincular permissões para o perfil</span>
+    <span class="alert alert-secondary d-block text-center">Vincular permissões ao novo perfil</span>
     <div class="form-row table-responsive">
         <table class="table table-sm">
             <thead>
