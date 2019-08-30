@@ -52,7 +52,7 @@
               <h6 class="collapse-header">Access Control List:</h6>
               <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>
               <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}">Permissões</a>
-              <a class="collapse-item" href="{{ route('user.index') }}">Usuários</a>              
+              <a class="collapse-item {{ Request::segment(3) == 'user' ? 'active' : '' }}" href="{{ route('user.index') }}">Usuários</a>              
             </div>
           </div>
         </li>

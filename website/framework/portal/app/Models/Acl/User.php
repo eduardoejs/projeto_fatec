@@ -122,10 +122,26 @@ class User extends Authenticatable
         return $this->getNomeSobrenome($this->nome);
     } 
     
+    public function getStatusAttribute()
+    {
+        $status = '';
+        switch($this->ativo) 
+        {
+            case 'S':
+                $status = 'Ativo';
+            break;
+            case 'N':
+                $status = 'Inativo';
+            break;
+        }
+        return $status;
+    }
+
     public function getTipoUserAttribute() 
     {
         $tipo = '';
-        switch ($this->tipo) {
+        switch ($this->tipo) 
+        {
             case 'A':
                 $tipo = 'Aluno';
                 break;

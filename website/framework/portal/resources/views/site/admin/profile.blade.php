@@ -2,6 +2,9 @@
 
 @section('content')
 
+@breadcrumb_component(['page' => $page ?? '', 'items' => $breadcrumb ?? []])
+
+@endbreadcrumb_component
 <div class="container py-4 my-2">
     <div class="row">
         <div class="col-md-4 pr-md-5">
@@ -16,7 +19,7 @@
                             <p class="text-secondary">Southern Street Floral Park, NY 11001</p>
                         </div>
                         <div class="work mb-4">
-                            <strong class="h5 d-block text-secondary font-weight-bold mb-1">Tipo de Usuário no Sistema</strong>                            
+                            <strong class="h5 d-block text-secondary font-weight-bold mb-1">Tipo de Usuário:</strong>                            
                             <strong class="h5 d-block text-warning mb-1">{{ Auth::user()->tipo_user }}</strong>                            
                         </div>
                     </div>    

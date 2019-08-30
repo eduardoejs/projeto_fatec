@@ -15,5 +15,4 @@
     </div>
     <button type="submit" class="btn btn-outline-primary btn-sm mb-2"><i class="fa fa-search" aria-hidden="true"></i> </button>
     <a href="{{ route($rotaNome.'.index') }}" class="btn btn-outline-secondary btn-sm mb-2 ml-1"><i class="fa fa-broom" aria-hidden="true"></i></a>
-
 </form>
