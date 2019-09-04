@@ -55,6 +55,7 @@
         
             @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST'])
                 @include('site.admin.acl.'.$rotaNome.'._form')
+                <hr>
                 <button type="submit" class="btn btn-outline-success float-right btn-icon-split mt-2">
                     <span class="icon text-white bg-success">
                         <i class="fas fa-save"></i>

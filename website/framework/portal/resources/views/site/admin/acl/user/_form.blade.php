@@ -1,95 +1,91 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Dados</a>
+        <a class="nav-item nav-link" id="nav-perfil-tab" data-toggle="tab" href="#nav-perfil" role="tab" aria-controls="nav-perfil" aria-selected="false">Perfil</a>        
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="form-row ml-auto mr-auto mt-2">
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="dados-tab" data-toggle="tab" href="#dados" role="tab" aria-controls="dados" aria-selected="true">Dados Usuário</a>
-        </li>        
-        <li class="nav-item">
-            <a class="nav-link" id="perfil-tab" data-toggle="tab" href="#perfil" role="tab" aria-controls="perfil" aria-selected="false">Perfil</a>
-        </li>
-    </ul>
-    <div class="tab-content mt-2" id="myTabContent">
-        <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
-            <div class="form-row ml-auto mr-auto">
-                
-                <div class="form-group col-md-6">
-                    <label for="nome">Nome</label>            
-                    <input type="text" name="nome" value="{{ old('nome') ?? ($registro->nome ?? '') }}" class="form-control {{ $errors->has('nome') ? ' is-invalid' : '' }}" placeholder="Nome completo" required>
-                    @if ($errors->has('nome'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('nome') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                
-                <div class="form-group col-md-2">
-                    <label for="cpf">CPF</label>
-                    <input type="text" name="cpf" value="{{ old('cpf') ?? ($registro->cpf ?? '') }}" class="form-control {{ $errors->has('cpf') ? ' is-invalid' : '' }}" placeholder="Ex.: 111.222.333-44" required>
-                    @if ($errors->has('cpf'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('cpf') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            <div class="form-group col-md-6">
+                <label for="nome">Nome</label>            
+                <input type="text" name="nome" value="{{ old('nome') ?? ($registro->nome ?? '') }}" class="form-control {{ $errors->has('nome') ? ' is-invalid' : '' }}" placeholder="Nome completo" required>
+                @if ($errors->has('nome'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('nome') }}</strong>
+                    </span>
+                @endif
+            </div>
+            
+            <div class="form-group col-md-2">
+                <label for="cpf">CPF</label>
+                <input type="text" name="cpf" value="{{ old('cpf') ?? ($registro->cpf ?? '') }}" class="form-control {{ $errors->has('cpf') ? ' is-invalid' : '' }}" placeholder="Ex.: 111.222.333-44" required>
+                @if ($errors->has('cpf'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('cpf') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="sexo">Sexo</label>
-                    <select name="sexo" id="sexo" class="custom-select">
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
-                    </select>            
-                </div>
+            <div class="form-group col-md-2">
+                <label for="sexo">Sexo</label>
+                <select name="sexo" id="sexo" class="custom-select">
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </select>            
+            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="fone">Telefone</label>            
-                    <input type="text" name="fone" value="{{ old('fone') ?? ($registro->telefone ?? '') }}" class="form-control {{ $errors->has('fone') ? ' is-invalid' : '' }}" placeholder="Telefone" required>
-                    @if ($errors->has('fone'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('fone') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            <div class="form-group col-md-2">
+                <label for="fone">Telefone</label>            
+                <input type="text" name="fone" value="{{ old('fone') ?? ($registro->telefone ?? '') }}" class="form-control {{ $errors->has('fone') ? ' is-invalid' : '' }}" placeholder="Telefone" required>
+                @if ($errors->has('fone'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('fone') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                <div class="form-group col-md-6">
-                    <label for="email">E-Mail</label>            
-                    <input type="text" name="email" value="{{ old('email') ?? ($registro->email ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email" required>                
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            <div class="form-group col-md-6">
+                <label for="email">E-Mail</label>            
+                <input type="text" name="email" value="{{ old('email') ?? ($registro->email ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email" required>                
+                @if ($errors->has('email'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="senha">Senha</label>            
-                    <input type="password" name="senha" value="{{ old('senha') ?? ($registro->password ?? '') }}" class="form-control {{ $errors->has('senha') ? ' is-invalid' : '' }}" placeholder="" required>                
-                    @if ($errors->has('senha'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('senha') }}</strong>
-                        </span>
-                    @endif
-                </div>
+            <div class="form-group col-md-2">
+                <label for="senha">Senha</label>            
+                <input type="password" name="senha" value="{{ old('senha') ?? ($registro->password ?? '') }}" class="form-control {{ $errors->has('senha') ? ' is-invalid' : '' }}" placeholder="" required>                
+                @if ($errors->has('senha'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('senha') }}</strong>
+                    </span>
+                @endif
+            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="status">Permite Login <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite o usuário acessar a área administrativa"></i></span></label>
-                    <select name="status" class="custom-select">                    
-                        <option value="S">SIM</option>
-                        <option value="N">NÃO</option>                    
-                    </select>            
-                </div>
+            <div class="form-group col-md-2">
+                <label for="status">Permite Login <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite o usuário acessar a área administrativa"></i></span></label>
+                <select name="status" class="custom-select">                    
+                    <option value="S">SIM</option>
+                    <option value="N">NÃO</option>                    
+                </select>            
+            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="selectTipo">Tipo de Usuário</label>
-                    <select name="selectTipo" id="selecionaTipo" class="custom-select">
-                        <option value="F">Funcionário</option>
-                        <option value="D">Docente</option>
-                        <option value="A">Aluno</option>
-                        <option value="EX">Ex-Aluno</option>
-                        <option value="C">Externo / Convidado</option>
-                    </select>
-                </div>
-            </div>   
-            </div> 
-            <div id='tipoFuncionario' class="form-row mr-auto ml-auto">
+            <div class="form-group col-md-2">
+                <label for="selectTipo">Tipo de Usuário</label>
+                <select name="selectTipo" id="selecionaTipo" class="custom-select">
+                    <option value="F">Funcionário</option>
+                    <option value="D">Docente</option>
+                    <option value="A">Aluno</option>
+                    <option value="EX">Ex-Aluno</option>
+                    <option value="C">Externo / Convidado</option>
+                </select>
+            </div>
+        </div>
+        <div id='tipoFuncionario' class="form-row mr-auto ml-auto">
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
@@ -185,61 +181,54 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="tab-pane fade" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
-            oii
-        </div>
-    </div>    
-</div>
-
-
-
-
-          
-    {{--<span class="alert alert-secondary d-block text-center">Vincular um perfil a nova permissão</span>
-    <div class="form-row table-responsive">
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Perfil</th>
-                    <th>Descrição</th>
-                    <th><i class="fa fa-shield-alt"></i></th>                                    
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($perfis as $perfil)
+    </div>
+    <div class="tab-pane fade" id="nav-perfil" role="tabpanel" aria-labelledby="nav-perfil-tab">
+        
+        <div class="form-row table-responsive mt-2 ml-auto mr-auto">
+            <h5 >Vincular um perfil ao novo usuário</h5>
+            <table class="table table-sm">
+                <thead>
                     <tr>
-                        <td>{{ $perfil->id }}</td>
-                        <td>{{ $perfil->nome }}</td>
-                        <td>{{ $perfil->descricao }}</td>
-                        <td>
-                            <div class="custom-control custom-switch">                                          
-                            @php
-                                $checked = '';
-                                if(old('perfis') ?? false) {
-                                    foreach(old('perfis') as $key => $id){
-                                        if($perfil->id == $id){
-                                            $checked = 'checked';
-                                        }
-                                    }
-                                }else{
-                                    if($registro ?? false){
-                                        foreach($registro->perfis as $lista){
-                                            if($lista->id == $perfil->id){
+                        <th>#</th>
+                        <th>Perfil</th>
+                        <th>Descrição</th>
+                        <th><i class="fa fa-shield-alt"></i></th>                                    
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($perfis as $perfil)
+                        <tr>
+                            <td>{{ $perfil->id }}</td>
+                            <td>{{ $perfil->nome }}</td>
+                            <td>{{ $perfil->descricao }}</td>
+                            <td>
+                                <div class="custom-control custom-switch">                                          
+                                @php
+                                    $checked = '';
+                                    if(old('perfis') ?? false) {
+                                        foreach(old('perfis') as $key => $id){
+                                            if($perfil->id == $id){
                                                 $checked = 'checked';
                                             }
                                         }
+                                    }else{
+                                        if($registro ?? false){
+                                            foreach($registro->perfis as $lista){
+                                                if($lista->id == $perfil->id){
+                                                    $checked = 'checked';
+                                                }
+                                            }
+                                        }
                                     }
-                                }
-                            @endphp                                                                           
-                                <input {{$checked}} type="checkbox" class="custom-control-input" name="perfis[]" id="customSwitch{{ $perfil->id }}" value="{{ $perfil->id }}">
-                                <label class="custom-control-label" for="customSwitch{{ $perfil->id }}"></label>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>                        
-    </div>--}}
+                                @endphp                                                                           
+                                    <input {{$checked}} type="checkbox" class="custom-control-input" name="perfis[]" id="customSwitch{{ $perfil->id }}" value="{{ $perfil->id }}">
+                                    <label class="custom-control-label" for="customSwitch{{ $perfil->id }}"></label>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>                        
+        </div>
+    </div>    
+</div>
