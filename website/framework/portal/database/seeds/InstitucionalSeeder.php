@@ -11,6 +11,7 @@ use App\Models\Institucional\Departamento;
 use App\Models\Institucional\TiposUsuarios\Aluno;
 use App\Models\Institucional\TiposUsuarios\Docente;
 use App\Models\Institucional\TiposUsuarios\Funcionario;
+use Faker\Factory as Faker;
 
 class InstitucionalSeeder extends Seeder
 {
@@ -37,9 +38,9 @@ class InstitucionalSeeder extends Seeder
         $d1 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Secretaria Acadêmica')]);
         $d2 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Diretoria de Serviços')]);
         $d3 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Informática')]);
-        $d4 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório FQ')]);
-        $d5 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório MB')]);
-        $d6 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório PAL')]);
+        $d4 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório Físico-Químico')]);
+        $d5 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório Micro-Biologia')]);
+        $d6 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Laboratório Processamento de Alimentos')]);
         $d7 = Departamento::firstOrCreate(['nome' => mb_strtoupper('Biblioteca')]);
         echo "Departamentos criados com Sucesso! \n";      
 
@@ -74,6 +75,12 @@ class InstitucionalSeeder extends Seeder
         DB::table('alunos')->delete();
         $f1 = Aluno::firstOrCreate([ 'matricula' => '20190604', 'user_id' => 3, 'curso_id' => 1]);
         echo "Dados de usuários criados com Sucesso! \n";
+
+        $faker = Faker::create();        
+        foreach (range(1,200) as $i) {
+            $aluno = User::firstOrCreate(['nome' => $faker->name, 'cpf' => $faker->unique()->randomNumber($nbDigits = NULL, $strict = true), 'sexo' => 'M', 'email' => $faker->email, 'password' => bcrypt('123456'), 'tipo' => 'A']);
+                Aluno::firstOrCreate([ 'matricula' => $faker->numberBetween($min = 1000, $max = 9000), 'user_id' => $aluno->id, 'curso_id' => 1]);
+        }
 
         DB::table('disciplinas')->delete();
         $dc1 = Disciplina::firstOrCreate(['nome' => mb_strtoupper('Estatística Aplicada')]);

@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->enum('sexo', ['M', 'F']);                       
             $table->string('email')->unique();            
             $table->string('password');
+            $table->string('telefone', 15)->nullable();
             $table->enum('ativo',['S','N'])->default('S'); // Sim ou Nao
             $table->enum('tipo', ['A', 'F', 'D', 'C', 'EX']); //A=Aluno F=Funcionario D=Docente C=Convidado EX=ExAluno
             $table->rememberToken();

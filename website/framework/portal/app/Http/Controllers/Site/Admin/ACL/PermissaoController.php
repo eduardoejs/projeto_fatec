@@ -11,6 +11,11 @@ class PermissaoController extends Controller
 {
     private $route = 'permissao';    
     private $search = ['nome', 'descricao'];
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

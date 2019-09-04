@@ -9,10 +9,13 @@
         </a>            
         {{--@endcan--}}
     </div>
+
+    {{ $slot }}
     
-    <div class="form-group mx-sm-3 mb-2">
+    <div class="form-group mx-sm-2 mb-2">
         <input type="search" class="form-control form-control-sm" placeholder="Pesquisar..." name="search" value="{{ $search }}">
     </div>
-    <button type="submit" class="btn btn-outline-primary btn-sm mb-2"><i class="fa fa-search" aria-hidden="true"></i> </button>
-    <a href="{{ route($rotaNome.'.index') }}" class="btn btn-outline-secondary btn-sm mb-2 ml-1"><i class="fa fa-broom" aria-hidden="true"></i></a>
+    <button type="submit" class="btn btn-outline-primary btn-sm mb-2"><i class="fa fa-filter" aria-hidden="true"></i> </button>
+    <a href="{{ route($rotaNome.'.index') }}" class="btn btn-outline-secondary btn-sm mb-2 ml-1"><i class="fa fa-broom" aria-hidden="true"></i></a>        
 </form>
+
