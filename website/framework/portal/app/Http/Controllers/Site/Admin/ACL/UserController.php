@@ -6,9 +6,13 @@ use App\Models\Acl\User;
 use App\Models\Acl\Perfil;
 use App\Models\Cursos\Curso;
 use Illuminate\Http\Request;
+use App\Mail\SendEmailNewUser;
 use Illuminate\Validation\Rule;
+use App\Jobs\SendEmailToNewUserJob;
 use App\Models\Institucional\Cargo;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendWelcomeEmailNewUser;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Institucional\Departamento;
 use App\Models\Institucional\TiposUsuarios\Aluno;
@@ -146,7 +150,7 @@ class UserController extends Controller
                 'status' => 'required',
                 'matricula' => 'required|string',                
                 'curso' => 'required',
-            ])->validate();
+            ])->validate();            
         } else if($data['selectTipo'] == 'F') {                
             $validacao = Validator::make($data, [
                 'nome' => 'required|string|max:255',
@@ -206,7 +210,14 @@ class UserController extends Controller
                     'cargo_id' => $data['cargo_funcionario'],
                     'departamento_id' => $data['departamento_funcionario'],
                     'user_id' => $user->id,
-                ]);
+                ]); 
+
+                if($user && $funcionario){
+                    \DB::commit();
+                }else{
+                    \DB::rollback();
+                }
+
             } else if($data['selectTipo'] == 'D') {
                 $docente = Docente::create([
                     'url_lattes' => $data['lattes_docente'],
@@ -216,14 +227,34 @@ class UserController extends Controller
                     'titulacao' => $data['titulacao'],
                     'user_id' => $user->id,
                 ]);
+
+                if($user && $docente){
+                    \DB::commit();
+                }else{
+                    \DB::rollback();
+                }
+
             } else if ($data['selectTipo'] == 'A'  || $data['selectTipo'] == 'EX') {
                 $aluno = Aluno::create([
                     'matricula' => $data['matricula'],
                     'curso_id' => $data['curso'],
                     'user_id' => $user->id,
                 ]);
-            } //se o tipo for "C" já é o próprio objeto user definido acima
 
+                if($user && $aluno){
+                    \DB::commit();
+                }else{
+                    \DB::rollback();
+                }
+            } else {
+                //se o tipo for "C" já é o próprio objeto user definido acima
+                if($user){
+                    \DB::commit();
+                }else{
+                    \DB::rollback();
+                }
+            }
+            
             //vincular os perfis ao usuario
             if(isset($data['perfis'])){
                 foreach ($data['perfis'] as $key => $value) {
@@ -233,15 +264,24 @@ class UserController extends Controller
 
             session()->flash('msg', 'Registro cadastrado com sucesso!');
             session()->flash('status', 'success');
-            \DB::commit();            
         } catch (\PDOException $e) {
+            \DB::rollback();
             session()->flash('msg', 'Erro inesperado ao inserir registro: ' . $e->getMessage());
             session()->flash('status', 'error');
-            \DB::rollback();
-        }     
-        
-        //enviar email ao usuario com senha descriptografada - plainPassword
+        } 
 
+        
+        /*try {
+            //enviar email ao usuario com senha descriptografada - plainPassword
+            $user->plainPassword = $plainPassword;                 
+            Mail::to($user->email)->queue(new SendEmailNewUser($user));
+            session()->flash('msg', 'E-mail com os dados de acesso foram enviados ao novo usuário!');
+            session()->flash('status', 'success');
+        } catch (\Exception $ex) {
+            session()->flash('msg', 'Erro ao enviar e-mail com os dados de acesso: ' . $ex->getMessage());
+            session()->flash('status', 'error');            
+        }*/
+                
         return redirect()->back();
     }
 
