@@ -23,6 +23,8 @@ class PermissaoController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('read-permission');
+        
         $search = "";
         if(isset($request->search)){
             $search = $request->search;
@@ -55,6 +57,8 @@ class PermissaoController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-permission');
+
         $page = 'Adicionar';
         $rotaNome = $this->route;
         $tituloPagina = 'Adicionar Permissão';
@@ -77,6 +81,8 @@ class PermissaoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create-permission');
+
         $data = $request->all();
 
         $validacao = \Validator::make($data, [
@@ -125,6 +131,8 @@ class PermissaoController extends Controller
      */
     public function show($id, Request $request)
     {
+        $this->authorize('read-permission');
+
         $registro = Permissao::findOrFail($id);
         if($registro) {
             $page = 'Show';
@@ -164,6 +172,8 @@ class PermissaoController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-permission');
+
         $registro = Permissao::findOrFail($id);
         $perfis = Perfil::all();
 
@@ -189,6 +199,8 @@ class PermissaoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-permission');
+
         $data = $request->all();
 
         $validacao = \Validator::make($data, [
@@ -244,6 +256,8 @@ class PermissaoController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-permission');
+        
         $permissão = Permissao::findOrFail($id);
 
         try {

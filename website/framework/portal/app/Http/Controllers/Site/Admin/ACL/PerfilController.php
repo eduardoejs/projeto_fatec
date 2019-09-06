@@ -23,6 +23,8 @@ class PerfilController extends Controller
      */
     public function index(Request $request)
     {        
+        $this->authorize('read-perfil');
+
         $search = "";
         if(isset($request->search)){
             $search = $request->search;
@@ -55,6 +57,8 @@ class PerfilController extends Controller
      */
     public function create()
     {
+        $this->authorize('create-perfil');
+
         $page = 'Adicionar';
         $rotaNome = $this->route;
         $tituloPagina = 'Adicionar Perfil';
@@ -77,6 +81,8 @@ class PerfilController extends Controller
      */
     public function store(Request $request)
     {     
+        $this->authorize('create-perfil');
+
         $data = $request->all();
 
         $validacao = \Validator::make($data, [
@@ -125,6 +131,8 @@ class PerfilController extends Controller
      */
     public function show($id, Request $request)
     {
+        $this->authorize('read-perfil');
+
         $registro = Perfil::findOrFail($id);
         if($registro) {
             $page = 'Show';
@@ -164,6 +172,8 @@ class PerfilController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('update-perfil');
+
         $registro = Perfil::findOrFail($id);
         $permissoes = Permissao::all();
 
@@ -189,6 +199,8 @@ class PerfilController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('update-perfil');
+
         $data = $request->all();
 
         $validacao = \Validator::make($data, [
@@ -244,6 +256,8 @@ class PerfilController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete-perfil');
+        
         $perfil = Perfil::findOrFail($id);
 
         try {

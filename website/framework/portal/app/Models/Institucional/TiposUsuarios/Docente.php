@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Docente extends Model
 {
     protected $fillable = ['titulacao',
-                           'url_lattes', 'url_compartilhado', 'exibe_dados', 'user_id', 
+                           'url_lattes', 'link_compartilhado', 'exibe_dados', 'user_id', 
                            'cargo_id'];
 
     public function user()

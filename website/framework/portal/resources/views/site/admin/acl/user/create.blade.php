@@ -7,8 +7,7 @@
 @endsection
 
 @section('js')
-    <script>
-        //$("#meuelemento").css("display", "none");
+    <script>        
         $('#tipoFuncionario').css('display', 'none')        
 
         $(document).ready(function(){
@@ -30,14 +29,21 @@
                     $('#tipoAluno').css('display', 'none')
                 }
             });
+            //Masks
+            $('.cpf').mask('000.000.000-00', {reverse: true});
+            $('.phone_with_ddd').mask('(00) 00000-0000');
+            
+            //$("#selecionaTipo option:first").attr('selected','selected');//seleciona a primeira option do select            
+            $("select#selecionaTipo").trigger("change");//simular que o usuário fez uma seleção e exibe a div oculta
         });
 
         $(function () {
-            $("#selecionaTipo option:first").attr('selected','selected');//seleciona a primeira option do select
-            $("select#selecionaTipo").trigger("change");//simular que o usuário fez uma seleção e exibe a div oculta
+            
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+
+    <script src="{{ asset('js/plugins/jquery.mask.min.js') }}"></script>
     
 @endsection
 

@@ -1,7 +1,7 @@
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Dados</a>
-        <a class="nav-item nav-link" id="nav-perfil-tab" data-toggle="tab" href="#nav-perfil" role="tab" aria-controls="nav-perfil" aria-selected="false">Perfil</a>        
+        <a class="nav-item nav-link active align-middle" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fas fa-id-badge fa-3x align-middle"></i> Dados Pessoais</a>
+        <a class="nav-item nav-link align-middle" id="nav-perfil-tab" data-toggle="tab" href="#nav-perfil" role="tab" aria-controls="nav-perfil" aria-selected="false"><i class="fas fa-user-shield fa-3x align-middle"></i> Perfil no Sistema</a>        
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
@@ -20,7 +20,7 @@
             
             <div class="form-group col-md-2">
                 <label for="cpf">CPF</label>
-                <input type="text" name="cpf" value="{{ old('cpf') ?? ($registro->cpf ?? '') }}" class="form-control {{ $errors->has('cpf') ? ' is-invalid' : '' }}" placeholder="Ex.: 111.222.333-44" required>
+                <input type="text" name="cpf" value="{{ old('cpf') ?? ($registro->cpf ?? '') }}" class="cpf form-control {{ $errors->has('cpf') ? ' is-invalid' : '' }}" placeholder="Ex.: 111.222.333-44" required>
                 @if ($errors->has('cpf'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('cpf') }}</strong>
@@ -31,14 +31,14 @@
             <div class="form-group col-md-2">
                 <label for="sexo">Sexo</label>
                 <select name="sexo" id="sexo" class="custom-select">
-                    <option value="M">Masculino</option>
-                    <option value="F">Feminino</option>
+                    <option value="M">MASCULINO</option>
+                    <option value="F">FEMININO</option>
                 </select>            
             </div>
 
             <div class="form-group col-md-2">
-                <label for="fone">Telefone</label>            
-                <input type="text" name="fone" value="{{ old('fone') ?? ($registro->telefone ?? '') }}" class="form-control {{ $errors->has('fone') ? ' is-invalid' : '' }}" placeholder="Telefone" required>
+                <label for="fone">Telefone Celular</label>            
+                <input type="text" name="fone" value="{{ old('fone') ?? ($registro->telefone ?? '') }}" class="phone_with_ddd form-control {{ $errors->has('fone') ? ' is-invalid' : '' }}" placeholder="(00) 00000-0000">
                 @if ($errors->has('fone'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('fone') }}</strong>
@@ -48,7 +48,7 @@
 
             <div class="form-group col-md-6">
                 <label for="email">E-Mail</label>            
-                <input type="text" name="email" value="{{ old('email') ?? ($registro->email ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email" required>                
+                <input type="email" name="email" value="{{ old('email') ?? ($registro->email ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email" required>                
                 @if ($errors->has('email'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -57,11 +57,11 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="senha">Senha</label>            
-                <input type="password" name="senha" value="{{ old('senha') ?? ($registro->password ?? '') }}" class="form-control {{ $errors->has('senha') ? ' is-invalid' : '' }}" placeholder="" required>                
-                @if ($errors->has('senha'))
+                <label for="password">Senha</label>            
+                <input type="password" name="password" value="{{ old('password') ?? ($registro->password ?? '') }}" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="">
+                @if ($errors->has('password'))
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('senha') }}</strong>
+                        <strong>{{ $errors->first('password') }}</strong>
                     </span>
                 @endif
             </div>
@@ -69,19 +69,19 @@
             <div class="form-group col-md-2">
                 <label for="status">Permite Login <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite o usuário acessar a área administrativa"></i></span></label>
                 <select name="status" class="custom-select">                    
-                    <option value="S">SIM</option>
-                    <option value="N">NÃO</option>                    
+                    <option {{ (old('status') == 'S' ? 'selected' : '') }} value="S">SIM</option>
+                    <option {{ (old('status') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
                 </select>            
             </div>
 
             <div class="form-group col-md-2">
                 <label for="selectTipo">Tipo de Usuário</label>
                 <select name="selectTipo" id="selecionaTipo" class="custom-select">
-                    <option value="F">Funcionário</option>
-                    <option value="D">Docente</option>
-                    <option value="A">Aluno</option>
-                    <option value="EX">Ex-Aluno</option>
-                    <option value="C">Externo / Convidado</option>
+                    <option {{ (old('selectTipo') == 'F' ? 'selected' : '') }} value="F">FUNCIONÁRIO</option>
+                    <option {{ (old('selectTipo') == 'D' ? 'selected' : '') }} value="D">DOCENTE</option>
+                    <option {{ (old('selectTipo') == 'A' ? 'selected' : '') }} value="A">ALUNO</option>
+                    <option {{ (old('selectTipo') == 'EX' ? 'selected' : '') }} value="EX">EX-ALUNO</option>
+                    <option {{ (old('selectTipo') == 'C' ? 'selected' : '') }} value="C">EXTERNO / CONVIDADO</option>
                 </select>
             </div>
         </div>
@@ -89,17 +89,19 @@
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="exibe_dados">Cargo</label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="S">Analista de Suporte e Gestão - Tecnólogo em Informática</option>
-                            <option value="N">NÃO</option>                    
+                        <label for="cargo_funcionario">Cargo</label>
+                        <select name="cargo_funcionario" class="custom-select">                    
+                            @foreach ($cargos as $cargo)
+                                <option value="{{ $cargo->id }}">{{ $cargo->nome }}</option>
+                            @endforeach                   
                         </select>                
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="exibe_dados">Departamento </label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="S">Diretoria de Serviços Administrativos</option>
-                            <option value="N">Secretaria Acadêmica</option>                    
+                        <label for="departamento_funcionario">Departamento </label>
+                        <select name="departamento_funcionario" class="custom-select">                    
+                            @foreach ($departamentos as $departamento)
+                                <option value="{{ $departamento->id }}">{{ $departamento->nome }}</option>
+                            @endforeach                    
                         </select>                
                     </div>
                     <div class="form-group col-md-4">
@@ -112,10 +114,10 @@
                         @endif
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="exibe_dados">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="S">SIM</option>
-                            <option value="N">NÃO</option>                    
+                        <label for="exibe_dados_funcionario">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
+                        <select name="exibe_dados_funcionario" class="custom-select">                    
+                            <option {{ (old('exibe_dados_funcionario') == 'S' ? 'selected' : '') }} value="S">SIM</option>
+                            <option {{ (old('exibe_dados_funcionario') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
                         </select>                
                     </div>
                 </div>
@@ -124,20 +126,25 @@
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="exibe_dados">Cargo</label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="S">Analista de Suporte e Gestão - Tecnólogo em Informática</option>
-                            <option value="N">NÃO</option>                    
+                        <label for="cargo_docente">Cargo</label>
+                        <select name="cargo_docente" class="custom-select">                    
+                            @foreach ($cargos as $cargo)
+                                @if ($cargo->id == old('cargo_docente'))
+                                    <option selected value="{{ $cargo->id }}">{{ $cargo->nome }}</option>
+                                @else
+                                    <option value="{{ $cargo->id }}">{{ $cargo->nome }}</option>    
+                                @endif                                
+                            @endforeach
                         </select>                
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="exibe_dados">Titulação </label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="D">Doutorado</option>
-                            <option value="M">Mestrado</option>                    
-                            <option value="PG">Pós-Graduado (Especialização)</option>                    
-                            <option value="L">Licenciatura</option>                    
-                            <option value="G">Graduação</option>
+                        <label for="titulacao">Titulação </label>
+                        <select name="titulacao" class="custom-select">                    
+                            <option {{ (old('titulacao') == 'D' ? 'selected' : '') }} value="D">DOUTORADO</option>
+                            <option {{ (old('titulacao') == 'M' ? 'selected' : '') }} value="M">MESTRADO</option>                    
+                            <option {{ (old('titulacao') == 'PG' ? 'selected' : '') }} value="PG">PÓS-GRADUADO (ESPECIALIZAÇÃO)</option>                    
+                            <option {{ (old('titulacao') == 'L' ? 'selected' : '') }} value="L">LICENCIATURA</option>                    
+                            <option {{ (old('titulacao') == 'G' ? 'selected' : '') }} value="G">GRADUAÇÃO</option>
                         </select>                
                     </div>
                     <div class="form-group col-md-5">
@@ -159,10 +166,10 @@
                         @endif
                     </div>
                     <div class="form-group col-md-2">
-                        <label for="exibe_dados">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
-                        <select name="exibe_dados" class="custom-select">                    
-                            <option value="S">SIM</option>
-                            <option value="N">NÃO</option>                    
+                        <label for="exibe_dados_docente">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
+                        <select name="exibe_dados_docente" class="custom-select">                    
+                            <option {{ (old('exibe_dados_docente') == 'S' ? 'selected' : '') }} value="S">SIM</option>
+                            <option {{ (old('exibe_dados_docente') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
                         </select>                
                     </div>
                 </div>
@@ -172,12 +179,24 @@
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label for="matricula">Matrícula</label>
-                        <input type="text" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="" required>                
+                        <input type="text" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
                         @if ($errors->has('matricula'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('matricula') }}</strong>
                             </span>
                         @endif
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="curso">Curso</label>
+                        <select name="curso" class="custom-select">                    
+                            @foreach ($cursos as $curso)
+                                @if ($curso->id == old('curso'))
+                                    <option selected value="{{ $curso->id }}">{{ $curso->nome }}</option>
+                                @else
+                                    <option value="{{ $curso->id }}">{{ $curso->nome }}</option>    
+                                @endif                                
+                            @endforeach
+                        </select> 
                     </div>
                 </div>
             </div>

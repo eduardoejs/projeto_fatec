@@ -19,13 +19,13 @@
             <span>Dashboard</span></a>
         </li>
         
+        @if(auth()->user()->can('read-perfil') || auth()->user()->can('read-permission') || auth()->user()->can('read-user')) 
         <!-- Divider -->
         <hr class="sidebar-divider">
-        <!-- Heading -->
+        <!-- Heading -->        
         <div class="sidebar-heading">
           Segurança
         </div>
-
         @php
             //sem clicar
             $collapsed = 'collapsed';
@@ -41,8 +41,8 @@
         @endphp
 
         <!-- Nav Item - Charts -->
-        <!-- Nav Item - Pages Collapse Menu -->
-          <li class="nav-item {{ $active }}">
+        <!-- Nav Item - Pages Collapse Menu -->        
+        <li class="nav-item {{ $active }}">
           <a class="nav-link {{ $collapsed }}" href="#" data-toggle="collapse" data-target="#collapseAcl" aria-expanded="true" aria-controls="collapseAcl">
             <i class="fas fa-fw fa-user-lock"></i>
             <span>ACL</span>
@@ -50,12 +50,19 @@
           <div id="collapseAcl" class="collapse {{ $show }}" aria-labelledby="headingAcl" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Access Control List:</h6>
-              <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>
-              <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}">Permissões</a>
-              <a class="collapse-item {{ Request::segment(3) == 'user' ? 'active' : '' }}" href="{{ route('user.index') }}">Usuários</a>              
+              @can('read-perfil')
+                <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>  
+              @endcan              
+              @can('read-permission')
+                <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}">Permissões</a>  
+              @endcan              
+              @can('read-user')
+                <a class="collapse-item {{ Request::segment(3) == 'user' ? 'active' : '' }}" href="{{ route('user.index') }}">Usuários</a>                
+              @endcan              
             </div>
           </div>
         </li>
+        @endif
   
         <!-- Divider -->
         <hr class="sidebar-divider">

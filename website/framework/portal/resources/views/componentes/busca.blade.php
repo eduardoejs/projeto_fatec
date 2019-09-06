@@ -1,13 +1,13 @@
 <form class="form-inline" method="GET" action="{{ route($rotaNome.'.index') }}">
     <div class="form-group mb-2">
-        {{--@can('add-user')--}}
+        @can('create-'.$rotaNome)
         <a href="{{ route($rotaNome.'.create') }}" class="btn btn-outline-success btn-sm btn-icon-split">
             <span class="icon text-white bg-success">
                 <i class="fas fa-plus"></i>
             </span>
             <span class="text">Adicionar {{ $page }}</span>
         </a>            
-        {{--@endcan--}}
+        @endcan
     </div>
 
     {{ $slot }}

@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'password','ativo', 'tipo', 'cpf', 'sexo',
+        'nome', 'email', 'password','ativo', 'tipo', 'cpf', 'sexo', 'telefone'
     ];
 
     /**
@@ -48,7 +48,7 @@ class User extends Authenticatable
 
     public function perfis() 
     {
-        return $this->belongsToMany(Perfil::class);
+        return $this->belongsToMany(Perfil::class)->withTimestamps();
     }
 
     public function inscricoes() 
