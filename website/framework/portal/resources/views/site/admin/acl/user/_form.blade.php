@@ -75,21 +75,40 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="selectTipo">Tipo de Usuário</label>
-                <select name="selectTipo" id="selecionaTipo" class="custom-select">
-                    <option {{ (old('selectTipo') == 'F' ? 'selected' : '') }} value="F">FUNCIONÁRIO</option>
-                    <option {{ (old('selectTipo') == 'D' ? 'selected' : '') }} value="D">DOCENTE</option>
-                    <option {{ (old('selectTipo') == 'A' ? 'selected' : '') }} value="A">ALUNO</option>
-                    <option {{ (old('selectTipo') == 'EX' ? 'selected' : '') }} value="EX">EX-ALUNO</option>
-                    <option {{ (old('selectTipo') == 'C' ? 'selected' : '') }} value="C">EXTERNO / CONVIDADO</option>
+                <label for="selectTipo">Tipo de Usuário</label>               
+                <select name="selectTipo[]" id="selecionaTipo" class="selectpicker form-control custom-select" multiple title="Selecione um tipo" required>
+                    @foreach ($tiposUsers as $tipo)
+                        @php
+                            $selected = '';
+                            if(old('selectTipo') ?? false) {
+                                foreach(old('selectTipo') as $key => $value){
+                                    if($tipo->valor == $value){
+                                        $selected = 'selected';
+                                    }
+                                }
+                            }
+                        @endphp
+                        <option {{ $selected }} value="{{ $tipo->valor }}">{{$tipo->descricao}}</option>    
+                    @endforeach                    
                 </select>
             </div>
+
+            <div class="form-group col-md-6">
+                <label for="url_lattes">Currículo Lattes</label>
+                <input type="url" name="url_lattes" value="{{ old('lattes') ?? ($registro->url_lattes ?? '') }}" class="form-control {{ $errors->has('url_lattes') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
+                @if ($errors->has('url_lattes'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('url_lattes') }}</strong>
+                    </span>
+                @endif
+            </div>
         </div>
+
         <div id='tipoFuncionario' class="form-row mr-auto ml-auto">
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="cargo_funcionario">Cargo</label>
+                        <label for="cargo_funcionario">Cargo do Funcionário</label>
                         <select name="cargo_funcionario" class="custom-select">                    
                             @foreach ($cargos as $cargo)
                                 <option value="{{ $cargo->id }}">{{ $cargo->nome }}</option>
@@ -104,29 +123,14 @@
                             @endforeach                    
                         </select>                
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="lattes_funcionario">Currículo Lattes</label>
-                        <input type="url" name="lattes_funcionario" value="{{ old('lattes_funcionario') ?? ($registro->url_lattes ?? '') }}" class="form-control {{ $errors->has('lattes_funcionario') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
-                        @if ($errors->has('lattes_funcionario'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('lattes_funcionario') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="exibe_dados_funcionario">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
-                        <select name="exibe_dados_funcionario" class="custom-select">                    
-                            <option {{ (old('exibe_dados_funcionario') == 'S' ? 'selected' : '') }} value="S">SIM</option>
-                            <option {{ (old('exibe_dados_funcionario') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
-                        </select>                
-                    </div>
+                                        
                 </div>
             </div>
             <div id='tipoDocente' class="form-row mr-auto ml-auto">
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-6">
-                        <label for="cargo_docente">Cargo</label>
+                        <label for="cargo_docente">Cargo do Docente</label>
                         <select name="cargo_docente" class="custom-select">                    
                             @foreach ($cargos as $cargo)
                                 @if ($cargo->id == old('cargo_docente'))
@@ -147,15 +151,7 @@
                             <option {{ (old('titulacao') == 'G' ? 'selected' : '') }} value="G">GRADUAÇÃO</option>
                         </select>                
                     </div>
-                    <div class="form-group col-md-5">
-                        <label for="lattes_docente">Currículo Lattes</label>
-                        <input type="url" name="lattes_docente" value="{{ old('lattes_docente') ?? ($registro->url_lattes ?? '') }}" class="form-control {{ $errors->has('lattes_docente') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
-                        @if ($errors->has('lattes_docente'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('lattes_docente') }}</strong>
-                            </span>
-                        @endif
-                    </div>
+
                     <div class="form-group col-md-5">
                         <label for="link_compartilhado">Link Compartilhado <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite compartilhar de forma pública um endereço ou página pessoal. Exemplo: OneDrive, Google Drive, Dropbox, etc."></i></span></label>
                         <input type="url" name="link_compartilhado" value="{{ old('link_compartilhado') ?? ($registro->link_compartilhado ?? '') }}" class="form-control {{ $errors->has('link_compartilhado') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
@@ -164,21 +160,14 @@
                                 <strong>{{ $errors->first('link_compartilhado') }}</strong>
                             </span>
                         @endif
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="exibe_dados_docente">Exibir dados <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite exibir alguns dados do usuário na página do portal"></i></span></label>
-                        <select name="exibe_dados_docente" class="custom-select">                    
-                            <option {{ (old('exibe_dados_docente') == 'S' ? 'selected' : '') }} value="S">SIM</option>
-                            <option {{ (old('exibe_dados_docente') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
-                        </select>                
-                    </div>
+                    </div>                    
                 </div>
             </div>
             <div id='tipoAluno' class="form-row mr-auto ml-auto">
                 <hr>
                 <div class="row">
                     <div class="form-group col-md-2">
-                        <label for="matricula">Matrícula</label>
+                        <label for="matricula">Registro Acadêmico (RA)</label>
                         <input type="text" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
                         @if ($errors->has('matricula'))
                             <span class="invalid-feedback" role="alert">

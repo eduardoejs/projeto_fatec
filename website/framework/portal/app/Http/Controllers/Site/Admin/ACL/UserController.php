@@ -56,7 +56,7 @@ class UserController extends Controller
         }  
 
         $colunas = ['id' => 'ID', 'nome' => 'Nome', 'email' => 'E-Mail', 'tipoUser' => 'Tipo', 'status' => 'Status'];
-        
+                
         $rotaNome = $this->route;        
         $page = 'Usuários';        
         $tituloPagina = 'Usuários do Sistema';
@@ -88,12 +88,20 @@ class UserController extends Controller
             (object)['url' => '', 'title' => $page],
         ];
 
+        $tiposUsers = [
+            (object)['valor' => 'F', 'descricao' => 'FUNCIONÁRIO'],
+            (object)['valor' => 'D', 'descricao' => 'DOCENTE'],
+            (object)['valor' => 'A', 'descricao' => 'ALUNO'],
+            (object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
+            (object)['valor' => 'C', 'descricao' => 'CONVIDADO'],
+        ];
+
         $perfis = Perfil::orderBy('nome', 'ASC')->get();
         $cargos = Cargo::orderBy('nome', 'ASC')->get();
         $departamentos = Departamento::all();
         $cursos = Curso::all();
 
-        return view('site.admin.acl.'.$this->route.'.create', compact('perfis','breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome', 'cargos', 'departamentos', 'cursos'));
+        return view('site.admin.acl.'.$this->route.'.create', compact('perfis','breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome', 'cargos', 'departamentos', 'cursos', 'tiposUsers'));
     }
 
     /**
@@ -105,23 +113,29 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create-user');
-        $data = [];        
-        if(isset($request->selectTipo)) {            
-            switch ($request->selectTipo) {
-                case 'F':
-                    $data = $request->except(['cargo_docente', 'titulacao', 'lattes_docente', 'link_compartilhado', 'exibe_dados_docente', 'matricula', 'curso']);
-                break;
-                case 'D':
-                    $data = $request->except(['cargo_funcionario', 'departamento_funcionario', 'matricula', 'exibe_dados_funcionario', 'lattes_funcionario', 'curso']);
-                break;
-                case 'A':
-                case 'EX':
-                    $data = $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado']);
-                break;
-                default:
-                    $data = $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado', 'matricula', 'curso']);
-                break;
-            }            
+        $data = [];
+        if(isset($request->selectTipo)) {
+            foreach ($request->selectTipo as $key => $value) {
+                switch ($value) {
+                    case 'F':
+                        $data += $request->except(['cargo_docente', 'titulacao', 'lattes_docente', 'link_compartilhado', 'exibe_dados_docente', 'matricula', 'curso']);
+                    break;
+                    case 'D':
+                        $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'matricula', 'exibe_dados_funcionario', 'lattes_funcionario', 'curso']);
+                    break;
+                    case 'A':
+                    case 'EX':
+                        $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado']);
+                    break;
+                    default:
+                        $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado', 'matricula', 'curso']);
+                    break;
+                }
+            }
+        } else {
+            session()->flash('msg', 'Você deve informar pelo menos um tipo de usuário');
+            session()->flash('status', 'error');
+            return redirect()->back();
         }
 
         $authUser = $request->user();
@@ -136,62 +150,64 @@ class UserController extends Controller
             $plainPassword = str_random(8);        
             $data['password'] = bcrypt($plainPassword);            
         }
-        
+                
         //validar dados
-        if($data['selectTipo'] == 'A' || $data['selectTipo'] == 'EX') {
-            $validacao = Validator::make($data, [
-                'nome' => 'required|string|max:255',
-                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
-                'password' => 'required|string|min:6',
-                'cpf' => 'required|string|unique:users',
-                'selectTipo' => 'required',
-                'sexo' => 'required',
-                'fone' => 'nullable|string',
-                'status' => 'required',
-                'matricula' => 'required|string',                
-                'curso' => 'required',
-            ])->validate();            
-        } else if($data['selectTipo'] == 'F') {                
-            $validacao = Validator::make($data, [
-                'nome' => 'required|string|max:255',
-                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
-                'password' => 'required|string|min:6',
-                'cpf' => 'required|string|unique:users',
-                'selectTipo' => 'required',
-                'sexo' => 'required',
-                'fone' => 'nullable|string',
-                'status' => 'required',
-                'lattes_funcionario' => 'nullable|url',                
-            ])->validate();
-        } else if($data['selectTipo'] == 'D'){
-            $validacao = Validator::make($data, [
-                'nome' => 'required|string|max:255',
-                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
-                'password' => 'required|string|min:6',
-                'cpf' => 'required|string|unique:users',
-                'selectTipo' => 'required',
-                'sexo' => 'required',
-                'fone' => 'nullable|string',
-                'status' => 'required',
-                'lattes_docente' => 'nullable|url',                
-            ])->validate();
-        } else {
-            $validacao = Validator::make($data, [
-                'nome' => 'required|string|max:255',
-                'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
-                'password' => 'required|string|min:6',
-                'cpf' => 'required|string|unique:users',
-                'selectTipo' => 'required',
-                'sexo' => 'required',
-                'fone' => 'nullable|string',
-                'status' => 'required',                    
-            ])->validate();
-        } 
-        
+        foreach ($request->selectTipo as $key => $value) {
+            if($value == 'A' || $value == 'EX') {
+                $validacao = Validator::make($data, [
+                    'nome' => 'required|string|max:255',
+                    'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
+                    'password' => 'required|string|min:6',
+                    'cpf' => 'required|string|unique:users',
+                    'selectTipo' => 'required',
+                    'sexo' => 'required',
+                    'fone' => 'nullable|string',
+                    'status' => 'required',
+                    'matricula' => 'required|string',                
+                    'curso' => 'required',
+                ])->validate();            
+            } else if($value == 'F') {                
+                $validacao = Validator::make($data, [
+                    'nome' => 'required|string|max:255',
+                    'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
+                    'password' => 'required|string|min:6',
+                    'cpf' => 'required|string|unique:users',
+                    'selectTipo' => 'required',
+                    'sexo' => 'required',
+                    'fone' => 'nullable|string',
+                    'status' => 'required',
+                    'lattes_funcionario' => 'nullable|url',                
+                ])->validate();
+            } else if($value == 'D'){
+                $validacao = Validator::make($data, [
+                    'nome' => 'required|string|max:255',
+                    'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
+                    'password' => 'required|string|min:6',
+                    'cpf' => 'required|string|unique:users',
+                    'selectTipo' => 'required',
+                    'sexo' => 'required',
+                    'fone' => 'nullable|string',
+                    'status' => 'required',
+                    'lattes_docente' => 'nullable|url',                
+                ])->validate();
+            } else {
+                $validacao = Validator::make($data, [
+                    'nome' => 'required|string|max:255',
+                    'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
+                    'password' => 'required|string|min:6',
+                    'cpf' => 'required|string|unique:users',
+                    'selectTipo' => 'required',
+                    'sexo' => 'required',
+                    'fone' => 'nullable|string',
+                    'status' => 'required',                    
+                ])->validate();
+            } 
+        }
+           
         //gravar dados após validacao, usando transaction
         try {
             \DB::beginTransaction();
-            
+                        
             $user = User::create([
                 'nome' => $data['nome'],
                 'cpf' => $data['cpf'],
@@ -200,70 +216,51 @@ class UserController extends Controller
                 'password' => $data['password'],
                 'telefone' => $data['fone'],
                 'ativo' => $data['status'],
-                'tipo' => $data['selectTipo'],
+                'tipo' => implode(',', $data['selectTipo']),
+                'url_lattes' => $data['url_lattes'],
             ]);
             
-            if($data['selectTipo'] == 'F') {
-                $funcionario = Funcionario::create([
-                    'url_lattes' => $data['lattes_funcionario'],
-                    'exibe_dados' => $data['exibe_dados_funcionario'],
-                    'cargo_id' => $data['cargo_funcionario'],
-                    'departamento_id' => $data['departamento_funcionario'],
-                    'user_id' => $user->id,
-                ]); 
-
-                if($user && $funcionario){
-                    \DB::commit();
-                }else{
-                    \DB::rollback();
-                }
-
-            } else if($data['selectTipo'] == 'D') {
-                $docente = Docente::create([
-                    'url_lattes' => $data['lattes_docente'],
-                    'exibe_dados' => $data['exibe_dados_docente'],
-                    'cargo_id' => $data['cargo_docente'], 
-                    'link_compartilhado' => $data['link_compartilhado'],
-                    'titulacao' => $data['titulacao'],
-                    'user_id' => $user->id,
-                ]);
-
-                if($user && $docente){
-                    \DB::commit();
-                }else{
-                    \DB::rollback();
-                }
-
-            } else if ($data['selectTipo'] == 'A'  || $data['selectTipo'] == 'EX') {
-                $aluno = Aluno::create([
-                    'matricula' => $data['matricula'],
-                    'curso_id' => $data['curso'],
-                    'user_id' => $user->id,
-                ]);
-
-                if($user && $aluno){
-                    \DB::commit();
-                }else{
-                    \DB::rollback();
-                }
-            } else {
-                //se o tipo for "C" já é o próprio objeto user definido acima
-                if($user){
-                    \DB::commit();
-                }else{
-                    \DB::rollback();
-                }
+            foreach ($data['selectTipo'] as $key => $value) {
+                if($value == 'F') {
+                    $create = Funcionario::create([                    
+                        'cargo_id' => $data['cargo_funcionario'],
+                        'departamento_id' => $data['departamento_funcionario'],
+                        'user_id' => $user->id,
+                    ]);     
+                } else if($value == 'D') {
+                    $create = Docente::create([
+                        'link_compartilhado' => $data['link_compartilhado'],
+                        'titulacao' => $data['titulacao'],
+                        'cargo_id' => $data['cargo_docente'], 
+                        'user_id' => $user->id,
+                    ]);    
+                } else if ($value == 'A'  || $value == 'EX') {
+                    $create = Aluno::create([
+                        'matricula' => $data['matricula'],
+                        'curso_id' => $data['curso'],
+                        'user_id' => $user->id,
+                    ]);    
+                   
+                }             
             }
             
-            //vincular os perfis ao usuario
-            if(isset($data['perfis'])){
-                foreach ($data['perfis'] as $key => $value) {
-                    $user->perfis()->attach($value);
+            if($user && $create) {
+                //vincular os perfis ao usuario
+                if(isset($data['perfis'])){
+                    foreach ($data['perfis'] as $key => $value) {
+                        $user->perfis()->attach($value);
+                    }
                 }
-            }
 
-            session()->flash('msg', 'Registro cadastrado com sucesso!');
-            session()->flash('status', 'success');
+                session()->flash('msg', 'Registro cadastrado com sucesso!');
+                session()->flash('status', 'success');
+                \DB::commit();
+            } else {
+                // session()->flash('msg', 'Erro: Rollback aplicado!');
+                // session()->flash('status', 'error');
+                \DB::rollback();
+            }
+            
         } catch (\PDOException $e) {
             \DB::rollback();
             session()->flash('msg', 'Erro inesperado ao inserir registro: ' . $e->getMessage());

@@ -15,9 +15,6 @@ class CreateFuncionariosTable extends Migration
     {
         Schema::create('funcionarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-                        
-            $table->string('url_lattes', 255)->nullable();
-            $table->enum('exibe_dados', ['S','N'])->default('S');
             
             $table->bigInteger('cargo_id')->unsigned();
             $table->foreign('cargo_id')->references('id')->on('cargos')->onDelete('cascade');
@@ -25,7 +22,7 @@ class CreateFuncionariosTable extends Migration
             $table->bigInteger('departamento_id')->unsigned();
             $table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->timestamps();
