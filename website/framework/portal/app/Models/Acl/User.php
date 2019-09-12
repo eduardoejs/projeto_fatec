@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'password','ativo', 'tipo', 'cpf', 'sexo', 'telefone'
+        'nome', 'email', 'password','ativo', 'tipo', 'cpf', 'sexo', 'telefone', 'url_lattes'
     ];
 
     /**
@@ -140,27 +140,31 @@ class User extends Authenticatable
     public function getTipoUserAttribute() 
     {
         $tipo = '';
-        switch ($this->tipo) 
-        {
-            case 'A':
-                $tipo = 'Aluno';
-                break;
-            case 'D':
-                $tipo = 'Docente';
-                break;            
-            case 'F':
-                $tipo = 'Funcionário';
-                break;
-            case 'C':
-                $tipo = 'Convidado';
-                break;    
-            case 'EX':
-                $tipo = 'Ex-Aluno';
-                break;            
-            default:
-                $tipo = 'Não atribuído';
-                break;
+        $valor = '';
+        $arrayTipos = explode(',', $this->tipo);
+        $tipo = '<div class="col-8">';
+        foreach ($arrayTipos as $key => $value) {            
+            switch ($value) 
+            {
+                case 'A':
+                    $valor = 'Aluno';
+                    break;
+                case 'D':
+                    $valor = 'Docente';
+                    break;            
+                case 'F':
+                    $valor = 'Funcionário';
+                    break;
+                case 'C':
+                    $valor = 'Convidado';
+                    break;    
+                case 'EX':
+                    $valor = 'Ex-Aluno';
+                    break;
+            }            
+            $tipo .= ' <span class="badge badge-dark">'.$valor.'</span> ';
         }
+        $tipo .= '</div>';
         return $tipo;
     }
 

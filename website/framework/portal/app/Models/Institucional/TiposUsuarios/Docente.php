@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Docente extends Model
 {
-    protected $fillable = ['titulacao',
-                           'url_lattes', 'link_compartilhado', 'exibe_dados', 'user_id', 
-                           'cargo_id'];
+    public $incrementing = false; 
+    protected $primaryKey = 'user_id';
+
+    protected $fillable = ['titulacao', 'link_compartilhado', 'user_id', 'cargo_id'];
+                              
 
     public function user()
     {

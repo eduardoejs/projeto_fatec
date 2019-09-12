@@ -21,7 +21,7 @@ class RelacionaCursosComDisciplinasComDocentesTable extends Migration
             $table->foreign('disciplina_id')->references('id')->on('disciplinas')->onDelete('cascade');
 
             $table->bigInteger('docente_id')->unsigned()->nullable();
-            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('set null');
+            $table->foreign('docente_id')->references('user_id')->on('docentes')->onDelete('set null');
 
             $table->integer('semestre')->unsigned();
             $table->integer('carga_horaria')->unsigned();

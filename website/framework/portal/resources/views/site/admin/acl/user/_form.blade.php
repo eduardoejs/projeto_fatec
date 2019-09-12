@@ -95,7 +95,7 @@
 
             <div class="form-group col-md-6">
                 <label for="url_lattes">Currículo Lattes</label>
-                <input type="url" name="url_lattes" value="{{ old('lattes') ?? ($registro->url_lattes ?? '') }}" class="form-control {{ $errors->has('url_lattes') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
+                <input type="url" name="url_lattes" value="{{ old('url_lattes') ?? ($registro->url_lattes ?? '') }}" class="form-control {{ $errors->has('url_lattes') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
                 @if ($errors->has('url_lattes'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('url_lattes') }}</strong>
@@ -168,7 +168,7 @@
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label for="matricula">Registro Acadêmico (RA)</label>
-                        <input type="text" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
+                        <input type="number" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
                         @if ($errors->has('matricula'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('matricula') }}</strong>

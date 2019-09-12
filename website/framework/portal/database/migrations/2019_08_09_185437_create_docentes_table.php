@@ -14,12 +14,12 @@ class CreateDocentesTable extends Migration
     public function up()
     {
         Schema::create('docentes', function (Blueprint $table) {
-            $table->bigIncrements('id');            
+            //$table->bigIncrements('id');            
             
             $table->string('link_compartilhado', 255)->nullable();
             $table->enum('titulacao', ['B', 'L', 'PG', 'M', 'D']); //Bacharel, Licenciatura, PosGraduado, Mestrado, Doutorado
                         
-            $table->bigInteger('user_id')->unsigned()->unique();
+            $table->bigInteger('user_id')->unsigned()->primary();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->bigInteger('cargo_id')->unsigned();

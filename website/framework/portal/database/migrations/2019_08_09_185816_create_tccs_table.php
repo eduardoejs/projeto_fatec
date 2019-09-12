@@ -23,7 +23,7 @@ class CreateTccsTable extends Migration
             $table->string('arquivo', 255); //URL do arquivo a ser enviado
 
             $table->bigInteger('docente_id')->unsigned(); //orientador
-            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('cascade');
+            $table->foreign('docente_id')->references('user_id')->on('docentes')->onDelete('cascade');
 
             $table->bigInteger('curso_id')->unsigned();
             $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');

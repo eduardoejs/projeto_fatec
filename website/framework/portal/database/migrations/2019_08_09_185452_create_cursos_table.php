@@ -30,7 +30,7 @@ class CreateCursosTable extends Migration
             $table->foreign('modalidade_id')->references('id')->on('modalidades')->onDelete('cascade');
             
             $table->bigInteger('docente_id')->unsigned()->nullable();
-            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('set null');
+            $table->foreign('docente_id')->references('user_id')->on('docentes')->onDelete('set null');
 
             $table->timestamps();
         });

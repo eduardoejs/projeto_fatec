@@ -48,14 +48,14 @@ class UserController extends Controller
 
             $query = new User();            
             foreach($this->search as $key => $value) {    
-                $query = $query->orWhere($value, 'like', '%'.$search.'%')->where('tipo', $filtro);                
+                $query = $query->orWhere($value, 'like', '%'.$search.'%')->where('tipo', 'like', '%'.$filtro.'%');                
             }            
             $list = $query->orderBy('ativo', 'ASC')->orderBy('nome', 'ASC')->paginate($this->paginacao);
         }else{
-            $list = User::where('tipo', 'F')->orderBy('ativo', 'ASC')->orderBy('nome', 'ASC')->paginate($this->paginacao);
+            $list = User::where('tipo', 'like', '%F%')->orderBy('ativo', 'ASC')->orderBy('nome', 'ASC')->paginate($this->paginacao);
         }  
 
-        $colunas = ['id' => 'ID', 'nome' => 'Nome', 'email' => 'E-Mail', 'tipoUser' => 'Tipo', 'status' => 'Status'];
+        $colunas = ['id' => 'ID', 'nome' => 'Nome', 'email' => 'E-Mail', 'telefone' => 'Telefone', 'tipoUser' => 'Tipo de Usuário', 'status' => 'Status'];
                 
         $rotaNome = $this->route;        
         $page = 'Usuários';        
@@ -163,7 +163,7 @@ class UserController extends Controller
                     'sexo' => 'required',
                     'fone' => 'nullable|string',
                     'status' => 'required',
-                    'matricula' => 'required|string',                
+                    'matricula' => 'required|numeric',                
                     'curso' => 'required',
                 ])->validate();            
             } else if($value == 'F') {                
@@ -207,8 +207,9 @@ class UserController extends Controller
         //gravar dados após validacao, usando transaction
         try {
             \DB::beginTransaction();
-                        
-            $user = User::create([
+                       
+            
+            $user = User::firstOrCreate([
                 'nome' => $data['nome'],
                 'cpf' => $data['cpf'],
                 'sexo' => $data['sexo'],
@@ -218,24 +219,24 @@ class UserController extends Controller
                 'ativo' => $data['status'],
                 'tipo' => implode(',', $data['selectTipo']),
                 'url_lattes' => $data['url_lattes'],
-            ]);
+            ]);            
             
-            foreach ($data['selectTipo'] as $key => $value) {
+            foreach (explode(',',$user->tipo) as $key => $value) {
                 if($value == 'F') {
-                    $create = Funcionario::create([                    
+                    $create = Funcionario::firstOrCreate([                    
                         'cargo_id' => $data['cargo_funcionario'],
                         'departamento_id' => $data['departamento_funcionario'],
                         'user_id' => $user->id,
                     ]);     
                 } else if($value == 'D') {
-                    $create = Docente::create([
+                    $create = Docente::firstOrCreate([
                         'link_compartilhado' => $data['link_compartilhado'],
                         'titulacao' => $data['titulacao'],
                         'cargo_id' => $data['cargo_docente'], 
                         'user_id' => $user->id,
                     ]);    
                 } else if ($value == 'A'  || $value == 'EX') {
-                    $create = Aluno::create([
+                    $create = Aluno::firstOrCreate([
                         'matricula' => $data['matricula'],
                         'curso_id' => $data['curso'],
                         'user_id' => $user->id,
@@ -255,6 +256,17 @@ class UserController extends Controller
                 session()->flash('msg', 'Registro cadastrado com sucesso!');
                 session()->flash('status', 'success');
                 \DB::commit();
+
+                /*try {
+                    //enviar email ao usuario com senha descriptografada - plainPassword
+                    $user->plainPassword = $plainPassword;                 
+                    Mail::to($user->email)->queue(new SendEmailNewUser($user));
+                    session()->flash('msg', 'E-mail com os dados de acesso foram enviados ao novo usuário!');
+                    session()->flash('status', 'success');
+                } catch (\Exception $ex) {
+                    session()->flash('msg', 'Erro ao enviar e-mail com os dados de acesso: ' . $ex->getMessage());
+                    session()->flash('status', 'error');            
+                }*/
             } else {
                 // session()->flash('msg', 'Erro: Rollback aplicado!');
                 // session()->flash('status', 'error');
@@ -267,18 +279,6 @@ class UserController extends Controller
             session()->flash('status', 'error');
         } 
 
-        
-        /*try {
-            //enviar email ao usuario com senha descriptografada - plainPassword
-            $user->plainPassword = $plainPassword;                 
-            Mail::to($user->email)->queue(new SendEmailNewUser($user));
-            session()->flash('msg', 'E-mail com os dados de acesso foram enviados ao novo usuário!');
-            session()->flash('status', 'success');
-        } catch (\Exception $ex) {
-            session()->flash('msg', 'Erro ao enviar e-mail com os dados de acesso: ' . $ex->getMessage());
-            session()->flash('status', 'error');            
-        }*/
-                
         return redirect()->back();
     }
 
