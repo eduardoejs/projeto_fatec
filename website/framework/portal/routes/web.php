@@ -54,11 +54,11 @@ Route::prefix('admin')->middleware('auth', 'revalidate')->namespace('Site\Admin'
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');
     
-
-    Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){        
+    Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){
+        Route::get('/user/send-email', 'UserController@sendEMail');
         Route::resource('/perfil', 'PerfilController');    
         Route::resource('/permissao', 'PermissaoController');    
-        Route::resource('/user', 'UserController');        
+        Route::resource('/user', 'UserController');                    
     });    
 });
 

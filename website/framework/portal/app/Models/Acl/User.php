@@ -7,7 +7,6 @@ use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Sistema\Eventos\Inscricao;
 use App\Models\Sistema\Destaques\Destaque;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Sistema\Agendamento\Agendamento;
 use App\Models\Institucional\TiposUsuarios\Aluno;
 use App\Models\Institucional\TiposUsuarios\Docente;

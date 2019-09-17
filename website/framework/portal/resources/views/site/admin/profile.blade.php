@@ -20,7 +20,7 @@
                         </div>
                         <div class="work mb-4">
                             <strong class="h5 d-block text-secondary font-weight-bold mb-1">Tipo de Usuário:</strong>                            
-                            <strong class="h5 d-block text-warning mb-1">{{ Auth::user()->tipo_user }}</strong>                            
+                            <strong class="h5 d-block text-warning mb-1">{!! Auth::user()->tipoUser !!}</strong>   
                         </div>
                     </div>    
                 </section>

@@ -81,14 +81,13 @@
                 }                
             });
 
-            var tempArray = <?php echo json_encode($teste); ?>; 
-            console.log(tempArray.length)           
+            var tempArray = <?php echo json_encode($teste); ?>;                       
             if(tempArray.length > 0) {
                 $('.selectpicker').selectpicker('val', tempArray);
             } else {
                 $("#selecionaTipo option:first").attr('selected','selected');//seleciona a primeira option do select            
             }
-
+            
             //Masks
             $('.cpf').mask('000.000.000-00', {reverse: true});
             $('.phone_with_ddd').mask('(00) 00000-0000');

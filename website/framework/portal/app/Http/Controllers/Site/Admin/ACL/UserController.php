@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Site\Admin\ACL;
 
+use App\Mail\MailNotify;
 use App\Models\Acl\User;
+use App\Jobs\SendEmailJob;
 use App\Models\Acl\Perfil;
 use App\Models\Cursos\Curso;
 use Illuminate\Http\Request;
 use App\Mail\SendEmailNewUser;
 use Illuminate\Validation\Rule;
+use App\Mail\SendEmailToNewUser;
 use App\Jobs\SendEmailToNewUserJob;
 use App\Models\Institucional\Cargo;
 use App\Http\Controllers\Controller;
@@ -150,7 +153,7 @@ class UserController extends Controller
             $plainPassword = str_random(8);        
             $data['password'] = bcrypt($plainPassword);            
         }
-                
+                        
         //validar dados
         foreach ($request->selectTipo as $key => $value) {
             if($value == 'A' || $value == 'EX') {
@@ -205,79 +208,76 @@ class UserController extends Controller
         }
            
         //gravar dados após validacao, usando transaction
-        try {
-            \DB::beginTransaction();
-                       
-            
-            $user = User::firstOrCreate([
-                'nome' => $data['nome'],
-                'cpf' => $data['cpf'],
-                'sexo' => $data['sexo'],
-                'email' => $data['email'],
-                'password' => $data['password'],
-                'telefone' => $data['fone'],
-                'ativo' => $data['status'],
-                'tipo' => implode(',', $data['selectTipo']),
-                'url_lattes' => $data['url_lattes'],
-            ]);            
-            
-            foreach (explode(',',$user->tipo) as $key => $value) {
-                if($value == 'F') {
-                    $create = Funcionario::firstOrCreate([                    
-                        'cargo_id' => $data['cargo_funcionario'],
-                        'departamento_id' => $data['departamento_funcionario'],
-                        'user_id' => $user->id,
-                    ]);     
-                } else if($value == 'D') {
-                    $create = Docente::firstOrCreate([
-                        'link_compartilhado' => $data['link_compartilhado'],
-                        'titulacao' => $data['titulacao'],
-                        'cargo_id' => $data['cargo_docente'], 
-                        'user_id' => $user->id,
-                    ]);    
-                } else if ($value == 'A'  || $value == 'EX') {
-                    $create = Aluno::firstOrCreate([
-                        'matricula' => $data['matricula'],
-                        'curso_id' => $data['curso'],
-                        'user_id' => $user->id,
-                    ]);    
+        if($validacao){
+            try {
+                \DB::beginTransaction();
                    
-                }             
-            }
-            
-            if($user && $create) {
-                //vincular os perfis ao usuario
-                if(isset($data['perfis'])){
-                    foreach ($data['perfis'] as $key => $value) {
-                        $user->perfis()->attach($value);
-                    }
+                $user = User::firstOrCreate([
+                    'nome' => $data['nome'],
+                    'cpf' => $data['cpf'],
+                    'sexo' => $data['sexo'],
+                    'email' => $data['email'],
+                    'password' => $data['password'],
+                    'telefone' => $data['fone'],
+                    'ativo' => $data['status'],
+                    'tipo' => implode(',', $data['selectTipo']),
+                    'url_lattes' => $data['url_lattes'],
+                ]);            
+                
+                foreach (explode(',',$user->tipo) as $key => $value) {
+                    if($value == 'F') {
+                        $create = Funcionario::firstOrCreate([                    
+                            'cargo_id' => $data['cargo_funcionario'],
+                            'departamento_id' => $data['departamento_funcionario'],
+                            'user_id' => $user->id,
+                        ]);     
+                    } else if($value == 'D') {
+                        $create = Docente::firstOrCreate([
+                            'link_compartilhado' => $data['link_compartilhado'],
+                            'titulacao' => $data['titulacao'],
+                            'cargo_id' => $data['cargo_docente'], 
+                            'user_id' => $user->id,
+                        ]);    
+                    } else if ($value == 'A'  || $value == 'EX') {
+                        $create = Aluno::firstOrCreate([
+                            'matricula' => $data['matricula'],
+                            'curso_id' => $data['curso'],
+                            'user_id' => $user->id,
+                        ]);    
+                       
+                    }             
                 }
-
-                session()->flash('msg', 'Registro cadastrado com sucesso!');
-                session()->flash('status', 'success');
-                \DB::commit();
-
-                /*try {
+                
+                if($user && $create) {
+                    
+                    //vincular os perfis ao usuario
+                    if(isset($data['perfis'])){
+                        foreach ($data['perfis'] as $key => $value) {
+                            $user->perfis()->attach($value);
+                        }
+                    }
+    
+                    \DB::commit();
+                    session()->flash('msg', 'Registro cadastrado com sucesso!');
+                    session()->flash('status', 'success');                
+                    
                     //enviar email ao usuario com senha descriptografada - plainPassword
-                    $user->plainPassword = $plainPassword;                 
-                    Mail::to($user->email)->queue(new SendEmailNewUser($user));
-                    session()->flash('msg', 'E-mail com os dados de acesso foram enviados ao novo usuário!');
-                    session()->flash('status', 'success');
-                } catch (\Exception $ex) {
-                    session()->flash('msg', 'Erro ao enviar e-mail com os dados de acesso: ' . $ex->getMessage());
-                    session()->flash('status', 'error');            
-                }*/
-            } else {
-                // session()->flash('msg', 'Erro: Rollback aplicado!');
-                // session()->flash('status', 'error');
+                    $user->plainPassword = $plainPassword;                
+                    $this->sendEmailToNewUser($user); 
+                } else {                
+                    \DB::rollback();
+                }
+                
+            } catch (\PDOException $e) {
                 \DB::rollback();
+                session()->flash('msg', 'Erro inesperado ao inserir registro: ' . $e->getMessage());
+                session()->flash('status', 'error');
+            } catch (\Exception $ex) {
+                \DB::rollback();
+                session()->flash('msg', 'Erro inesperado: ' . $ex->getMessage());
+                session()->flash('status', 'error');
             }
-            
-        } catch (\PDOException $e) {
-            \DB::rollback();
-            session()->flash('msg', 'Erro inesperado ao inserir registro: ' . $e->getMessage());
-            session()->flash('status', 'error');
-        } 
+        }        
 
         return redirect()->back();
     }
@@ -335,5 +335,11 @@ class UserController extends Controller
             (object)['url' => '', 'title' => $page],
         ];
         return view('site.admin.profile', compact('breadcrumb'));
+    }
+
+    public function sendEmailToNewUser($user)
+    {   
+        //dispatch(new SendEmailToNewUserJob($user));
+        Mail::to($user->email)->queue(new SendEmailToNewUser($user));
     }
 }
