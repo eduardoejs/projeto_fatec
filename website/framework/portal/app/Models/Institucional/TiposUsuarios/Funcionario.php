@@ -12,8 +12,7 @@ class Funcionario extends Model
     public $incrementing = false; 
     protected $primaryKey = 'user_id';
     
-    protected $fillable = ['url_lattes', 'exibe_dados', 
-                           'cargo_id', 'departamento_id', 'user_id'];
+    protected $fillable = ['cargo_id', 'departamento_id', 'user_id'];
 
     public function user() 
     {

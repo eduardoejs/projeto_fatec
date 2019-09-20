@@ -31,17 +31,17 @@
             <div class="form-group col-md-2">
                 <label for="sexo">Sexo</label>
                 <select name="sexo" id="sexo" class="custom-select">
-                    <option value="M">MASCULINO</option>
-                    <option value="F">FEMININO</option>
+                    <option {{ (old('sexo') == 'M' ? 'selected' : '') }} @if (isset($registro) && $registro->sexo == 'M') selected @endif value="M">MASCULINO</option>
+                    <option {{ (old('sexo') == 'F' ? 'selected' : '') }} @if (isset($registro) && $registro->sexo == 'F') selected @endif value="F">FEMININO</option>
                 </select>            
             </div>
 
             <div class="form-group col-md-2">
-                <label for="fone">Telefone Celular</label>            
-                <input type="text" name="fone" value="{{ old('fone') ?? ($registro->telefone ?? '') }}" class="phone_with_ddd form-control {{ $errors->has('fone') ? ' is-invalid' : '' }}" placeholder="(00) 00000-0000">
-                @if ($errors->has('fone'))
+                <label for="telefone">Telefone Celular</label>            
+                <input type="text" name="telefone" value="{{ old('telefone') ?? ($registro->telefone ?? '') }}" class="phone_with_ddd form-control {{ $errors->has('telefone') ? ' is-invalid' : '' }}" placeholder="(00) 00000-0000">
+                @if ($errors->has('telefone'))
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('fone') }}</strong>
+                        <strong>{{ $errors->first('telefone') }}</strong>
                     </span>
                 @endif
             </div>
@@ -58,7 +58,7 @@
 
             <div class="form-group col-md-2">
                 <label for="password">Senha</label>            
-                <input type="password" name="password" value="{{ old('password') ?? ($registro->password ?? '') }}" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="">
+                <input type="password" name="password" value="{{ old('password') ?? '' }}" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="">
                 @if ($errors->has('password'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('password') }}</strong>
@@ -67,10 +67,10 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="status">Permite Login <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite o usuário acessar a área administrativa"></i></span></label>
-                <select name="status" class="custom-select">                    
-                    <option {{ (old('status') == 'S' ? 'selected' : '') }} value="S">SIM</option>
-                    <option {{ (old('status') == 'N' ? 'selected' : '') }} value="N">NÃO</option>                    
+                <label for="ativo">Permite Login <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite o usuário acessar a área administrativa"></i></span></label>
+                <select name="ativo" class="custom-select">                    
+                    <option {{ (old('ativo') == 'S' ? 'selected' : '') }} @if (isset($registro) && $registro->ativo == 'S') selected @endif value="S">SIM</option>
+                    <option {{ (old('ativo') == 'N' ? 'selected' : '') }} @if (isset($registro) && $registro->ativo == 'N') selected @endif value="N">NÃO</option>                    
                 </select>            
             </div>
 
@@ -81,9 +81,17 @@
                         @php
                             $selected = '';
                             if(old('selectTipo') ?? false) {
-                                foreach(old('selectTipo') as $key => $value){
-                                    if($tipo->valor == $value){
+                                foreach(old('selectTipo') as $key => $value) {
+                                    if($tipo->valor == $value) {
                                         $selected = 'selected';
+                                    }
+                                }
+                            } else {
+                                if($registro ?? false) {                                    
+                                    foreach ($tiposDoUsuario as $lista) {
+                                        if($tipo->valor == $lista->valor) {
+                                            $selected = 'selected';
+                                        }
                                     }
                                 }
                             }
@@ -111,7 +119,15 @@
                         <label for="cargo_funcionario">Cargo do Funcionário</label>
                         <select name="cargo_funcionario" class="custom-select">                    
                             @foreach ($cargos as $cargo)
-                                <option value="{{ $cargo->id }}">{{ $cargo->nome }}</option>
+                                @php
+                                    $selected = '';
+                                    if(isset($registro) && isset($registro->funcionarios->first()->cargo_id)) {
+                                        if($cargo->id == $registro->funcionarios->first()->cargo_id) {
+                                            $selected = 'selected';
+                                        }
+                                    }                                    
+                                @endphp                                
+                                <option value="{{ $cargo->id }}" {{ $selected }}>{{ $cargo->nome }}</option>
                             @endforeach                   
                         </select>                
                     </div>
@@ -119,7 +135,15 @@
                         <label for="departamento_funcionario">Departamento </label>
                         <select name="departamento_funcionario" class="custom-select">                    
                             @foreach ($departamentos as $departamento)
-                                <option value="{{ $departamento->id }}">{{ $departamento->nome }}</option>
+                                @php
+                                    $selected = '';
+                                    if(isset($registro) && isset($registro->funcionarios->first()->departamento_id)) {
+                                        if($departamento->id == $registro->funcionarios->first()->departamento_id) {
+                                            $selected = 'selected';
+                                        }
+                                    }                                    
+                                @endphp 
+                                <option value="{{ $departamento->id }}" {{ $selected }}>{{ $departamento->nome }}</option>
                             @endforeach                    
                         </select>                
                     </div>
@@ -136,25 +160,44 @@
                                 @if ($cargo->id == old('cargo_docente'))
                                     <option selected value="{{ $cargo->id }}">{{ $cargo->nome }}</option>
                                 @else
-                                    <option value="{{ $cargo->id }}">{{ $cargo->nome }}</option>    
+                                    @php
+                                        $selected = '';
+                                        if(isset($registro) && isset($registro->docentes->first()->cargo_id)) {
+                                            if($cargo->id == $registro->docentes->first()->cargo_id) {
+                                                $selected = 'selected';
+                                            }
+                                        }                                    
+                                    @endphp 
+                                    <option value="{{ $cargo->id }}" {{ $selected }} >{{ $cargo->nome }}</option>    
                                 @endif                                
                             @endforeach
                         </select>                
                     </div>
                     <div class="form-group col-md-6">
                         <label for="titulacao">Titulação </label>
-                        <select name="titulacao" class="custom-select">                    
-                            <option {{ (old('titulacao') == 'D' ? 'selected' : '') }} value="D">DOUTORADO</option>
-                            <option {{ (old('titulacao') == 'M' ? 'selected' : '') }} value="M">MESTRADO</option>                    
-                            <option {{ (old('titulacao') == 'PG' ? 'selected' : '') }} value="PG">PÓS-GRADUADO (ESPECIALIZAÇÃO)</option>                    
-                            <option {{ (old('titulacao') == 'L' ? 'selected' : '') }} value="L">LICENCIATURA</option>                    
-                            <option {{ (old('titulacao') == 'G' ? 'selected' : '') }} value="G">GRADUAÇÃO</option>
+                        <select name="titulacao" class="custom-select">
+                            @foreach ($titulacoes as $titulo)
+
+                                @if ($titulo->valor == old('titulacao'))
+                                    <option selected value="{{ $titulo->valor }}">{{ $titulo->descricao }}</option>
+                                @else
+                                    @php
+                                        $selected = '';                                        
+                                        if(isset($registro) && isset($registro->docentes->first()->titulacao)) {
+                                            if($titulo->valor == $registro->docentes->first()->titulacao) {
+                                                $selected = 'selected';
+                                            }
+                                        }                                    
+                                    @endphp 
+                                    <option value="{{ $titulo->valor }}" {{ $selected }} >{{ $titulo->descricao }}</option>    
+                                @endif                                 
+                            @endforeach                            
                         </select>                
                     </div>
 
                     <div class="form-group col-md-5">
                         <label for="link_compartilhado">Link Compartilhado <span class="text-info"><i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Permite compartilhar de forma pública um endereço ou página pessoal. Exemplo: OneDrive, Google Drive, Dropbox, etc."></i></span></label>
-                        <input type="url" name="link_compartilhado" value="{{ old('link_compartilhado') ?? ($registro->link_compartilhado ?? '') }}" class="form-control {{ $errors->has('link_compartilhado') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
+                        <input type="url" name="link_compartilhado" value="{{ old('link_compartilhado') ?? (isset($registro) && isset($registro->docentes->first()->link_compartilhado) ? $registro->docentes->first()->link_compartilhado : '') }}" class="form-control {{ $errors->has('link_compartilhado') ? ' is-invalid' : '' }}" placeholder="Ex.: http://lattes.cnpq.br/xyz">
                         @if ($errors->has('link_compartilhado'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('link_compartilhado') }}</strong>
@@ -168,7 +211,7 @@
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label for="matricula">Registro Acadêmico (RA)</label>
-                        <input type="number" name="matricula" value="{{ old('matricula') ?? ($registro->matricula ?? '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
+                        <input type="number" name="matricula" value="{{ old('matricula') ?? (isset($registro) && isset($registro->alunos->first()->matricula) ? $registro->alunos->first()->matricula : '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
                         @if ($errors->has('matricula'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('matricula') }}</strong>
@@ -182,7 +225,15 @@
                                 @if ($curso->id == old('curso'))
                                     <option selected value="{{ $curso->id }}">{{ $curso->nome }}</option>
                                 @else
-                                    <option value="{{ $curso->id }}">{{ $curso->nome }}</option>    
+                                    @php
+                                        $selected = '';                                        
+                                        if(isset($registro) && isset($registro->alunos->first()->curso_id)) {
+                                            if($curso->id == $registro->alunos->first()->curso_id) {
+                                                $selected = 'selected';
+                                            }
+                                        }                                    
+                                    @endphp 
+                                    <option value="{{ $curso->id }}" {{ $selected }}>{{ $curso->nome }}</option>
                                 @endif                                
                             @endforeach
                         </select> 

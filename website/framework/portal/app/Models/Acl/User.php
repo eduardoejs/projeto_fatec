@@ -136,6 +136,18 @@ class User extends Authenticatable
         return $status;
     }
 
+    public function getTipoUserArrayAttribute()
+    {
+        //recupero os tipos de usuário cadastrado
+        $array = explode(',', $this->tipo);
+        $arrayTipos = [];
+        for($i = 0; $i < count($array); $i++)
+        {
+            $arrayTipos[$i] = (object)$arrayTipos[$i] = $array[$i];
+        }
+        return json_decode(str_replace('scalar', 'valor',json_encode($arrayTipos)));        
+    }
+
     public function getTipoUserAttribute() 
     {
         $tipo = '';
