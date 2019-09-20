@@ -6,6 +6,7 @@ use App\Mail\MailNotify;
 use App\Models\Acl\User;
 use App\Jobs\SendEmailJob;
 use App\Models\Acl\Perfil;
+use App\Events\NovoUsuario;
 use App\Models\Cursos\Curso;
 use Illuminate\Http\Request;
 use App\Mail\SendEmailNewUser;
@@ -135,7 +136,7 @@ class UserController extends Controller
                         $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'matricula', 'exibe_dados_funcionario', 'lattes_funcionario', 'curso']);
                     break;
                     case 'A':
-                    case 'EX':
+                    //case 'EX':
                         $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado']);
                     break;
                     default:
@@ -150,7 +151,7 @@ class UserController extends Controller
         }
 
         $authUser = $request->user();
-        $plainPassword = '';
+        //$plainPassword = '';
         
         //Verifica se foi informada uma senha no cadastro, caso contrário é gerada uma senha aleatória
         if (isset($data['password'])){
@@ -164,7 +165,7 @@ class UserController extends Controller
                         
         //validar dados
         foreach ($request->selectTipo as $key => $value) {
-            if($value == 'A' || $value == 'EX') {
+            if($value == 'A') {
                 $validacao = Validator::make($data, [
                     'nome' => 'required|string|max:255',
                     'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($authUser->id)],
@@ -226,6 +227,7 @@ class UserController extends Controller
                     'sexo' => $data['sexo'],
                     'email' => $data['email'],
                     'password' => $data['password'],
+                    'token' => bcrypt($data['cpf'].'#'.$data['email'].'#'.$data['nome']),
                     'telefone' => $data['telefone'],
                     'ativo' => $data['ativo'],
                     'tipo' => implode(',', $data['selectTipo']),
@@ -269,9 +271,9 @@ class UserController extends Controller
                     session()->flash('msg', 'Registro cadastrado com sucesso!');
                     session()->flash('status', 'success');                
                     
-                    //enviar email ao usuario com senha descriptografada - plainPassword
-                    $user->plainPassword = $plainPassword;                
-                    $this->sendEmailToNewUser($user); 
+                    //enviar email ao usuario com senha descriptografada - plainPassword                                    
+                    //$this->sendEmailToNewUser($user); 
+                    event(new NovoUsuario($user));
                 } else {                
                     \DB::rollback();
                 }
@@ -435,7 +437,7 @@ class UserController extends Controller
                         
         //validar dados
         foreach ($request->selectTipo as $key => $value) {
-            if($value == 'A' || $value == 'EX') {
+            if($value == 'A') {
                 $validacao = Validator::make($data, [
                     'nome' => 'required|string|max:255',
                     'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($id)],
@@ -552,8 +554,7 @@ class UserController extends Controller
                 //se nao tem item a inserir ou remover, entao, atualiza as informacoes
                 foreach ($request->selectTipo as $key => $value) {
                     
-                    if($value == 'F') { 
-                        
+                    if($value == 'F') {                         
                         $updateFuncionario = Funcionario::find($id)->update(['cargo_id' => $data['cargo_funcionario'], 'departamento_id' => $data['departamento_funcionario'], 'user_id' => $id]);                        
                     } else if($value == 'D') {
                         $updateDocente = Docente::find($id)->update(['cargo_id' => $data['cargo_docente'], 'titulacao' => $data['titulacao'], 'user_id' => $id, 'link_compartilhado' => $data['link_compartilhado']]);    

@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->enum('ativo',['S','N'])->default('S'); // Sim ou Nao
             $table->set('tipo', ['A', 'F', 'D', 'C', 'EX']); //A=Aluno F=Funcionario D=Docente C=Convidado EX=ExAluno
             $table->string('url_lattes')->nullable();
+            $table->string('token', 100)->nullable();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

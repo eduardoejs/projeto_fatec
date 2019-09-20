@@ -47,7 +47,7 @@ Auth::routes(['register' =>false]);
 
 Route::namespace('Site\Publico')->group(function () {
     Route::get('/', 'SiteController@index')->name('site');
-    Route::get('/ativar/conta/{token}', 'SiteController@ativarConta')->name('ativar.conta');
+    Route::get('/ativar/conta/{token}/{email}', 'SiteController@showFormAtivacao')->name('ativar.conta');
 });
 
 Route::prefix('admin')->middleware('auth', 'revalidate')->namespace('Site\Admin')->group(function () {

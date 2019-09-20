@@ -7,7 +7,8 @@
 
  <h1>This is test mail from Tutsmake.com</h1>
  <h1>Your username: {{ $email }}</h1>
- <h1>Your password: {{ $plainPassword }}</h1>
+ <h1>Your token: {{ $token }}</h1>
+<a class="btn btn-success" href="{{url(config('aap.url').route('ativar.conta', ['token' => $token, 'email' => $email]))}}">ATIVAR MINHA CONTA</a>
  <p>Thank you, {{ $nome }}</p>
 
  Olá, Fukano

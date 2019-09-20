@@ -33,7 +33,8 @@ class SendEmailToNewUser extends Mailable
         return $this->subject('Bem vindo')->view('emails.newuser')->with([
                                                     'nome' => $this->user->nome, 
                                                     'email' => $this->user->email,
-                                                    'plainPassword' => $this->user->plainPassword,
+                                                    'token' => $this->user->token,
+                                                    'cpf' => $this->user->cpf,
                                                 ]);
     }
 }
