@@ -23,7 +23,7 @@ class SiteController extends Controller
     }
     
     public function showFormAtivacao($token, $email)
-    {           
+    {   
         if(isset($token) && isset($email))
         {
             $user = User::where('token', $token)->where('email', $email)->first();            
@@ -32,8 +32,10 @@ class SiteController extends Controller
                     return view('site.publico.ativar_usuario', compact('token', 'email', 'user'));
                 }                
             }else {
-                return 'inválido';
+                return view('site.publico.ativar_usuario', compact('token', 'email', 'user'));
             }
         }
+        
+        
     }
 }

@@ -30,11 +30,18 @@ class SendEmailToNewUser extends Mailable
      */
     public function build()
     {        
-        return $this->subject('Bem vindo')->view('emails.newuser')->with([
-                                                    'nome' => $this->user->nome, 
-                                                    'email' => $this->user->email,
-                                                    'token' => $this->user->token,
-                                                    'cpf' => $this->user->cpf,
-                                                ]);
+        // return $this->subject('Bem vindo')->view('emails.newuser')->with([
+        //                                             'nome' => $this->user->nome, 
+        //                                             'email' => $this->user->email,
+        //                                             'token' => $this->user->token,
+        //                                             'cpf' => $this->user->cpf,
+        //                                         ]);
+        return $this->subject('Bem vindo ao portal da Fatec Marília')->markdown('emails.user.created')->with([
+                                                        'nome' => $this->user->nome, 
+                                                        'email' => $this->user->email,
+                                                        'token' => $this->user->token,
+                                                        'cpf' => $this->user->cpf,
+                                                         ]);
+               
     }
 }
