@@ -23,13 +23,14 @@ class SiteController extends Controller
     }
     
     public function showFormAtivacao($token, $email)
-    {   
-        
+    {           
         if(isset($token) && isset($email))
         {
             $user = User::where('token', $token)->where('email', $email)->first();            
             if($user){
-                return view('site.publico.ativar_usuario', compact('token', 'email', 'user'));
+                if(md5($user->cpf.'#'.$user->email.'#'.$user->nome) == $token){                    
+                    return view('site.publico.ativar_usuario', compact('token', 'email', 'user'));
+                }                
             }else {
                 return 'inválido';
             }

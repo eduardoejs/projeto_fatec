@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Laravel Send Email</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <title>Confirmar usuário</title>
 </head>
 <body>
+ 
+ <p>Olá, <strong><h3>{{ $nome }}<h3><strong></p>
 
- <h1>This is test mail from Tutsmake.com</h1>
- <h1>Your username: {{ $email }}</h1>
- <h1>Your token: {{ $token }}</h1>
-<a class="btn btn-success" href="{{url(config('aap.url').route('ativar.conta', ['token' => $token, 'email' => $email]))}}">ATIVAR MINHA CONTA</a>
- <p>Thank you, {{ $nome }}</p>
-
- Olá, Fukano
-
- Bem-vindo ao (portal)! Está tudo pronto para você acessar sua área de usuário.
- Para acessar é muito simples. Clique no botão abaixo, defina uma senha de acesso e pronto! Após a ativação da sua conta você vai receber um email confirmando seus dados de acesso.
-
- (Botão ATIVAR MINHA CONTA)
+ <p>Bem-vindo ao portal da Fatec Marília!</p>
+ <p>Está tudo pronto para você acessar sua área de usuário.</p>
+ <p>Para acessar é muito simples, clique no botão abaixo, confirme seus dados, defina uma senha de acesso, e pronto!</p> 
+ 
+ <div class="row col-12">
+    <a class="btn btn-success btn-lg btn-block col-6" href="{{url(config('aap.url').route('ativar.conta', ['token' => $token, 'email' => $email]))}}">ATIVAR MINHA CONTA</a>
+ </div> 
+ <p>Muito obrigado,</p>  
  <hr>
- Muito obrigado,
-  
-
- <p>Best Regards,</p>
- <p>TI Team - Fatec Marília</p>
+ <p>Equipe TI da Fatec Marília</p>
+ 
+ <div class="alert alert-danger" role="alert">
+    Esta mensagem é uma resposta automática que visa confirmar a recepção do seu contato. Por favor não responda este email.
+ </div>
+ <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

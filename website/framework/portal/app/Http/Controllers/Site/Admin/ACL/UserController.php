@@ -227,7 +227,7 @@ class UserController extends Controller
                     'sexo' => $data['sexo'],
                     'email' => $data['email'],
                     'password' => $data['password'],
-                    'token' => bcrypt($data['cpf'].'#'.$data['email'].'#'.$data['nome']),
+                    'token' => md5($data['cpf'].'#'.$data['email'].'#'.$data['nome']),
                     'telefone' => $data['telefone'],
                     'ativo' => $data['ativo'],
                     'tipo' => implode(',', $data['selectTipo']),
