@@ -15,12 +15,10 @@
             @form_component(['action' => route($rotaNome.'.update', $registro->id), 'method' => 'PUT'])
             {{-- no caso de EDIT os tipos são armazenados na variavel abaixo para a selecao por JS --}}
             @php
-                                
-                $teste = [];
-                if($registro->tipo != ""){
-                     $teste = explode(',', $registro->tipo);
-                 }
-                
+                $arrayTipos = [];
+                if($registro->tipo != "") {
+                     $arrayTipos = explode(',', $registro->tipo);
+                }                 
             @endphp
                 @include('site.admin.acl.'.$rotaNome.'._form')                
                 <button type="submit" class="btn btn-outline-success float-right btn-icon-split">
@@ -54,11 +52,12 @@
             return false;
         }
 
-        $(document).ready(function(){
-
+        $(document).ready(function() {           
+            
             //exibe ou nao as divs com os campos necessarios            
              $('#selecionaTipo').change(function() {                
                 const tipo = $('#selecionaTipo').val();
+                
                 if(tipo.contains('F')) {
                     $('#tipoFuncionario').css('display', 'block')
                 } else {
@@ -69,14 +68,14 @@
                 } else {
                     $('#tipoDocente').css('display', 'none')
                 }
-                if(tipo.contains('A') || tipo.contains('EX')) {
+                if(tipo.contains('A')) {
                     $('#tipoAluno').css('display', 'block')
                 } else {
                     $('#tipoAluno').css('display', 'none')
                 }                
             });
-
-            const tempArray = <?php echo json_encode($teste); ?>;                       
+            
+            const tempArray = $('#selecionaTipo').val();                        
             if(tempArray.length > 0) {
                 $('.selectpicker').selectpicker('val', tempArray);
             } else {

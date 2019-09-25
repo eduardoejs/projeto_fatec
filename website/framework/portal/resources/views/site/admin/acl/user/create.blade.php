@@ -23,7 +23,7 @@
 
             {{-- no caso de EDIT os tipos são armazenados na variavel abaixo para a selecao por JS --}}
             @php
-                $teste = [];//array('A','D');
+                $arrayTipos = [];
             @endphp
 
                 @include('site.admin.acl.'.$rotaNome.'._form')
@@ -74,14 +74,14 @@
                 } else {
                     $('#tipoDocente').css('display', 'none')
                 }
-                if(tipo.contains('A') || tipo.contains('EX')) {
+                if(tipo.contains('A')) {
                     $('#tipoAluno').css('display', 'block')
                 } else {
                     $('#tipoAluno').css('display', 'none')
                 }                
             });
 
-            var tempArray = <?php echo json_encode($teste); ?>;                       
+            var tempArray = <?php echo json_encode($arrayTipos); ?>;                       
             if(tempArray.length > 0) {
                 $('.selectpicker').selectpicker('val', tempArray);
             } else {

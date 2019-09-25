@@ -78,22 +78,24 @@
                 <label for="selectTipo">Tipo de Usuário</label>               
                 <select name="selectTipo[]" id="selecionaTipo" class="selectpicker form-control custom-select" multiple title="Selecione um tipo" required>
                     @foreach ($tiposUsers as $tipo)
-                        @php
-                            $selected = '';
+                        @php                            
+                            $selected = '';                            
                             if(old('selectTipo') ?? false) {
                                 foreach(old('selectTipo') as $key => $value) {
                                     if($tipo->valor == $value) {
-                                        $selected = 'selected';
+                                        $selected = 'selected';                                        
                                     }
                                 }
+                                
                             } else {
                                 if($registro ?? false) {                                    
                                     foreach ($tiposDoUsuario as $lista) {
                                         if($tipo->valor == $lista->valor) {
                                             $selected = 'selected';
                                         }
-                                    }
+                                    }                                    
                                 }
+                                
                             }
                         @endphp
                         <option {{ $selected }} value="{{ $tipo->valor }}">{{$tipo->descricao}}</option>    
@@ -211,7 +213,7 @@
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label for="matricula">Registro Acadêmico (RA)</label>
-                        <input type="number" name="matricula" value="{{ old('matricula') ?? (isset($registro) && isset($registro->alunos->first()->matricula) ? $registro->alunos->first()->matricula : '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
+                        <input type="text" name="matricula" value="{{ old('matricula') ?? (isset($registro) && isset($registro->alunos->first()->matricula) ? $registro->alunos->first()->matricula : '') }}" class="form-control {{ $errors->has('matricula') ? ' is-invalid' : '' }}" placeholder="">
                         @if ($errors->has('matricula'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('matricula') }}</strong>
