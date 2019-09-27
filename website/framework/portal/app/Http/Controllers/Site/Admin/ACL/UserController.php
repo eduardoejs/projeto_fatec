@@ -20,11 +20,27 @@ class UserController extends Controller
 {
     private $route = 'user';    
     private $search = ['nome', 'email'];
-    private $paginacao = 30;    
+    private $paginacao = 30;  
+    private $tiposUsers = [];
+    private $titulacoes = [];
 
     public function __construct()
     {
         $this->middleware('auth');        
+        $this->tiposUsers = [
+            (object)['valor' => 'F', 'descricao' => 'FUNCIONÁRIO'],
+            (object)['valor' => 'D', 'descricao' => 'DOCENTE'],
+            (object)['valor' => 'A', 'descricao' => 'ALUNO'],
+            //(object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
+            (object)['valor' => 'C', 'descricao' => 'CONVIDADO'],
+        ];
+        $this->titulacoes = [
+            (object)['valor' => 'D', 'descricao' => 'DOUTORADO'],
+            (object)['valor' => 'M', 'descricao' => 'MESTRADO'],
+            (object)['valor' => 'PG', 'descricao' => 'PÓS-GRADUADO (ESPECIALIZAÇÃO)'],
+            (object)['valor' => 'L', 'descricao' => 'LICENCIATURA'],
+            (object)['valor' => 'B', 'descricao' => 'GRADUADO'],
+        ];
     }
 
     /**
@@ -84,22 +100,9 @@ class UserController extends Controller
             (object)['url' => '', 'title' => $page],
         ];
 
-        $tiposUsers = [
-            (object)['valor' => 'F', 'descricao' => 'FUNCIONÁRIO'],
-            (object)['valor' => 'D', 'descricao' => 'DOCENTE'],
-            (object)['valor' => 'A', 'descricao' => 'ALUNO'],
-            //(object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
-            (object)['valor' => 'C', 'descricao' => 'CONVIDADO'],
-        ];
-
-        $titulacoes = [
-            (object)['valor' => 'D', 'descricao' => 'DOUTORADO'],
-            (object)['valor' => 'M', 'descricao' => 'MESTRADO'],
-            (object)['valor' => 'PG', 'descricao' => 'PÓS-GRADUADO (ESPECIALIZAÇÃO)'],
-            (object)['valor' => 'L', 'descricao' => 'LICENCIATURA'],
-            (object)['valor' => 'B', 'descricao' => 'GRADUADO'],
-        ];
-
+        $tiposUsers = $this->tiposUsers;
+        $titulacoes = $this->titulacoes;
+        
         $perfis = Perfil::orderBy('nome', 'ASC')->get();
         $cargos = Cargo::orderBy('nome', 'ASC')->get();
         $departamentos = Departamento::all();
@@ -272,21 +275,8 @@ class UserController extends Controller
             (object)['url' => '', 'title' => $page],
         ];
 
-        $tiposUsers = [
-            (object)['valor' => 'F', 'descricao' => 'FUNCIONÁRIO'],
-            (object)['valor' => 'D', 'descricao' => 'DOCENTE'],
-            (object)['valor' => 'A', 'descricao' => 'ALUNO'],
-            //(object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
-            (object)['valor' => 'C', 'descricao' => 'CONVIDADO'],
-        ];
-
-        $titulacoes = [
-            (object)['valor' => 'D', 'descricao' => 'DOUTORADO'],
-            (object)['valor' => 'M', 'descricao' => 'MESTRADO'],
-            (object)['valor' => 'PG', 'descricao' => 'PÓS-GRADUADO (ESPECIALIZAÇÃO)'],
-            (object)['valor' => 'L', 'descricao' => 'LICENCIATURA'],
-            (object)['valor' => 'B', 'descricao' => 'GRADUADO'],
-        ];
+        $tiposUsers = $this->tiposUsers;
+        $titulacoes = $this->titulacoes;
 
         //recupero os tipos de usuário cadastrado
         $array = explode(',', $registro->tipo);
@@ -376,7 +366,7 @@ class UserController extends Controller
                             'user_id' => $id,
                         ]);
 
-                    } else if ($value == 'A'  || $value == 'EX') {
+                    } else if ($value == 'A') {
                         $create = Aluno::firstOrCreate([
                             'matricula' => $request->matricula,
                             'curso_id' => $request->curso,
