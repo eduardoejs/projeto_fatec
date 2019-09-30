@@ -51,7 +51,7 @@ Route::namespace('Site\Publico')->group(function () {
     Route::post('/validar/conta', 'SiteController@validarConta')->name('validar.conta');
 });
 
-Route::prefix('admin')->middleware('auth', 'revalidate')->namespace('Site\Admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');

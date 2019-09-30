@@ -2,6 +2,9 @@
 
 @section('content')
     
+    @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
+    @endalert_component
+    
     @form_component(['method' => 'POST', 'action' => route('login'), 'class' => 'form-signin'])
         <div class="form-label-group">
           <input type="email" id="inputEmail" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required autofocus>

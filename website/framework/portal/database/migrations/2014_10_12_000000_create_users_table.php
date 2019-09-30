@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->set('tipo', ['A', 'F', 'D', 'C', 'EX']); //A=Aluno F=Funcionario D=Docente C=Convidado 
             $table->string('url_lattes')->nullable();
             $table->string('token_create', 40)->nullable(); //token usado para validacao quando o usuario for cadastrado, é enviado um email com ele 
+            $table->string('token_access')->nullable(); //token usado para verificação de login único
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
