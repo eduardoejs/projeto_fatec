@@ -31,7 +31,7 @@ class UserController extends Controller
             (object)['valor' => 'F', 'descricao' => 'FUNCIONÁRIO'],
             (object)['valor' => 'D', 'descricao' => 'DOCENTE'],
             (object)['valor' => 'A', 'descricao' => 'ALUNO'],
-            //(object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
+            (object)['valor' => 'EX', 'descricao' => 'EX-ALUNO'],
             (object)['valor' => 'C', 'descricao' => 'CONVIDADO'],
         ];
         $this->titulacoes = [
@@ -68,7 +68,7 @@ class UserController extends Controller
             $list = User::where('tipo', 'like', '%F%')->orderBy('ativo', 'ASC')->orderBy('nome', 'ASC')->paginate($this->paginacao);
         }  
 
-        $colunas = ['id' => 'ID', 'nome' => 'Nome', 'email' => 'E-Mail', 'telefone' => 'Telefone', 'tipoUser' => 'Tipo de Usuário', 'status' => 'Status'];                
+        $colunas = ['id' => 'ID', 'nome' => 'Nome', 'email' => 'E-Mail', 'telefone' => 'Telefone', 'tipoUser' => 'Tipo de Usuário', 'status' => 'Login'];                
         $rotaNome = $this->route;        
         $page = 'Usuários';        
         $tituloPagina = 'Usuários do Sistema';
@@ -147,12 +147,12 @@ class UserController extends Controller
                     'sexo' => $request->sexo,
                     'email' => $request->email,
                     'password' => $request->password,
-                    'token' => md5($request->cpf.'#'.$request->email.'#'.$request->nome),
+                    'token_create' => md5($request->cpf),
                     'telefone' => $request->telefone,
                     'ativo' => $request->ativo,
                     'tipo' => implode(',', $request->selectTipo),
                     'url_lattes' => $request->url_lattes,
-                ]);            
+                ]);  
                 
                 foreach (explode(',',$user->tipo) as $key => $value) {
                     if($value == 'F') {
@@ -188,15 +188,14 @@ class UserController extends Controller
     
                     \DB::commit();
                     session()->flash('msg', 'Registro cadastrado com sucesso!');
-                    session()->flash('status', 'success');                
+                    session()->flash('status', 'success');
                     
-                    //enviar email ao usuario com senha descriptografada - plainPassword                                    
-                    //$this->sendEmailToNewUser($user); 
-                    event(new NovoUsuario($user));
+                    //Quando o estado do model user é "created".
+                    //UserObserver dispara o evento de envio de email para o usuario com os dados de validacao 
+                    //da nova conta criada (Model Event)
                 } else {                
                     \DB::rollback();
-                }
-                
+                }                
             } catch (\PDOException $e) {
                 \DB::rollback();
                 session()->flash('msg', 'Erro inesperado ao inserir registro: ' . $e->getMessage());
@@ -206,8 +205,7 @@ class UserController extends Controller
                 session()->flash('msg', 'Erro inesperado: ' . $ex->getMessage());
                 session()->flash('status', 'error');
             }
-        }        
-
+        }
         return redirect()->back();
     }
 
@@ -366,7 +364,7 @@ class UserController extends Controller
                             'user_id' => $id,
                         ]);
 
-                    } else if ($value == 'A') {
+                    } else if ($value == 'A' || $value == 'EX') {
                         $create = Aluno::firstOrCreate([
                             'matricula' => $request->matricula,
                             'curso_id' => $request->curso,
@@ -382,7 +380,7 @@ class UserController extends Controller
                         $delete = Funcionario::find($id)->delete();
                     } else if($value == 'D') {
                         $delete = Docente::find($id)->delete();    
-                    } else if ($value == 'A') {
+                    } else if ($value == 'A' || $value == 'EX') {
                         $delete = Aluno::find($id)->delete(); 
                     }             
                 }
@@ -393,7 +391,7 @@ class UserController extends Controller
                         $update = Funcionario::find($id)->update(['cargo_id' => $request->cargo_funcionario, 'departamento_id' => $request->departamento_funcionario, 'user_id' => $id]);                        
                     } else if($value == 'D') {
                         $update = Docente::find($id)->update(['cargo_id' => $request->cargo_docente, 'titulacao' => $request->titulacao, 'user_id' => $id, 'link_compartilhado' => $request->link_compartilhado]);    
-                    } else if ($value == 'A') {
+                    } else if ($value == 'A' || $value == 'EX') {                        
                         $update = Aluno::find($id)->update(['matricula' => $request->matricula, 'curso_id' => $request->curso, 'user_id' => $id,]); 
                     }             
                 }

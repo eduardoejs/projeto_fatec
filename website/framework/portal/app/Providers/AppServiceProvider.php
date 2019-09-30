@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Acl\User;
+use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -37,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('componentes.page_header', 'pageheader_component');
         Blade::component('componentes.busca', 'busca_component');
         Blade::component('componentes.card_menu', 'card_menu_component');
+
+        User::observe(UserObserver::class);
     }
 }

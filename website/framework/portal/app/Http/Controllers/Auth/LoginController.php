@@ -56,7 +56,7 @@ class LoginController extends Controller
         $password = $request->password;
         // Checa a tentativa de login do usuário. Só será aceito, se além das informações estiverem corretas,
         // o status do usuário for true (1).
-        if(\Auth::attempt(['email' => $username, 'password' => $password, 'ativo' => 'S'])){
+        if(\Auth::attempt(['email' => $username, 'password' => $password, 'ativo' => 'S', 'token_create' => null])){
             return redirect()->route('admin');
         } else {
             return redirect()->to('/login')

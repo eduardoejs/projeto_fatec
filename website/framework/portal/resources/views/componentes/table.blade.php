@@ -17,7 +17,7 @@
                         @else
                         
                             @if ($nomeColuna == 'status')                            
-                                @if ($value->{$nomeColuna} == 'Ativo')
+                                @if ($value->{$nomeColuna} == 'SIM')
                                     <td><span class="badge badge-pill badge-success">@php echo $value->{$nomeColuna} @endphp</span></td>    
                                 @else
                                 <td><span class="badge badge-pill badge-danger">@php echo $value->{$nomeColuna} @endphp</span></td>    

@@ -39,7 +39,7 @@ class SendEmailToNewUser extends Mailable
         return $this->subject('Bem vindo ao portal da Fatec Marília')->markdown('emails.user.created')->with([
                                                         'nome' => $this->user->nome, 
                                                         'email' => $this->user->email,
-                                                        'token' => $this->user->token,
+                                                        'token' => $this->user->token_create,
                                                         'cpf' => $this->user->cpf,
                                                          ]);
                

@@ -56,12 +56,12 @@ class InstitucionalSeeder extends Seeder
         echo "Modalidades de Curso criados com Sucesso! \n";      
 
         DB::table('users')->delete();
-        $login1 = User::firstOrCreate(['nome' => 'Eduardo Jose da Silva', 'cpf' => '30558653839', 'sexo' => 'M', 'email' => 'eduardo@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'F']);        
+        $login1 = User::firstOrCreate(['nome' => 'Eduardo Jose da Silva', 'cpf' => '305.586.538-39', 'sexo' => 'M', 'email' => 'eduardo@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'F', 'token_create' => md5('305.586.538-39')]);        
         $perfil = Perfil::find(1);
         $login1->perfis()->attach($perfil);
-        $login2 = User::firstOrCreate(['nome' => 'Marie Oshiwa', 'cpf' => '11122233344', 'sexo' => 'F', 'email' => 'marie@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'D']);
-        $login3 = User::firstOrCreate(['nome' => 'Vitor Silva', 'cpf' => '55552552566', 'sexo' => 'M', 'email' => 'vitor@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'A']);
-        $login2 = User::firstOrCreate(['nome' => 'Sandra Barbalho', 'cpf' => '10022233344', 'sexo' => 'F', 'email' => 'sandra@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'D']);
+        $login2 = User::firstOrCreate(['nome' => 'Marie Oshiwa', 'cpf' => '111.222.333-44', 'sexo' => 'F', 'email' => 'marie@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'D', 'token_create' => md5('111.222.333-44')]);
+        $login3 = User::firstOrCreate(['nome' => 'Vitor Silva', 'cpf' => '555.525.525-66', 'sexo' => 'M', 'email' => 'vitor@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'A', 'token_create' => md5('555.525.525-66')]);
+        $login2 = User::firstOrCreate(['nome' => 'Sandra Barbalho', 'cpf' => '100.222.333-44', 'sexo' => 'F', 'email' => 'sandra@mail.com', 'password' => bcrypt('123456'), 'tipo' => 'D', 'token_create' => md5('100.222.333-44')]);
         echo "Logins de usuário criados com Sucesso! \n";       
         
         DB::table('docentes')->delete();
@@ -79,11 +79,11 @@ class InstitucionalSeeder extends Seeder
         $f1 = Aluno::firstOrCreate([ 'matricula' => '20190604', 'user_id' => 3, 'curso_id' => 1]);
         echo "Dados de usuários criados com Sucesso! \n";
 
-        $faker = Faker::create();        
+        /*$faker = Faker::create();        
         foreach (range(1,20) as $i) {
             $aluno = User::firstOrCreate(['nome' => $faker->name, 'cpf' => $faker->unique()->randomNumber($nbDigits = NULL, $strict = true), 'sexo' => 'M', 'email' => $faker->email, 'password' => bcrypt('123456'), 'tipo' => 'A']);
                 Aluno::firstOrCreate([ 'matricula' => $faker->numberBetween($min = 1000, $max = 9000), 'user_id' => $aluno->id, 'curso_id' => 1]);
-        }
+        }*/
 
         DB::table('disciplinas')->delete();
         $dc1 = Disciplina::firstOrCreate(['nome' => mb_strtoupper('Estatística Aplicada')]);

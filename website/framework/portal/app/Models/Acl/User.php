@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nome', 'email', 'password', 'ativo', 'tipo', 'cpf', 'sexo', 'telefone', 'url_lattes', 'token',
+        'nome', 'email', 'password', 'ativo', 'tipo', 'cpf', 'sexo', 'telefone', 'url_lattes', 'token_create',
     ];
 
     /**
@@ -127,10 +127,10 @@ class User extends Authenticatable
         switch($this->ativo) 
         {
             case 'S':
-                $status = 'Ativo';
+                $status = 'SIM';
             break;
             case 'N':
-                $status = 'Inativo';
+                $status = 'NÃO';
             break;
         }
         return $status;

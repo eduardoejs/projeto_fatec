@@ -74,7 +74,7 @@
                 } else {
                     $('#tipoDocente').css('display', 'none')
                 }
-                if(tipo.contains('A')) {
+                if(tipo.contains('A') || tipo.contains('EX')) {
                     $('#tipoAluno').css('display', 'block')
                 } else {
                     $('#tipoAluno').css('display', 'none')
