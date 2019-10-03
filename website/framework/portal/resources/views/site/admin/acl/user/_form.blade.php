@@ -57,8 +57,8 @@
             </div>
 
             <div class="form-group col-md-2">
-                <label for="password">Senha</label>            
-                <input type="password" name="password" value="{{ old('password') ?? '' }}" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="">
+                <label for="password">Senha</label>
+                <input type="password" name="password" value="{{ old('password') ?? '' }}" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ (Request::segment(4) == 'create') ? '******' : '' }}" {{ (Request::segment(4) == 'create') ? 'readonly' : '' }}> 
                 @if ($errors->has('password'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('password') }}</strong>

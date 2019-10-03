@@ -45,11 +45,11 @@
         <li class="nav-item {{ $active }}">
           <a class="nav-link {{ $collapsed }}" href="#" data-toggle="collapse" data-target="#collapseAcl" aria-expanded="true" aria-controls="collapseAcl">
             <i class="fas fa-fw fa-user-lock"></i>
-            <span>ACL</span>
+            <span>ACL e Usuários</span>
           </a>
           <div id="collapseAcl" class="collapse {{ $show }}" aria-labelledby="headingAcl" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Access Control List:</h6>
+              <h6 class="collapse-header">Menu de Opções:</h6>
               @can('read-perfil')
                 <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>  
               @endcan              

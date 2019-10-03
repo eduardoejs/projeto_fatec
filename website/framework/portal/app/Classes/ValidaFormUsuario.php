@@ -21,7 +21,7 @@ class ValidaFormUsuario {
                     $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'matricula', 'exibe_dados_funcionario', 'lattes_funcionario', 'curso']);
                 break;
                 case 'A':
-                //case 'EX':
+                case 'EX':
                     $data += $request->except(['cargo_funcionario', 'departamento_funcionario', 'cargo_docente', 'titulacao', 'lattes_docente', 'exibe_dados_docente', 'exibe_dados_funcionario', 'lattes_funcionario', 'link_compartilhado']);
                 break;
                 default:
@@ -39,7 +39,7 @@ class ValidaFormUsuario {
         
         //2º Validar o request
         foreach ($request->selectTipo as $key => $value) {
-            if($value == 'A') {
+            if($value == 'A' || $value == 'EX') {
                 if($id == null){
                     $validator = Validator::make($data, [
                         'nome' => 'required|string|max:255',
