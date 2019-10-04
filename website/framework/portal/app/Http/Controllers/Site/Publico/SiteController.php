@@ -7,6 +7,7 @@ use App\Models\Acl\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Avisos\Aviso;
+use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
@@ -18,9 +19,12 @@ class SiteController extends Controller
         $modal_size = 'lg';
         $scrolling = false;
         $centralized = true;
-        $upper = true;        
+        $upper = true;  
         
-        return view('site.publico.index', compact('efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos'));
+        //retornar apenas as 3 ultimas noticias
+        $noticias = Noticia::all();        
+        
+        return view('site.publico.index', compact('efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos', 'noticias'));
     }
     
     public function showFormAtivacao($token, $email)
@@ -72,7 +76,6 @@ class SiteController extends Controller
                 return redirect()->back();
             }
         }
-
         return redirect()->route('admin');
-    }
+    }    
 }

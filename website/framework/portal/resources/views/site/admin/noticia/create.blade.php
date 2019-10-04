@@ -1,0 +1,50 @@
+@extends('layouts.site.admin.app')
+@section('content')
+    @page_component(['col' => 12])
+
+        @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
+        @endbreadcrumb_component        
+                
+        @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
+        @endalert_component
+       
+        @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
+            @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST'])
+                @include('site.admin.'.$rotaNome.'._form')
+                <button type="submit" class="btn btn-outline-success float-right btn-icon-split">
+                    <span class="icon text-white bg-success">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span class="text">Gravar</span>
+                </button>                
+            @endform_component
+        @endbodypage_component
+
+    @endpage_component    
+@endsection
+
+@section('css')
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@endsection
+
+@section('js')
+    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            $( "#datepicker" ).datepicker({ 
+                    minDate: 0, 
+                    maxDate: "+12M", 
+                    dayNamesMin: [ "D", "S", "T", "Q", "Q", "S", "S" ] ,
+                    monthNames: [ "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" ],
+                    showAnim: "slideDown",
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    dateFormat: "dd/mm/yy"                    
+            });            
+        })
+        CKEDITOR.replace( 'summary-ckeditor' );
+    </script>    
+@endsection

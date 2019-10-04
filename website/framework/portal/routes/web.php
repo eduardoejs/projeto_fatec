@@ -53,8 +53,9 @@ Route::namespace('Site\Publico')->group(function () {
 
 Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
-    Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');
+    Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');    
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');
+    Route::resource('/noticia', 'NoticiaController');
     
     Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){
         Route::get('/user/send-email', 'UserController@sendEMail');

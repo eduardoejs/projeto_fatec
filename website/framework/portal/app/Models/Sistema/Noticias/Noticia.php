@@ -19,4 +19,24 @@ class Noticia extends Model
     {
         return $this->belongsToMany(Arquivo::clas);
     }
+
+    public function getExibirAttribute()
+    {        
+        return date('d/m/Y', strtotime(str_replace("/", "-", $this->data_exibicao)));
+    }
+
+    public function getStatusAttribute()
+    {
+        $status = '';
+        switch($this->ativo) 
+        {
+            case 'S':
+                $status = 'SIM';
+            break;
+            case 'N':
+                $status = 'NÃO';
+            break;
+        }
+        return $status;
+    }
 }

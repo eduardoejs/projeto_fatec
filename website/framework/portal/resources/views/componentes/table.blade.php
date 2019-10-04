@@ -14,19 +14,21 @@
                     @foreach ($colunas as $nomeColuna => $valorColuna)
                         @if ($nomeColuna == 'id')
                             <th scope='row'>@php echo $value->{$nomeColuna} @endphp</th>
-                        @else
-                        
+                        @else                        
+                            
                             @if ($nomeColuna == 'status')                            
                                 @if ($value->{$nomeColuna} == 'SIM')
                                     <td><span class="badge badge-pill badge-success">@php echo $value->{$nomeColuna} @endphp</span></td>    
                                 @else
-                                <td><span class="badge badge-pill badge-danger">@php echo $value->{$nomeColuna} @endphp</span></td>    
-                                @endif
-                                
+                                    <td><span class="badge badge-pill badge-danger">@php echo $value->{$nomeColuna} @endphp</span></td>    
+                                @endif                                
                             @else
-                                <td>@php echo $value->{$nomeColuna} @endphp</td>    
-                            @endif
-                            
+                                @if ($nomeColuna == 'user')
+                                <td>@php echo $value->{$nomeColuna}->nome_abr @endphp</td>
+                                @else
+                                    <td>@php echo $value->{$nomeColuna} @endphp</td>        
+                                @endif 
+                            @endif                            
                         @endif                       
 
                     @endforeach

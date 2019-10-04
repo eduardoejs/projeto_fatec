@@ -12,6 +12,25 @@
     </div>        
     <div class="row noticias justify-content-sm-center mt-2 mb-5">
         <div class="card-deck">
+            @foreach ($noticias as $noticia)
+                <div class="card">
+                    <img src="img/cards/noticias/card11.jpg" alt="news" class="card-img-top img-fluid img-thumbnail">        
+                    <div class="card-body">
+                        <h4 class="card-title text-center">{{ $noticia->titulo }}</h4>
+                        <p class="card-text text-justify">{!! $noticia->conteudo !!}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row d-flex flex-row">
+                            <div class="col d-flex align-items-center justify-content-center">
+                                <small class="d-block text-muted"><i class="far fa-calendar-alt"></i> {{$noticia->created_at}}</small>
+                            </div>
+                            <div class="col">
+                                <a href="#" class="card-link btn btn-outline-info d-block">Leia mais <i class="fas fa-plus"></i></a>                                   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
             <div class="card">
                 <img src="img/cards/noticias/card11.jpg" alt="news" class="card-img-top img-fluid img-thumbnail">        
                 <div class="card-body">

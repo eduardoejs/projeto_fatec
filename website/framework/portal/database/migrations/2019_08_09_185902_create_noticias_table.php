@@ -17,7 +17,7 @@ class CreateNoticiasTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo', 255);
             $table->longText('conteudo');
-            $table->date('data_exibicao'); //Exibe a noticia até a data informada
+            $table->date('data_exibicao')->nullable(); //Exibe a noticia até a data informada
             $table->enum('ativo', ['S','N'])->default('S');
             
             $table->bigInteger('user_id')->unsigned();
