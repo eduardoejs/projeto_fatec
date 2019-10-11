@@ -75,9 +75,11 @@ class NoticiaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $date =date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
-        Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->ckeditor, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => $date]);
+    {           
+        if(isset($request->data_exibicao)) {
+            $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
+        }        
+        Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->editor1, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);
         return redirect()->route('noticia.index');
     }
 

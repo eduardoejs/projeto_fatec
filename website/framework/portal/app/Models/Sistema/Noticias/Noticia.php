@@ -21,8 +21,12 @@ class Noticia extends Model
     }
 
     public function getExibirAttribute()
-    {        
-        return date('d/m/Y', strtotime(str_replace("/", "-", $this->data_exibicao)));
+    {   
+        if(isset($this->data_exibicao)) {
+            return date('d/m/Y', strtotime(str_replace("/", "-", $this->data_exibicao)));
+        } else {
+            return '-';
+        }        
     }
 
     public function getStatusAttribute()

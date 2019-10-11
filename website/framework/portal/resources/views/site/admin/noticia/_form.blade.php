@@ -28,6 +28,6 @@
 <div class="form-row">
     <div class="form-group col-md-12">
         <label for="">Conteúdo da notícia</label>
-        <textarea class="form-control" id="summary-ckeditor" name="ckeditor"></textarea>
+        <textarea class="form-control" id="editor1" name="editor1" rows="500"></textarea>
     </div>    
 </div>

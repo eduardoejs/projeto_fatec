@@ -23,13 +23,12 @@
     @endpage_component    
 @endsection
 
-@section('css')
-    
+@section('css')    
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @endsection
 
 @section('js')
-    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function () {
@@ -45,6 +44,10 @@
                     dateFormat: "dd/mm/yy"                    
             });            
         })
-        CKEDITOR.replace( 'summary-ckeditor' );
+        
+        CKEDITOR.replace( 'editor1', {
+            customConfig: '/ckeditor/custom/ckeditor_config.js'
+        } );
+        
     </script>    
 @endsection
