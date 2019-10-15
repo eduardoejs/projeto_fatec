@@ -9,7 +9,7 @@
         @endalert_component
        
         @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
-            @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST'])
+            @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST', 'file_upload' => true])
                 @include('site.admin.'.$rotaNome.'._form')
                 <button type="submit" class="btn btn-outline-success float-right btn-icon-split">
                     <span class="icon text-white bg-success">
@@ -48,6 +48,11 @@
         CKEDITOR.replace( 'editor1', {
             customConfig: '/ckeditor/custom/ckeditor_config.js'
         } );
+
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
         
     </script>    
 @endsection

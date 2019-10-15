@@ -1,7 +1,7 @@
 @php
     $method = strtolower($method);
     $method_field = "";
-
+    
     if($method == 'post') {
 
     } elseif($method == 'put') {

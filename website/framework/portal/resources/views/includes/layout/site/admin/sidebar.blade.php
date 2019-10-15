@@ -51,13 +51,55 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Menu de Opções:</h6>
               @can('read-perfil')
-                <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}">Perfil de Usuário</a>  
+                <a class="collapse-item {{ Request::segment(3) == 'perfil' ? 'active' : '' }}" href="{{ route('perfil.index') }}"> <i class="fas fa-id-card"></i> Perfil de Usuário</a>  
               @endcan              
               @can('read-permission')
-                <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}">Permissões</a>  
+                <a class="collapse-item {{ Request::segment(3) == 'permissao' ? 'active' : '' }}" href="{{ route('permissao.index') }}"><i class="fas fa-user-lock"></i> Permissões</a>  
               @endcan              
               @can('read-user')
-                <a class="collapse-item {{ Request::segment(3) == 'user' ? 'active' : '' }}" href="{{ route('user.index') }}">Usuários</a>                
+                <a class="collapse-item {{ Request::segment(3) == 'user' ? 'active' : '' }}" href="{{ route('user.index') }}"> <i class="fas fa-user-friends"></i> Usuários</a>                
+              @endcan              
+            </div>
+          </div>
+        </li>
+        @endif
+               
+        @if(auth()->user()->can('read-noticia') || auth()->user()->can('read-pagina')) 
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->        
+        <div class="sidebar-heading">
+          Conteúdo do Portal
+        </div>
+        @php
+            //sem clicar
+            $collapsed = 'collapsed';
+            $active = '';
+            $show = '';
+
+            //expandiu o menu
+            if(Request::segment(1) == 'admin' && Request::segment(2) == 'noticia') {
+              $collapsed = '';
+              $show = 'show';
+              $active = 'active';
+            }
+        @endphp
+
+        <!-- Nav Item - Charts -->
+        <!-- Nav Item - Pages Collapse Menu -->        
+        <li class="nav-item {{ $active }}">
+          <a class="nav-link {{ $collapsed }}" href="#" data-toggle="collapse" data-target="#collapseContentPortal" aria-expanded="true" aria-controls="collapseContentPortal">
+            <i class="fas fa-fw fa-user-lock"></i>
+            <span>Gerenciamento</span>
+          </a>
+          <div id="collapseContentPortal" class="collapse {{ $show }}" aria-labelledby="headingAcl" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Menu de Opções:</h6>
+              @can('read-noticia')
+                <a class="collapse-item {{ Request::segment(2) == 'noticia' ? 'active' : '' }}" href="{{ route('noticia.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
+              @endcan              
+              @can('read-pagina')
+                <a class="collapse-item {{ Request::segment(2) == '' ? 'active' : '' }}" href="#"><i class="fas fa-chalkboard"></i> Páginas</a>  
               @endcan              
             </div>
           </div>
