@@ -2,6 +2,10 @@
     $method = strtolower($method);
     $method_field = "";
     
+    if(isset($enctype) && $enctype) {
+        $enctype = 'enctype="multipart/form-data"';        
+    }
+    
     if($method == 'post') {
 
     } elseif($method == 'put') {
@@ -15,7 +19,7 @@
     }
 @endphp
 
-<form action="{{ $action }}" method="{{ $method }}" class="{{ $class ?? '' }}">
+<form action="{{ $action }}" method="{{ $method }}" class="{{ $class ?? '' }}" {!! $enctype ?? '' !!}>
     @csrf
     {{ $method_field }}
     {{ $slot }}

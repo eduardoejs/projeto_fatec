@@ -14,8 +14,8 @@ class RelacionaArquivoComVestibularTable extends Migration
     public function up()
     {
         Schema::create('arquivo_vestibular', function (Blueprint $table) {
-            $table->string('titulo', 255)->nullable();
-            $table->string('descricao', 255)->nullable();
+            //$table->string('titulo', 255)->nullable();
+            //$table->string('descricao', 255)->nullable();
 
             $table->bigInteger('arquivo_id')->unsigned();
             $table->foreign('arquivo_id')->references('id')->on('arquivos')->onDelete('cascade');

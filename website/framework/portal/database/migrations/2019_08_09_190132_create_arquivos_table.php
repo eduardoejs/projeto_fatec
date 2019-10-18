@@ -17,7 +17,7 @@ class CreateArquivosTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo');
             $table->longText('descricao')->nullable();
-            $table->string('url_armazenamento', 255);
+            $table->string('nome_arquivo', 45);
             $table->integer('tamanho_arquivo')->unsigned();
             $table->timestamps();
         });

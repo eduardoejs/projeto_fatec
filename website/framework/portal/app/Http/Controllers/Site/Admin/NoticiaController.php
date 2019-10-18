@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Site\Admin;
 
+use App\Classes\Conversoes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Noticias\Noticia;
+use App\Models\Sistema\Gerenciamento\Imagens\Imagem;
 
 class NoticiaController extends Controller
 {
@@ -29,7 +31,7 @@ class NoticiaController extends Controller
             }            
             $list = $noticia->orderBy('id', 'DESC')->paginate($this->paginacao);
         }else{
-            $list = Noticia::all();
+            $list = Noticia::orderBy('id', 'DESC')->get();
         }
 
         $rotaNome = $this->route;        
@@ -79,8 +81,12 @@ class NoticiaController extends Controller
         if(isset($request->data_exibicao)) {
             $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
         }        
-        Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->editor1, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);
-        return redirect()->route('noticia.index');
+        Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->editor, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);        
+        
+        session()->flash('msg', 'Registro cadastrado com sucesso!');
+        session()->flash('status', 'success');
+
+        return redirect()->back();
     }
 
     /**
@@ -126,5 +132,66 @@ class NoticiaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function uploadFileForm($id)
+    {   
+        $noticia = Noticia::find($id);
+        return view('site.admin.'.$this->route.'.upload.file', compact('noticia'));
+    }
+
+    public function uploadImageForm($id)
+    {  
+        $page = 'Upload';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Envio de imagens';
+        $descricaoPagina = 'Uploads de imagens da notícia';
+        
+        $breadcrumb = [
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
+            (object)['url' => route($this->route.'.index'), 'title' => 'Notícia'],
+            (object)['url' => '', 'title' => $page],
+        ];  
+        $noticia = Noticia::findOrFail($id);        
+        return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb'));        
+    }
+
+    public function uploadImage(Request $request)
+    {
+        //Validar informacoes
+        
+        if($request->hasFile('imagens')) {
+            $files = $request->file('imagens');
+            $noticia = Noticia::findOrFail($request->noticiaId);
+
+            $storagePath = \storage_path().'/imagens/noticias/'.$request->noticiaId;
+
+            $ordem = 1;
+            foreach ($files as $file) {                                
+                $size = $file->getSize();
+                $fileName = md5($file->getClientOriginalName()).'.'.$file->extension();
+                
+                if(!\file_exists($storagePath.'/'.$fileName)) {
+                    $file->move($storagePath, $fileName);
+                
+                    $imagem = Imagem::firstOrCreate(['titulo' => $request->titulo_imagens, 
+                                                    'descricao' => $request->descricao_imagens, 
+                                                    'tamanho_arquivo' => $size,
+                                                    'nome_arquivo' => $fileName]);
+                    
+                    if($noticia->imagens()->count()) {                        
+                        $aux = $noticia->imagens()->orderBy('ordem','DESC')->first();
+                        $ordem = $aux->pivot->ordem + 1;
+                    }                    
+                    $imagem->noticias()->save($noticia, ['ordem' => $ordem]);
+                    session()->flash('msg', 'Imagem(ns) enviadas com sucesso!');
+                    session()->flash('status', 'success');    
+                } else {
+                    session()->flash('msg', 'O sistema detectou que esses arquivos já foram enviados!');
+                    session()->flash('status', 'error');
+                }                  
+            }
+        }
+        return redirect()->back();
     }
 }

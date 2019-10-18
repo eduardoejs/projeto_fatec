@@ -10,7 +10,7 @@
         <div class="form-row ml-auto mr-auto mt-2">
             <div class="form-group col-md-8">
                 <label for="titulo">Título da notícia</label>            
-                <input type="text" name="titulo" value="{{ old('titulo') ?? ($registro->titulo ?? '') }}" class="form-control {{ $errors->has('titulo') ? ' is-invalid' : '' }}" placeholder="Ex.: Instituição participa de evento voltado à área XYZ">        
+                <input type="text" name="titulo" value="{{ old('titulo') ?? ($registro->titulo ?? '') }}" class="form-control {{ $errors->has('titulo') ? ' is-invalid' : '' }}" placeholder="Ex.: Instituição participa de evento voltado à área XYZ" required>        
                 @if ($errors->has('titulo'))
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $errors->first('titulo') }}</strong>
@@ -32,36 +32,34 @@
                     <option value="S">SIM</option>
                     <option value="N">NÃO</option>
                 </select>
-            </div> 
-            
+            </div>             
             <div class="form-group col-md-12">
                 <label for="">Conteúdo da notícia</label>
-                <textarea class="form-control" id="editor1" name="editor1"></textarea>
-            </div>    
-            
+                <textarea class="form-control" id="editor" name="editor" required></textarea>
+            </div>
         </div> 
     </div>
     <div class="tab-pane fade" id="nav-imagens" role="tabpanel" aria-labelledby="nav-imagens-tab">
-        <div class="form-row ml-auto mr-auto mt-2">                
-            <div class="col-md-6">
-                <div class="card">
-                    <h5 class="card-header">Imagens da notícia</h5>
-                    <div class="card-body">
-                        
+        <div class="form-row ml-auto mr-auto mt-2">
+            <div class="form-group col-md-12">
+                <label for="titulo_imagens">Título das imagens</label>            
+                <input type="text" name="titulo_imagens" value="{{ old('titulo_imagens') ?? ($registro->titulo_imagens ?? '') }}" class="form-control" placeholder="">
+                <label for="sescricao_imagens">Breve descrição das imagens</label>            
+                <input type="text" name="sescricao_imagens" value="{{ old('descricao_imagens') ?? ($registro->descricao_imagens ?? '') }}" class="form-control" placeholder="">
+                <div class="input-group mt-3">                                                
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">                                
+                                Selecionar imagens<input type="file" style="display: none;" multiple name='imagens[]'>
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly>
                     </div>
+                    <span class="help-block">
+                        Selecione um ou mais arquivos de imagem para a notícia
+                    </span>                        
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <h5 class="card-header">Banco de imagem do sistema</h5>
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-                
+            </div>            
         </div>
     </div>
     <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">

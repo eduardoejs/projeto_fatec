@@ -4,26 +4,23 @@
 {{-- https://developer.snapappointments.com/bootstrap-select/examples/ --}}
 
 @section('css')
+    @parent
     <link rel="stylesheet" href="{{ asset('bootstrap-select/css/bootstrap-select.css') }}">    
-@endsection
+@stop
 
 @section('content')
-
-    @page_component(['col' => 12])            
-        
+    @page_component(['col' => 12])
         @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
         @endbreadcrumb_component  
 
         @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
         @endalert_component
        
-        @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
-        
+        @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])        
             @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST'])
-
             {{-- no caso de EDIT os tipos são armazenados na variavel abaixo para a selecao por JS --}}
             @php
-                $arrayTipos = [];
+                $arrayTipos = json_encode([]);
             @endphp
 
                 @include('site.admin.acl.'.$rotaNome.'._form')
@@ -36,14 +33,14 @@
                 </button>                
             @endform_component
         @endbodypage_component
-
-    @endpage_component
-    
+    @endpage_component    
 @endsection
 
 @section('js')
-    
-    <script>        
+    @parent    
+    <script src="{{ asset('js/plugins/jquery.mask.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-select/js/bootstrap-select.min.js') }}"></script>
+    <script> 
         $('#tipoFuncionario').css('display', 'none')        
         $('#tipoDocente').css('display', 'none')        
         $('#tipoAluno').css('display', 'none')
@@ -58,12 +55,15 @@
             }
             return false;
         }
+    
+        $(document).ready(function() {
 
-        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+            $('select#selecionaTipo').selectpicker();
 
             //exibe ou nao as divs com os campos necessarios            
-             $('#selecionaTipo').change(function() {                
-                var tipo = $('#selecionaTipo').val();
+                $('#selecionaTipo').change(function() {                
+                const tipo = $('#selecionaTipo').val();
                 if(tipo.contains('F')) {
                     $('#tipoFuncionario').css('display', 'block')
                 } else {
@@ -81,7 +81,7 @@
                 }                
             });
 
-            var tempArray = <?php echo json_encode($arrayTipos); ?>;                       
+            const tempArray = <?php echo $arrayTipos;?>;            
             if(tempArray.length > 0) {
                 $('.selectpicker').selectpicker('val', tempArray);
             } else {
@@ -94,14 +94,8 @@
             
             $("select#selecionaTipo").trigger("change");//simular que o usuário fez uma seleção e exibe a div oculta
         });
-
-        $(function () {            
-            $('[data-toggle="tooltip"]').tooltip();
-            $('select#selecionaTipo').selectpicker();
-        })
-    </script>
-
-    <script src="{{ asset('js/plugins/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('bootstrap-select/js/bootstrap-select.min.js') }}"></script>
+    </script>     
+@stop
     
-@endsection
+    
+

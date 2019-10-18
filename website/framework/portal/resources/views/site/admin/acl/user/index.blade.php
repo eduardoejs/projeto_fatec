@@ -1,6 +1,7 @@
 @extends('layouts.site.admin.app')
 
 @section('css')
+@parent
     <style>
         .myaccordion {
   max-width: 500px;
@@ -38,7 +39,7 @@
   margin-top: 10px;
 }    
     </style>
-@endsection
+@stop
 
 @section('content')    
     @page_component(['col' => 12])
@@ -79,6 +80,7 @@
 @endsection
 
 @section('js')
+@parent
     <script>
     $("#accordion").on("hide.bs.collapse show.bs.collapse", e => {
     $(e.target)
@@ -87,4 +89,4 @@
         .toggleClass("fa-minus fa-plus");
     });
     </script>
-@endsection
+@stop

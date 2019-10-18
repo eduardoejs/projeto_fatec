@@ -54,7 +54,10 @@ Route::namespace('Site\Publico')->group(function () {
 Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');    
-    Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');
+    Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');    
+    Route::get('/noticia/{id}/upload/image', 'NoticiaController@uploadImageForm')->name('noticia.upload.image');
+    Route::post('/noticia/upload/image', 'NoticiaController@uploadImage')->name('noticia.store.upload.image');
+    Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');
     Route::resource('/noticia', 'NoticiaController');
     
     Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){

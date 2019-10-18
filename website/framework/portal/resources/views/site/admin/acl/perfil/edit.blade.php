@@ -2,12 +2,10 @@
 @section('content')
 
     @page_component(['col' => 12])
-                
-        
+                        
         @breadcrumb_component(['page' => $page, 'items' => $breadcrumb ?? []])
         @endbreadcrumb_component        
-    
-        
+            
         @alert_component(['msg' => session('msg'), 'title' => session('title'), 'status' => session('status')])
         @endalert_component
 

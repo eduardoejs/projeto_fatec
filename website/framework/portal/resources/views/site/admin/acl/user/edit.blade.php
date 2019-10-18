@@ -1,8 +1,9 @@
 @extends('layouts.site.admin.app')
 
 @section('css')
+    @parent
     <link rel="stylesheet" href="{{ asset('bootstrap-select/css/bootstrap-select.css') }}">    
-@endsection
+@stop
 
 @section('content')
     @page_component(['col' => 12])
@@ -35,8 +36,11 @@
 @endsection
 
 @section('js')
-    
-    <script>        
+    @parent
+    <script src="{{ asset('js/plugins/jquery.mask.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-select/js/bootstrap-select.min.js') }}"></script>        
+
+    <script>      
         $('#tipoFuncionario').css('display', 'none')        
         $('#tipoDocente').css('display', 'none')        
         $('#tipoAluno').css('display', 'none')
@@ -52,7 +56,10 @@
             return false;
         }
 
-        $(document).ready(function() {           
+        $(document).ready(function() {  
+            
+            $('[data-toggle="tooltip"]').tooltip();
+            $('select#selecionaTipo').selectpicker();         
             
             //exibe ou nao as divs com os campos necessarios            
              $('#selecionaTipo').change(function() {                
@@ -87,15 +94,6 @@
             $('.phone_with_ddd').mask('(00) 00000-0000');
             
             $("select#selecionaTipo").trigger("change");//simular que o usuário fez uma seleção e exibe a div oculta
-        });
-
-        $(function () {            
-            $('[data-toggle="tooltip"]').tooltip();
-            $('select#selecionaTipo').selectpicker();
-        })
+        });        
     </script>
-
-    <script src="{{ asset('js/plugins/jquery.mask.min.js') }}"></script>
-    <script src="{{ asset('bootstrap-select/js/bootstrap-select.min.js') }}"></script>
-    
-@endsection
+@stop

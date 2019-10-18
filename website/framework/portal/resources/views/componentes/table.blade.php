@@ -41,6 +41,11 @@
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                    
+                                @if (isset($page) && $page == 'Notícias')
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.upload.image',[$value->id]) }}"><i class="fa fa-images"></i> Anexar Imagens</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.upload.file',[$value->id]) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
+                                @endif
                             </div>
                         </div>                            
                     </td>

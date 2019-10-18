@@ -4,6 +4,7 @@ namespace App\Models\Sistema\Noticias;
 
 use App\Models\Acl\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sistema\Gerenciamento\Imagens\Imagem;
 use App\Models\Sistema\Gerenciamento\Arquivos\Arquivo;
 
 class Noticia extends Model
@@ -17,7 +18,12 @@ class Noticia extends Model
 
     public function arquivos()
     {
-        return $this->belongsToMany(Arquivo::clas);
+        return $this->belongsToMany(Arquivo::class);
+    }
+
+    public function imagens()
+    {
+        return $this->belongsToMany(Imagem::class, 'imagem_noticia', 'noticia_id', 'imagem_id')->withPivot('ordem')->withTimestamps();
     }
 
     public function getExibirAttribute()

@@ -9,7 +9,7 @@
         @endalert_component
        
         @bodypage_component(['titulo' => $tituloPagina, 'descricao' => $descricaoPagina, 'rotaNome' => $rotaNome, 'page' => $page])
-            @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST', 'file_upload' => true])
+            @form_component(['action' => route($rotaNome.'.store'), 'method' => 'POST', 'enctype' => true])
                 @include('site.admin.'.$rotaNome.'._form')
                 <button type="submit" class="btn btn-outline-success float-right btn-icon-split">
                     <span class="icon text-white bg-success">
@@ -23,17 +23,22 @@
     @endpage_component    
 @endsection
 
-@section('css')    
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-@endsection
+@section('css')  
+    @parent  
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">      
+@stop
 
 @section('js')
+    @parent
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-            $( "#datepicker" ).datepicker({ 
+            $(document).ready(function(){
+    
+                $('[data-toggle="tooltip"]').tooltip()
+                $( "#datepicker" ).datepicker({ 
                     minDate: 0, 
                     maxDate: "+12M", 
                     dayNamesMin: [ "D", "S", "T", "Q", "Q", "S", "S" ] ,
@@ -42,17 +47,13 @@
                     showOtherMonths: true,
                     selectOtherMonths: true,
                     dateFormat: "dd/mm/yy"                    
+                });
+
+                CKEDITOR.replace( 'editor', {
+                    customConfig: '/ckeditor/custom/ckeditor_config.js'
+                });                       
             });            
         })
-        
-        CKEDITOR.replace( 'editor1', {
-            customConfig: '/ckeditor/custom/ckeditor_config.js'
-        } );
-
-        $(".custom-file-input").on("change", function() {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-        
-    </script>    
-@endsection
+                
+    </script>       
+@stop

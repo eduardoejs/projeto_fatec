@@ -17,8 +17,8 @@ class CreateImagensTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo', 255)->nullable();
             $table->string('descricao', 255)->nullable();
-            $table->enum('ativo', ['S','N']);
-            $table->string('url_arquivo', 255);
+            //$table->enum('ativo', ['S','N']);
+            $table->string('nome_arquivo', 45);
             $table->integer('tamanho_arquivo')->unsigned();            
             $table->timestamps();
         });
