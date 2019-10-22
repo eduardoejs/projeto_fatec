@@ -34,10 +34,10 @@
                     @endforeach
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-wrench"></i>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                    
@@ -47,7 +47,7 @@
                                     <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.upload.file',[$value->id]) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
                                 @endif
                             </div>
-                        </div>                            
+                        </div>                                                  
                     </td>
                 </tr>
                 @empty

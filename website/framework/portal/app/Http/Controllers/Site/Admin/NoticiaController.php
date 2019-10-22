@@ -6,6 +6,7 @@ use App\Classes\Conversoes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Noticias\Noticia;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Sistema\Gerenciamento\Imagens\Imagem;
 
 class NoticiaController extends Controller
@@ -142,29 +143,47 @@ class NoticiaController extends Controller
 
     public function uploadImageForm($id)
     {  
+        $noticia = Noticia::findOrFail($id);
         $page = 'Upload';
         $rotaNome = $this->route;
         $tituloPagina = 'Envio de imagens';
-        $descricaoPagina = 'Uploads de imagens da notícia';
+        $descricaoPagina = 'Uploads de imagens da notícia: <strong>' . $noticia->titulo . '</strong>';
         
         $breadcrumb = [
             (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
             (object)['url' => route($this->route.'.index'), 'title' => 'Notícia'],
             (object)['url' => '', 'title' => $page],
-        ];  
-        $noticia = Noticia::findOrFail($id);        
-        return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb'));        
+        ];          
+        
+        $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'titulo' => 'Arquivo', 'descricao' => 'Descrição', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
+        $list = Noticia::with('imagens')->findOrFail($id);        
+
+        return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb', 'colunas', 'list'));        
     }
 
     public function uploadImage(Request $request)
-    {
-        //Validar informacoes
-        
+    {                
         if($request->hasFile('imagens')) {
             $files = $request->file('imagens');
             $noticia = Noticia::findOrFail($request->noticiaId);
 
-            $storagePath = \storage_path().'/imagens/noticias/'.$request->noticiaId;
+            $storagePath = \storage_path().'/app/public/imagens/noticias/'.$request->noticiaId;
+
+            $imagemRegras = [
+                'imagem' => 'required|image|dimensions:min_width=600,min_height=600',
+            ];
+
+            //Valida os arquivos de imagem
+            foreach ($files as $imagem) {
+                $array = ['imagem' => $imagem];
+                $validator = Validator::make($array, $imagemRegras);
+                if($validator->fails()) {
+                    return redirect()
+                        ->back()
+                        ->withErrors($validator->messages())
+                        ->withInput(); 
+                }
+            }
 
             $ordem = 1;
             foreach ($files as $file) {                                

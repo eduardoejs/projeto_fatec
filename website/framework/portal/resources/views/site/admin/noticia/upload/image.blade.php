@@ -18,9 +18,54 @@
                     </span>
                     <span class="text">Gravar</span>
                 </button>                
-            @endform_component
-        @endbodypage_component
-
+            @endform_component                        
+        @endbodypage_component 
+        <div class="my-3">
+            @bodypage_component(['titulo' => 'Arquivos enviados', 'descricao' => '', 'rotaNome' => '', 'page' => ''])
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>                            
+                            <CAPTION ALIGN="bottom">
+                                <i class="fas fa-hdd"></i> {{ count($list->imagens) }} arquivo(s) - {{ Conversoes::bytesToHuman($list->imagens->sum('tamanho_arquivo')) }}
+                            </CAPTION>
+                            @foreach ($colunas as $key => $value)
+                                <th scope="col">{{ $value }}</th>
+                            @endforeach
+                            <th scope="col">Ação</th>
+                        </thead>
+                        <tbody>
+                            @forelse ($list->imagens as $arquivo)
+                                <tr>
+                                    <td>{{ $arquivo->id }}</td>
+                                    <td><img src="{{ url('storage/imagens/noticias/'.$list->id.'/'. $arquivo->nome_arquivo) }}" alt="{{$arquivo->titulo}}" width=60 height=40></td>
+                                    <td>{{ $arquivo->titulo }}</td>
+                                    <td>{{ $arquivo->descricao }}</td>
+                                    <td>{{ Carbon\Carbon::parse($arquivo->created_at)->format('d/m/Y H:i:s') }}</td>
+                                    <td>{{ Conversoes::bytesToHuman($arquivo->tamanho_arquivo) }}</td>                                
+                                    <td>{{ File::extension($arquivo->nome_arquivo) }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-wrench"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton">                                                
+                                                <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.destroy.image', ['id' => $noticia->id, 'imageId' => $arquivo->id]) }}"><i class="fa fa-trash"></i> Excluir</a>
+                                                <a class="dropdown-item text-secondary" href=""><i class="fa fa-download"></i> Download</a>                                            
+                                            </div>
+                                        </div>                                                  
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan={{count($colunas)+1}}><div class="alert alert-primary text-center" role="alert"> Sem registros! </div></td>
+                                </tr>
+                            @endforelse                        
+                        </tbody>
+                    
+                    </table>
+                </div>            
+            @endbodypage_component
+        </div>       
     @endpage_component    
 @endsection
 

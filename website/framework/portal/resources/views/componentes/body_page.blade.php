@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between">
             <div>
                 <h2 class="font-weight-bold">{{$titulo}}</h2>
-                <p class="card-description">{{$descricao}}</p>
+                <p class="card-description">{!!$descricao!!}</p>
             </div> 
             <div class="align-self-end">
                 @hasSection('search')

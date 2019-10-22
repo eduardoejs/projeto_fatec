@@ -57,6 +57,7 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');    
     Route::get('/noticia/{id}/upload/image', 'NoticiaController@uploadImageForm')->name('noticia.upload.image');
     Route::post('/noticia/upload/image', 'NoticiaController@uploadImage')->name('noticia.store.upload.image');
+    Route::post('/noticia/{id}/destroy/image/{imageId}', 'NoticiaController@destroyImage')->name('noticia.destroy.image');
     Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');
     Route::resource('/noticia', 'NoticiaController');
     
