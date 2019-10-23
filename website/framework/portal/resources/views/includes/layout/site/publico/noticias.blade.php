@@ -14,7 +14,12 @@
         <div class="card-deck">
             @foreach ($noticias as $noticia)
                 <div class="card">
-                    <img src="img/cards/noticias/card11.jpg" alt="news" class="card-img-top img-fluid img-thumbnail">        
+                    @if (isset($noticia->imagens()->where('ordem', 1)->first()->nome_arquivo))
+                        <img src="{{ url('storage/imagens/noticias/'.$noticia->id.'/thumbnail/medium/'. $noticia->imagens()->where('ordem',1)->first()->nome_arquivo) }}" alt="news" class="card-img-top img-fluid img-thumbnail">
+                    @else
+                        <img src="{{ url('storage/imagens/default/no_image.jpeg') }}" alt="news" class="card-img-top img-fluid img-thumbnail">        
+                    @endif
+                    
                     <div class="card-body">
                         <h4 class="card-title text-center">{{ $noticia->titulo }}</h4>
                         <p class="card-text text-justify">{!! $noticia->conteudo !!}</p>
@@ -31,7 +36,7 @@
                     </div>
                 </div>
             @endforeach
-            <div class="card">
+            {{--<div class="card">
                 <img src="img/cards/noticias/card11.jpg" alt="news" class="card-img-top img-fluid img-thumbnail">        
                 <div class="card-body">
                     <h4 class="card-title text-center">PROCESSO DE SELEÇÃO PARA O PROGRAMA DE BOLSAS IBERO-AMERICANAS</h4>
@@ -81,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--}}
         </div>
     </div>
 </div>

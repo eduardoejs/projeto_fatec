@@ -148,12 +148,13 @@
 @endsection
 
 
-@section('css')    
-       
+@section('css')
+@parent
 
 @endsection
 
 @section('js')
+@parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rating/1.5.0/bootstrap-rating.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
     <script>

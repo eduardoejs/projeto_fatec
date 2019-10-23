@@ -29,22 +29,20 @@
                                 <i class="fas fa-hdd"></i> {{ count($list->imagens) }} arquivo(s) - {{ Conversoes::bytesToHuman($list->imagens->sum('tamanho_arquivo')) }}
                             </CAPTION>
                             @foreach ($colunas as $key => $value)
-                                <th scope="col">{{ $value }}</th>
+                                <th scope="col" class="text-center">{{ $value }}</th>
                             @endforeach
                             <th scope="col">Ação</th>
                         </thead>
                         <tbody>
                             @forelse ($list->imagens as $arquivo)
                                 <tr>
-                                    <td>{{ $arquivo->id }}</td>
-                                    <td><img src="{{ url('storage/imagens/noticias/'.$list->id.'/'. $arquivo->nome_arquivo) }}" alt="{{$arquivo->titulo}}" width=60 height=40></td>
-                                    <td>{{ $arquivo->titulo }}</td>
-                                    <td>{{ $arquivo->descricao }}</td>
-                                    <td>{{ Carbon\Carbon::parse($arquivo->created_at)->format('d/m/Y H:i:s') }}</td>
-                                    <td>{{ Conversoes::bytesToHuman($arquivo->tamanho_arquivo) }}</td>                                
-                                    <td>{{ File::extension($arquivo->nome_arquivo) }}</td>
-                                    <td>
-                                        <div class="dropdown">
+                                    <td class="text-center align-middle">{{ $arquivo->id }}</td>
+                                    <td class="text-center align-middle"><img src="{{ url('storage/imagens/noticias/'.$list->id.'/thumbnail/small/'. $arquivo->nome_arquivo) }}" alt="{{$arquivo->titulo}}" width=100 height=80></td>
+                                    <td class="text-center align-middle">{{ Carbon\Carbon::parse($arquivo->created_at)->format('d/m/Y H:i:s') }}</td>
+                                    <td class="text-center align-middle">{{ Conversoes::bytesToHuman($arquivo->tamanho_arquivo) }}</td>                                
+                                    <td class="text-center align-middle">{{ File::extension($arquivo->nome_arquivo) }}</td>
+                                    <td class="text-center align-middle">
+                                        <div class="dropdown text-center align-middle">
                                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-wrench"></i>
                                             </button>

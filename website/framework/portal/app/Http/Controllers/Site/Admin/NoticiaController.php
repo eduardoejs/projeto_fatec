@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Site\Admin;
 
+use Image;
 use App\Classes\Conversoes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\ImageRepository;
 use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Sistema\Gerenciamento\Imagens\Imagem;
@@ -155,48 +157,45 @@ class NoticiaController extends Controller
             (object)['url' => '', 'title' => $page],
         ];          
         
-        $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'titulo' => 'Arquivo', 'descricao' => 'Descrição', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
+        $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
         $list = Noticia::with('imagens')->findOrFail($id);        
 
         return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb', 'colunas', 'list'));        
     }
 
-    public function uploadImage(Request $request)
-    {                
-        if($request->hasFile('imagens')) {
-            $files = $request->file('imagens');
-            $noticia = Noticia::findOrFail($request->noticiaId);
+    public function uploadImage(Request $request, ImageRepository $repository)
+    {   
+        $files = $request->file('imagens');
+        
+        //Valida os arquivos de imagem
+        $rules = [
+            'imagem' => 'required|image|dimensions:min_width=800,min_height=600',
+        ];
 
-            $storagePath = \storage_path().'/app/public/imagens/noticias/'.$request->noticiaId;
-
-            $imagemRegras = [
-                'imagem' => 'required|image|dimensions:min_width=600,min_height=600',
-            ];
-
-            //Valida os arquivos de imagem
-            foreach ($files as $imagem) {
-                $array = ['imagem' => $imagem];
-                $validator = Validator::make($array, $imagemRegras);
-                if($validator->fails()) {
-                    return redirect()
-                        ->back()
-                        ->withErrors($validator->messages())
-                        ->withInput(); 
-                }
+        foreach ($files as $imagem) {
+            $array = ['imagem' => $imagem];
+            $validator = Validator::make($array, $rules);
+            if($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator->messages())
+                    ->withInput(); 
             }
+        }
+        
+        if($request->hasFile('imagens')) { 
+            
+            $noticia = Noticia::findOrFail($request->noticiaId);                        
+            $ordem = 1;            
 
-            $ordem = 1;
             foreach ($files as $file) {                                
-                $size = $file->getSize();
-                $fileName = md5($file->getClientOriginalName()).'.'.$file->extension();
-                
-                if(!\file_exists($storagePath.'/'.$fileName)) {
-                    $file->move($storagePath, $fileName);
-                
-                    $imagem = Imagem::firstOrCreate(['titulo' => $request->titulo_imagens, 
-                                                    'descricao' => $request->descricao_imagens, 
-                                                    'tamanho_arquivo' => $size,
-                                                    'nome_arquivo' => $fileName]);
+                $fileName = $repository->moveImage($file, $noticia, 'noticias', true);
+
+                if(!\is_null($fileName)) {
+                    $imagem = Imagem::firstOrCreate(['titulo' => null, 
+                                                    'descricao' => null, 
+                                                    'tamanho_arquivo' => $file->getSize(),
+                                                    'nome_arquivo' => ($fileName ?? null)]);
                     
                     if($noticia->imagens()->count()) {                        
                         $aux = $noticia->imagens()->orderBy('ordem','DESC')->first();
@@ -206,9 +205,9 @@ class NoticiaController extends Controller
                     session()->flash('msg', 'Imagem(ns) enviadas com sucesso!');
                     session()->flash('status', 'success');    
                 } else {
-                    session()->flash('msg', 'O sistema detectou que esses arquivos já foram enviados!');
+                    session()->flash('msg', 'Ocorreu um erro ao enviar arquivo!');
                     session()->flash('status', 'error');
-                }                  
+                } 
             }
         }
         return redirect()->back();
