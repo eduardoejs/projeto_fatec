@@ -21,13 +21,13 @@
                     @endif
                     
                     <div class="card-body">
-                        <h4 class="card-title text-center">{{ $noticia->titulo }}</h4>
-                        <p class="card-text text-justify">{!! $noticia->conteudo !!}</p>
+                        <h4 class="card-title text-center"><strong>{{ $noticia->titulo }}</strong></h4>
+                        <p class="card-text text-justify">{!! $noticia->conteudo_resumido !!}</p>
                     </div>
                     <div class="card-footer">
                         <div class="row d-flex flex-row">
                             <div class="col d-flex align-items-center justify-content-center">
-                                <small class="d-block text-muted"><i class="far fa-calendar-alt"></i> {{$noticia->created_at}}</small>
+                                <small class="d-block text-muted"><i class="far fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($noticia->created_at)->format('d/m/Y H:i') }}</small>
                             </div>
                             <div class="col">
                                 <a href="#" class="card-link btn btn-outline-info d-block">Leia mais <i class="fas fa-plus"></i></a>                                   

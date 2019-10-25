@@ -10,7 +10,7 @@
                     @yield('search')                
                 @endif
             </div>               
-        </div>        
+        </div>                
         {{ $slot }}
     </div>
 </div>

@@ -262,7 +262,7 @@ class UserController extends Controller
         
         $registro = User::with(['funcionarios', 'docentes', 'alunos'])->findOrFail($id);
                 
-        $page = 'Adicionar';
+        $page = 'Alterar';
         $rotaNome = $this->route;
         $tituloPagina = 'Alterar Usuário: '.$registro->nome;
         $descricaoPagina = 'Alterar dados do usuário do sistema';

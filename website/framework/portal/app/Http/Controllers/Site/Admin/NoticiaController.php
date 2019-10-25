@@ -80,16 +80,27 @@ class NoticiaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {           
-        if(isset($request->data_exibicao)) {
-            $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
-        }        
-        Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->editor, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);        
-        
-        session()->flash('msg', 'Registro cadastrado com sucesso!');
-        session()->flash('status', 'success');
+    {     
+        $this->authorize('create-noticias'); 
+                
+        $validacao = \Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'conteudo' => 'required',
+        ])->validate();
 
-        return redirect()->back();
+        if($validacao) {
+
+            if(isset($request->data_exibicao)) {
+                $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
+            }        
+            Noticia::create(['titulo' => $request->titulo, 'conteudo' => $request->conteudo, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);        
+            
+            session()->flash('msg', 'Registro cadastrado com sucesso!');
+            session()->flash('status', 'success');
+
+            return redirect()->route($this->route.'.index');
+        }
+
     }
 
     /**
@@ -98,9 +109,37 @@ class NoticiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $registro = Noticia::findOrFail($id);
+        if($registro) {
+            $page = 'Show';
+            $delete = false;
+            if($request->delete ?? false) {                
+                $delete = true;
+                $page = 'Excluir';
+                $rotaNome = $this->route;
+                $tituloPagina = '';
+                $descricaoPagina = '';
+                $breadcrumb = [
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                              
+                    (object)['url' => route('noticia.index'), 'title' => 'Notícia'],
+                    (object)['url' => '', 'title' => $page],
+                ];
+            } else {
+                $page = 'Detalhes';
+                $rotaNome = $this->route;                        
+                $tituloPagina = 'Notícia: ' . $registro->titulo;
+                $descricaoPagina = '';
+                $breadcrumb = [
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                    
+                    (object)['url' => route('noticia.index'), 'title' => 'Notícia'],
+                    (object)['url' => '', 'title' => $page],
+                ];
+            }
+            return view('site.admin.'.$this->route.'.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
+        }
+        return redirect()->back();
     }
 
     /**
@@ -111,7 +150,21 @@ class NoticiaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('edit-noticias');
+        $registro = Noticia::findOrFail($id);
+                
+        $page = 'Alterar';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Alterar notícia: '.$registro->nome;
+        $descricaoPagina = 'Alterar dados da notícia';
+        
+        $breadcrumb = [
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
+            (object)['url' => route($this->route.'.index'), 'title' => 'Notícia'],
+            (object)['url' => '', 'title' => $page],
+        ];
+
+        return view('site.admin.'.$this->route.'.edit', compact('registro', 'breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**
@@ -123,7 +176,24 @@ class NoticiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('edit-noticias');
+
+        $validacao = \Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'conteudo' => 'required',
+        ])->validate();
+
+        if($validacao) {
+            $noticia = Noticia::findOrFail($id);            
+            if(isset($request->data_exibicao)) {
+                $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
+            }        
+            $noticia->update(['titulo' => $request->titulo, 'conteudo' => $request->conteudo, 'ativo' => $request->status, 'user_id' => auth()->user()->id, 'data_exibicao' => ($date ?? null)]);
+            session()->flash('msg', 'Registro atualizado com sucesso');
+            session()->flash('title', 'Sucesso!');
+            session()->flash('status', 'success');
+        }
+        return redirect()->route($this->route.'.index');
     }
 
     /**
@@ -132,10 +202,35 @@ class NoticiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, ImageRepository $repositoryImage)
     {
-        //
-    }
+        $this->authorize('delete-noticia');
+        
+        $noticia = Noticia::findOrFail($id);
+
+        try {
+            if($noticia) {
+
+                /***
+                 * remover diretorio com imagens e documentos
+                 * 
+                 * */
+                
+                $repositoryImage->removeImages('noticias', $noticia);
+
+                $noticia->delete();
+
+                session()->flash('msg', 'Registro excluído do banco de dados');
+                session()->flash('title', 'Sucesso');
+                session()->flash('status', 'success');
+            }
+        } catch (\PDOException $e) {
+            session()->flash('msg', $e->getMessage());
+            session()->flash('title', 'Erro inesperado');
+            session()->flash('status', 'error');
+        }
+        return redirect()->route($this->route.'.index');
+    }    
 
     public function uploadFileForm($id)
     {   
@@ -157,51 +252,44 @@ class NoticiaController extends Controller
             (object)['url' => '', 'title' => $page],
         ];          
         
-        $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
-        $list = Noticia::with('imagens')->findOrFail($id);        
-
+        $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo', 'ordem' => 'Capa Notícia'];        
+        $list = Noticia::with('imagens')->findOrFail($id); 
         return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb', 'colunas', 'list'));        
     }
 
     public function uploadImage(Request $request, ImageRepository $repository)
     {   
-        $files = $request->file('imagens');
-        
-        //Valida os arquivos de imagem
+        $files = $request->file('imagens');        
         $rules = [
             'imagem' => 'required|image|dimensions:min_width=800,min_height=600',
         ];
-
-        foreach ($files as $imagem) {
-            $array = ['imagem' => $imagem];
-            $validator = Validator::make($array, $rules);
-            if($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->withErrors($validator->messages())
-                    ->withInput(); 
-            }
-        }
         
-        if($request->hasFile('imagens')) { 
-            
+        if($request->hasFile('imagens')) {
+            foreach ($files as $imagem) {
+                $array = ['imagem' => $imagem];
+                $validator = Validator::make($array, $rules);
+                if($validator->fails()) {
+                    return redirect()
+                        ->back()
+                        ->withErrors($validator->messages())
+                        ->withInput(); 
+                }
+            }
+
             $noticia = Noticia::findOrFail($request->noticiaId);                        
-            $ordem = 1;            
-
-            foreach ($files as $file) {                                
+            $ordem = 1;
+            foreach ($files as $file) {                
                 $fileName = $repository->moveImage($file, $noticia, 'noticias', true);
-
                 if(!\is_null($fileName)) {
                     $imagem = Imagem::firstOrCreate(['titulo' => null, 
                                                     'descricao' => null, 
                                                     'tamanho_arquivo' => $file->getSize(),
                                                     'nome_arquivo' => ($fileName ?? null)]);
-                    
                     if($noticia->imagens()->count()) {                        
                         $aux = $noticia->imagens()->orderBy('ordem','DESC')->first();
                         $ordem = $aux->pivot->ordem + 1;
                     }                    
-                    $imagem->noticias()->save($noticia, ['ordem' => $ordem]);
+                    $imagem->noticias()->attach($noticia, ['ordem' => $ordem]);
                     session()->flash('msg', 'Imagem(ns) enviadas com sucesso!');
                     session()->flash('status', 'success');    
                 } else {
@@ -209,7 +297,41 @@ class NoticiaController extends Controller
                     session()->flash('status', 'error');
                 } 
             }
+        } else {
+            session()->flash('msg', 'Você deve selecionar uma imagem!');
+            session()->flash('status', 'error');
+        }        
+        return redirect()->back();
+    }
+
+    public function destroySingleImage($id, $imagemId, ImageRepository $repository)
+    {      
+        $noticia = Noticia::findOrFail($id);
+        $imagem = Imagem::with('noticias')->findOrFail($imagemId); 
+        $imagem->noticias()->detach($noticia);
+        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo);
+        session()->flash('msg', 'Imagem removida com sucesso!');
+        session()->flash('status', 'success');
+        return redirect()->back();
+    }
+
+    public function setCapa($id, $imagemId)
+    {        
+        $noticia = Noticia::findOrFail($id);
+        $imagem = Imagem::with('noticias')->findOrFail($imagemId);        
+        $ordemReplace = $noticia->imagens()->where('imagem_noticia.imagem_id', $imagemId)->first()->pivot->ordem;
+        $imageReplace = $noticia->imagens()->where('imagem_noticia.ordem',1)->first(); 
+        
+        //Não há imagens com campo ordem = 1
+        if($imageReplace){
+            $imageReplace->pivot->update(['ordem' => $ordemReplace]);
+            $imagem->noticias()->first()->pivot->update(['ordem' => 1]);            
+        } else {
+            $imagem->noticias()->first()->pivot->update(['ordem' => 1]);
         }
+        
+        session()->flash('msg', 'Imagem de capa definida com sucesso!');
+        session()->flash('status', 'success');
         return redirect()->back();
     }
 }

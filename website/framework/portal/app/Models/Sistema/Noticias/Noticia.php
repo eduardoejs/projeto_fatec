@@ -49,4 +49,9 @@ class Noticia extends Model
         }
         return $status;
     }
+
+    public function getConteudoResumidoAttribute()
+    {
+        return str_limit($this->getAttribute('conteudo'), 405, '...');
+    }
 }
