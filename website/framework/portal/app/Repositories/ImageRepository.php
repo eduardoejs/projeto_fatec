@@ -117,4 +117,10 @@ class ImageRepository{
         } 
         return; 
     } 
+
+    public function download($type, $model, $filename)
+    {
+        $destinationPath = \public_path('storage/imagens/'.$type.'/'.$model->id.'/'.$filename);
+        return response()->download($destinationPath);
+    }
 }

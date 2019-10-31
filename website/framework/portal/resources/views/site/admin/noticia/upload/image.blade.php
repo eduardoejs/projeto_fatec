@@ -68,7 +68,7 @@
                                                 @form_component(['action' => route($rotaNome.'.destroy.image', ['id' => $noticia->id, 'imagemId' => $arquivo->id]), 'method' => 'DELETE'])                                               
                                                     <button type="submit" class="dropdown-item text-secondary"><i class="fa fa-trash"></i> Excluir</button>
                                                 @endform_component
-                                                <a class="dropdown-item text-secondary" href=""><i class="fa fa-download"></i> Download</a>                                            
+                                                <a class="dropdown-item text-secondary" href="{{ route('noticia.download.image', ['id' => $noticia->id, 'imagemId' => $arquivo->id]) }}"><i class="fa fa-download"></i> Download</a>                                            
                                             </div>
                                         </div>                                                  
                                     </td>

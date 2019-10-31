@@ -216,8 +216,15 @@ class NoticiaController extends Controller
                  * 
                  * */
                 
+                //remove as imagens do diretório 
                 $repositoryImage->removeImages('noticias', $noticia);
 
+                //remove as imagens no banco de dados associadas à notícia
+                foreach($noticia->imagens as $imagem) {
+                    $imagem->delete();
+                }
+
+                //remove a notícia
                 $noticia->delete();
 
                 session()->flash('msg', 'Registro excluído do banco de dados');
@@ -288,7 +295,8 @@ class NoticiaController extends Controller
                     if($noticia->imagens()->count()) {                        
                         $aux = $noticia->imagens()->orderBy('ordem','DESC')->first();
                         $ordem = $aux->pivot->ordem + 1;
-                    }                    
+                    } 
+                    //associo a imagem à notícia no banco de dados                   
                     $imagem->noticias()->attach($noticia, ['ordem' => $ordem]);
                     session()->flash('msg', 'Imagem(ns) enviadas com sucesso!');
                     session()->flash('status', 'success');    
@@ -308,8 +316,9 @@ class NoticiaController extends Controller
     {      
         $noticia = Noticia::findOrFail($id);
         $imagem = Imagem::with('noticias')->findOrFail($imagemId); 
+        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo); //otimizar
         $imagem->noticias()->detach($noticia);
-        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo);
+        $imagem->delete();        
         session()->flash('msg', 'Imagem removida com sucesso!');
         session()->flash('status', 'success');
         return redirect()->back();
@@ -333,5 +342,11 @@ class NoticiaController extends Controller
         session()->flash('msg', 'Imagem de capa definida com sucesso!');
         session()->flash('status', 'success');
         return redirect()->back();
+    }
+
+    public function downloadImage($id, $imageId, ImageRepository $repository)
+    {        
+        $noticia = Noticia::findOrFail($id);
+        return $repository->download('noticias', $noticia, $noticia->imagens()->where('imagem_noticia.imagem_id', $imageId)->first()->nome_arquivo);
     }
 }
