@@ -3,7 +3,7 @@
     <div class="container">            
         <div class="row text-center">
             <div class="col-sm-6 col-lg-12">
-                <img src="img/site/logotipos/cpssp.png" alt="" class="mt-2 img-fluid">
+                <img src="{{ asset('img/site/logotipos/cpssp.png') }}" alt="" class="mt-2 img-fluid">
             </div>                
         </div>
         <div class="row">

@@ -79,4 +79,10 @@ class SiteController extends Controller
         }
         return redirect()->route('admin');
     }    
+
+    public function lerNoticia($id)
+    {
+        $noticia = Noticia::with('imagens', 'arquivos')->findOrFail($id);
+        return view('site.publico.noticias.ler_noticia', compact('noticia'));
+    }
 }

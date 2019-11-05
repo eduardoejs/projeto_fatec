@@ -30,7 +30,7 @@
                                 <small class="d-block text-muted"><i class="far fa-calendar-alt"></i> {{ \Carbon\Carbon::parse($noticia->created_at)->format('d/m/Y H:i') }}</small>
                             </div>
                             <div class="col">
-                                <a href="#" class="card-link btn btn-outline-info d-block">Leia mais <i class="fas fa-plus"></i></a>                                   
+                                <a href="{{ route('ler.noticia', ['id' => $noticia->id]) }}" class="card-link btn btn-outline-info d-block">Leia mais <i class="fas fa-plus"></i></a>
                             </div>
                         </div>
                     </div>

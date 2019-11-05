@@ -316,9 +316,9 @@ class NoticiaController extends Controller
     {      
         $noticia = Noticia::findOrFail($id);
         $imagem = Imagem::with('noticias')->findOrFail($imagemId); 
-        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo); //otimizar
+        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo);
         $imagem->noticias()->detach($noticia);
-        $imagem->delete();        
+        $imagem->delete();
         session()->flash('msg', 'Imagem removida com sucesso!');
         session()->flash('status', 'success');
         return redirect()->back();

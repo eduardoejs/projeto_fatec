@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <!-- Navbar-brand with hamburg menu -->
-        <a href="#" class="navbar-brand h1 mb-0"><img src="img/site/logotipos/logofatec-white-2.png" alt="logo-fatec" class="img-fluid" style="width: 90px; height: 30px;"></a>
+        <a href="#" class="navbar-brand h1 mb-0"><img src="{{ asset('img/site/logotipos/logofatec-white-2.png') }}" alt="logo-fatec" class="img-fluid" style="width: 90px; height: 30px;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSite">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -49,6 +49,7 @@ Route::namespace('Site\Publico')->group(function () {
     Route::get('/', 'SiteController@index')->name('site');
     Route::get('/ativar/conta/{token}/{email}', 'SiteController@showFormAtivacao')->name('ativar.conta');
     Route::post('/validar/conta', 'SiteController@validarConta')->name('validar.conta');
+    Route::get('/site/view/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function(){
