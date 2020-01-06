@@ -242,13 +242,27 @@ class NoticiaController extends Controller
     public function uploadFileForm($id)
     {   
         $noticia = Noticia::find($id);
-        return view('site.admin.'.$this->route.'.upload.file', compact('noticia'));
+        $page = 'Anexar Arquivos';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Envio de arquivos';
+        $descricaoPagina = 'Uploads de arquivos da notícia: <strong>' . $noticia->titulo . '</strong>';
+
+        $breadcrumb = [
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
+            (object)['url' => route($this->route.'.index'), 'title' => 'Notícia'],
+            (object)['url' => '', 'title' => $page],
+        ];          
+        
+        $colunas = ['id' => 'ID', 'arquivo' =>'File', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
+        $list = Noticia::with('arquivos')->findOrFail($id);         
+
+        return view('site.admin.'.$this->route.'.upload.file', compact('noticia', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome', 'breadcrumb', 'colunas', 'list'));
     }
 
     public function uploadImageForm($id)
     {  
         $noticia = Noticia::findOrFail($id);
-        $page = 'Upload';
+        $page = 'Anexar Imagens';
         $rotaNome = $this->route;
         $tituloPagina = 'Envio de imagens';
         $descricaoPagina = 'Uploads de imagens da notícia: <strong>' . $noticia->titulo . '</strong>';

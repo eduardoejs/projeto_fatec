@@ -18,7 +18,7 @@ class Noticia extends Model
 
     public function arquivos()
     {
-        return $this->belongsToMany(Arquivo::class);
+        return $this->belongsToMany(Arquivo::class, 'arquivo_noticia', 'noticia_id', 'arquivo_id')->withTimestamps();
     }
 
     public function imagens()
