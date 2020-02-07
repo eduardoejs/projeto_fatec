@@ -3,7 +3,7 @@
         <input type="hidden" name="noticiaId" value="{{ $noticia->id }}">
         <label for="titulo_arquivo">Nome do arquivo</label>            
         <input type="text" name="titulo_arquivo" value="{{ old('titulo_arquivo') ?? ($registro->titulo_arquivo ?? '') }}" class="form-control" placeholder="" required>
-        <label for="sescricao_arquivo">Descrição do arquivo</label>            
+        <label for="descricao_arquivo">Descrição do arquivo</label>            
         <input type="text" name="descricao_arquivo" value="{{ old('descricao_arquivo') ?? ($registro->descricao_arquivo ?? '') }}" class="form-control" placeholder="">
         <div class="input-group mt-3">                                                
             <div class="input-group">

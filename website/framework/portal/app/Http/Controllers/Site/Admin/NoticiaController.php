@@ -6,10 +6,12 @@ use Image;
 use App\Classes\Conversoes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Repositories\FileRepository;
 use App\Repositories\ImageRepository;
 use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Sistema\Gerenciamento\Imagens\Imagem;
+use App\Models\Sistema\Gerenciamento\Arquivos\Arquivo;
 
 class NoticiaController extends Controller
 {
@@ -32,11 +34,10 @@ class NoticiaController extends Controller
             foreach($this->search as $key => $value) {    
                 $noticia = Noticia::orWhere($value, 'like', '%'.$search.'%');                
             }            
-            $list = $noticia->orderBy('id', 'DESC')->paginate($this->paginacao);
+            $list = $noticia->orderBy('ativo', 'ASC')->orderBy('id', 'DESC')->paginate($this->paginacao);
         }else{
-            $list = Noticia::orderBy('id', 'DESC')->get();
+            $list = Noticia::orderBy('ativo', 'ASC')->orderBy('id', 'DESC')->paginate($this->paginacao);            
         }
-
         $rotaNome = $this->route;        
         $page = 'Notícias';        
         $tituloPagina = 'Notícias do Sistema';
@@ -202,7 +203,7 @@ class NoticiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, ImageRepository $repositoryImage)
+    public function destroy($id, ImageRepository $repositoryImage, FileRepository $repositoryFile)
     {
         $this->authorize('delete-noticia');
         
@@ -210,11 +211,9 @@ class NoticiaController extends Controller
 
         try {
             if($noticia) {
-
-                /***
-                 * remover diretorio com imagens e documentos
-                 * 
-                 * */
+                
+                //remove os arquivos do diretorio
+                $repositoryFile->removeFiles('noticias', $noticia);
                 
                 //remove as imagens do diretório 
                 $repositoryImage->removeImages('noticias', $noticia);
@@ -222,6 +221,10 @@ class NoticiaController extends Controller
                 //remove as imagens no banco de dados associadas à notícia
                 foreach($noticia->imagens as $imagem) {
                     $imagem->delete();
+                }
+
+                foreach($noticia->arquivos as $arquivo) {
+                    $arquivo->delete();
                 }
 
                 //remove a notícia
@@ -253,7 +256,7 @@ class NoticiaController extends Controller
             (object)['url' => '', 'title' => $page],
         ];          
         
-        $colunas = ['id' => 'ID', 'arquivo' =>'File', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
+        $colunas = ['id' => 'ID', 'titulo' =>'Arquivo', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
         $list = Noticia::with('arquivos')->findOrFail($id);         
 
         return view('site.admin.'.$this->route.'.upload.file', compact('noticia', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome', 'breadcrumb', 'colunas', 'list'));
@@ -276,6 +279,41 @@ class NoticiaController extends Controller
         $colunas = ['id' => 'ID', 'arquivo' =>'Imagem', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo', 'ordem' => 'Capa Notícia'];        
         $list = Noticia::with('imagens')->findOrFail($id); 
         return view('site.admin.'.$this->route.'.upload.image', compact('noticia', 'page', 'rotaNome', 'tituloPagina', 'descricaoPagina', 'breadcrumb', 'colunas', 'list'));        
+    }
+
+    public function uploadFile(Request $request, FileRepository $repository)
+    {
+        $file = $request->file('arquivo');        
+        $rules = [
+            'arquivo' => 'required|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,rar,zip|max:2048'
+        ];
+
+        if($request->hasFile('arquivo')) {            
+            $validator = Validator::make($request->all(), $rules);
+            if($validator->fails()) {
+                return redirect()->back()->withErrors($validator->messages())->withInput();
+            }
+          
+            //transaction            
+            $filename = time().random_int(100, 999).'.'.$file->getClientOriginalExtension();
+            $noticia = Noticia::findOrFail($request->noticiaId);
+            $arquivo = Arquivo::firstOrCreate(['titulo' => $request->titulo_arquivo, 
+                                                'descricao' => $request->descricao_arquivo,
+                                                'nome_arquivo' => $filename,
+                                                'tamanho_arquivo' => $file->getSize()]);
+
+            $fileRepository = $repository->moveFile($file, $noticia, 'noticias', $filename);
+            
+            // 3 - Associar o arquivo criado com a noticia
+            $arquivo->noticias()->attach($noticia);
+            session()->flash('msg', 'Arquivo enviado com sucesso!');
+            session()->flash('status', 'success');
+            
+        } else {
+            session()->flash('msg', 'Você deve selecionar um arquivo!');
+            session()->flash('status', 'error');
+        }
+        return redirect()->back();
     }
 
     public function uploadImage(Request $request, ImageRepository $repository)
@@ -326,13 +364,25 @@ class NoticiaController extends Controller
         return redirect()->back();
     }
 
+    public function destroySingleFile($id, $fileId, FileRepository $repository)
+    {      
+        $noticia = Noticia::findOrFail($id);
+        $file = Arquivo::with('noticias')->findOrFail($fileId);         
+        $file->noticias()->detach($noticia);
+        $file->delete();
+        $repository->removeFiles('noticias', $noticia, $file->nome_arquivo);
+        session()->flash('msg', 'Arquivo removido com sucesso!');
+        session()->flash('status', 'success');
+        return redirect()->back();
+    }
+
     public function destroySingleImage($id, $imagemId, ImageRepository $repository)
     {      
         $noticia = Noticia::findOrFail($id);
-        $imagem = Imagem::with('noticias')->findOrFail($imagemId); 
-        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo);
+        $imagem = Imagem::with('noticias')->findOrFail($imagemId);         
         $imagem->noticias()->detach($noticia);
         $imagem->delete();
+        $repository->removeImages('noticias', $noticia, $imagem->nome_arquivo);
         session()->flash('msg', 'Imagem removida com sucesso!');
         session()->flash('status', 'success');
         return redirect()->back();
@@ -362,5 +412,11 @@ class NoticiaController extends Controller
     {        
         $noticia = Noticia::findOrFail($id);
         return $repository->download('noticias', $noticia, $noticia->imagens()->where('imagem_noticia.imagem_id', $imageId)->first()->nome_arquivo);
+    }
+
+    public function downloadFile($id, $fileId, FileRepository $repository)
+    {        
+        $noticia = Noticia::findOrFail($id);
+        return $repository->download('noticias', $noticia, $noticia->arquivos()->where('arquivo_noticia.arquivo_id', $fileId)->first()->nome_arquivo);
     }
 }

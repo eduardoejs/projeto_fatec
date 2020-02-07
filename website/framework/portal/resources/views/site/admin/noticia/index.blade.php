@@ -14,8 +14,11 @@
                 @busca_component(['rotaNome' => $rotaNome, 'search' => $search, 'page' => $page])
                 @endbusca_component                
             @endsection
-            @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome, 'page' => $page])
+            
+            @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome, 'page' => $page])            
             @endtable_component
+            
+            {{ $list->appends(request()->query())->links() }}                        
         @endbodypage_component
                 
     @endpage_component

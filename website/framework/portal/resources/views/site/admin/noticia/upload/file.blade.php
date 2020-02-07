@@ -29,46 +29,29 @@
                                 <i class="fas fa-hdd"></i> {{ count($list->arquivos) }} arquivo(s) - {{ Conversoes::bytesToHuman($list->arquivos->sum('tamanho_arquivo')) }}
                             </CAPTION>
                             @foreach ($colunas as $key => $value)
-                                <th scope="col" class="text-center">{{ $value }}</th>
+                                <th scope="col" class="">{{ $value }}</th>
                             @endforeach
                             <th scope="col">Ação</th>
                         </thead>
                         <tbody>
                             @forelse ($list->arquivos()->orderBy('arquivo_noticia.created_at', 'ASC')->get() as $arquivo)
                                 <tr>
-                                    <td class="text-center align-middle">{{ $arquivo->id }}</td>
-                                    <td class="text-center align-middle"><img src="{{ url('storage/imagens/noticias/'.$list->id.'/thumbnail/small/'. $arquivo->nome_arquivo) }}" alt="{{$arquivo->titulo}}" width=100 height=80></td>
-                                    <td class="text-center align-middle">{{ Carbon\Carbon::parse($arquivo->created_at)->format('d/m/Y H:i:s') }}</td>
-                                    <td class="text-center align-middle">{{ Conversoes::bytesToHuman($arquivo->tamanho_arquivo) }}</td>                                
-                                    <td class="text-center align-middle">{{ File::extension($arquivo->nome_arquivo) }}</td>
-                                    <td class="text-center align-middle">
-                                        @php                                            
-                                            $active = "";
-                                            $textCapa = "Definir";
-                                            $classBtn = "btn-dark";
-
-                                            if($arquivo->pivot->ordem == 1) {                                            
-                                                $active = " focus active";
-                                                $textCapa = "Definido";
-                                                $classBtn = "btn-info";
-                                            }
-                                        @endphp
-                                         @form_component(['action' => route($rotaNome.'.image.capa', ['id' => $noticia->id, 'imagemId' => $arquivo->id]), 'method' => 'POST']) 
-                                            <button type="submit" class="btn {{$classBtn}} btn-sm {{$active}}">
-                                                {{ $textCapa }}
-                                            </button>
-                                        @endform_component
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <div class="dropdown text-center align-middle">
+                                    <td class="align-middle">{{ $arquivo->id }}</td>
+                                    <td class="align-middle">{{ $arquivo->titulo }}</td>
+                                    <td class="align-middle">{{ Carbon\Carbon::parse($arquivo->created_at)->format('d/m/Y H:i:s') }}</td>
+                                    <td class="align-middle">{{ Conversoes::bytesToHuman($arquivo->tamanho_arquivo) }}</td>                                
+                                    <td class="align-middle">{{ File::extension($arquivo->nome_arquivo) }}</td>
+                                    
+                                    <td class="align-middle">
+                                        <div class="dropdown  align-middle">
                                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-wrench"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton"> 
-                                                @form_component(['action' => route($rotaNome.'.destroy.image', ['id' => $noticia->id, 'imagemId' => $arquivo->id]), 'method' => 'DELETE'])                                               
+                                                @form_component(['action' => route($rotaNome.'.destroy.file', ['id' => $noticia->id, 'imagemId' => $arquivo->id]), 'method' => 'DELETE'])                                               
                                                     <button type="submit" class="dropdown-item text-secondary"><i class="fa fa-trash"></i> Excluir</button>
                                                 @endform_component
-                                                <a class="dropdown-item text-secondary" href="{{ route('noticia.download.image', ['id' => $noticia->id, 'imagemId' => $arquivo->id]) }}"><i class="fa fa-download"></i> Download</a>                                            
+                                                <a class="dropdown-item text-secondary" href="{{ route('noticia.download.file', ['id' => $noticia->id, 'imagemId' => $arquivo->id]) }}"><i class="fa fa-download"></i> Download</a>                                            
                                             </div>
                                         </div>                                                  
                                     </td>

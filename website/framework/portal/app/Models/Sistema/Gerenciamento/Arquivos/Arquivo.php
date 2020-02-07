@@ -8,15 +8,15 @@ use App\Models\Sistema\Vestibular\Vestibular;
 
 class Arquivo extends Model
 {
-    protected $fillable = ['titulo', 'descricao', 'url_armazenamento', 'tamanho_arquivo'];
+    protected $fillable = ['titulo', 'descricao', 'tamanho_arquivo', 'nome_arquivo'];
 
     public function vestibulares()
     {
-        return $this->belongsToMany(Vestibular::clas);
+        return $this->belongsToMany(Vestibular::class);
     }
 
     public function noticias()
     {
-        return $this->belongsToMany(Noticia::clas);
+        return $this->belongsToMany(Noticia::class);
     }
 }

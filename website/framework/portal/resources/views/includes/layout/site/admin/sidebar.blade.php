@@ -99,7 +99,7 @@
                 <a class="collapse-item {{ Request::segment(2) == 'noticia' ? 'active' : '' }}" href="{{ route('noticia.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
               @endcan              
               @can('read-pagina')
-                <a class="collapse-item {{ Request::segment(2) == '' ? 'active' : '' }}" href="#"><i class="fas fa-chalkboard"></i> Páginas</a>  
+                <a class="collapse-item {{ Request::segment(2) == 'pagina' ? 'active' : '' }}" href="#"><i class="fas fa-chalkboard"></i> Páginas</a>  
               @endcan              
             </div>
           </div>

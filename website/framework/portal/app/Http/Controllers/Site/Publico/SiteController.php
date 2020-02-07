@@ -21,9 +21,8 @@ class SiteController extends Controller
         $centralized = true;
         $upper = true;  
         
-        //retornar apenas as 3 ultimas noticias        
-        $noticias = Noticia::with('imagens')->where('ativo','S')->orderBy('id', 'DESC')->take(3)->get(); 
-        //dd($noticias);
+        //retornar apenas as 3 últimas noticias        
+        $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->take(3)->get();         
             
         return view('site.publico.index', compact('efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos', 'noticias'));
     }

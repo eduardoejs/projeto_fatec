@@ -53,7 +53,8 @@ Route::namespace('Site\Publico')->group(function () {
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function(){
-    Route::get('/noticia/{id}/download/{imageId}/image', 'NoticiaController@downloadImage')->name('noticia.download.image');
+    Route::get('/noticia/{id}/download-image/{imageId}', 'NoticiaController@downloadImage')->name('noticia.download.image');
+    Route::get('/noticia/{id}/download-file/{fileId}', 'NoticiaController@downloadFile')->name('noticia.download.file');
 });
 
 Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
@@ -64,6 +65,7 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::post('/noticia/upload/image', 'NoticiaController@uploadImage')->name('noticia.store.upload.image');
     Route::post('/noticia/upload/file', 'NoticiaController@uploadFile')->name('noticia.store.upload.file');
     Route::delete('/noticia/{id}/destroy/image/{imageId}', 'NoticiaController@destroySingleImage')->name('noticia.destroy.image');
+    Route::delete('/noticia/{id}/destroy/file/{FileId}', 'NoticiaController@destroySingleFile')->name('noticia.destroy.file');
     Route::post('/noticia/{id}/capa/image/{imageId}', 'NoticiaController@setCapa')->name('noticia.image.capa');
     Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');    
     Route::resource('/noticia', 'NoticiaController');
