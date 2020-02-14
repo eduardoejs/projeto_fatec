@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Site\Publico;
 
 
 use App\Models\Acl\User;
+use App\Models\Cursos\Curso;
 use Illuminate\Http\Request;
+use App\Models\Cursos\TipoCurso;
+use App\Models\Cursos\Modalidade;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Avisos\Aviso;
 use App\Models\Sistema\Noticias\Noticia;
@@ -20,11 +23,14 @@ class SiteController extends Controller
         $scrolling = false;
         $centralized = true;
         $upper = true;  
+               
+        $tipos = TipoCurso::all();
+        $cursos = new Curso();
         
         //retornar apenas as 3 últimas noticias        
         $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->take(3)->get();         
             
-        return view('site.publico.index', compact('efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos', 'noticias'));
+        return view('site.publico.index', compact('tipos', 'cursos', 'efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos', 'noticias'));
     }
     
     public function showFormAtivacao($token, $email)
@@ -83,5 +89,14 @@ class SiteController extends Controller
     {
         $noticia = Noticia::with('imagens', 'arquivos')->findOrFail($id);
         return view('site.publico.noticias.ler_noticia', compact('noticia'));
+    }
+
+    public function verCurso($id)
+    {
+        $tipos = TipoCurso::all();
+        $cursos = new Curso();
+        //$curso = Curso::with('arquivos')->findOrFail($id);
+        $curso = Curso::findOrFail($id);
+        return view('site.publico.cursos.ver_curso', compact('curso', 'tipos', 'cursos'));
     }
 }

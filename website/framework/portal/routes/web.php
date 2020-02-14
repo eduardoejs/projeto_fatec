@@ -50,6 +50,7 @@ Route::namespace('Site\Publico')->group(function () {
     Route::get('/ativar/conta/{token}/{email}', 'SiteController@showFormAtivacao')->name('ativar.conta');
     Route::post('/validar/conta', 'SiteController@validarConta')->name('validar.conta');
     Route::get('/site/view/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
+    Route::get('/view/curso/{id}', 'SiteController@verCurso')->name('ver.curso');
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function(){
@@ -69,6 +70,10 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::post('/noticia/{id}/capa/image/{imageId}', 'NoticiaController@setCapa')->name('noticia.image.capa');
     Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');    
     Route::resource('/noticia', 'NoticiaController');
+    Route::resource('/curso', 'Curso\CursoController');
+    Route::get('/curso/{id}/upload/file', 'CursoController@uploadFileForm')->name('curso.upload.file');    
+    Route::resource('/curso/tipocurso', 'Curso\TipoCursoController');
+    Route::resource('curso/modalidade', 'Curso\ModalidadeController');
     
     Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){
         Route::get('/user/send-email', 'UserController@sendEMail');

@@ -30,7 +30,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <p>Marcelo Tas descomplica e te ajuda a entender os cursos que formam tecnólogos.</p>
-                                <p>Curso técnico e tecnologo, você sabe a diferença entre eles? Muita gente ainda confunde essas duas modalidades de ensino, inclusive as empresas.</p>
+                                <p>Curso técnico e tecnólogo, você sabe a diferença entre eles? Muita gente ainda confunde essas duas modalidades de ensino, inclusive as empresas.</p>
                                 <p>Marcelo Tas te explica as vantagens e as diferenças de cada um deles para te ajudar a escolher qual curso fazer.</p>
                             </div>
                         </div>

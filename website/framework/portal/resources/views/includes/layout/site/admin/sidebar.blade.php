@@ -64,7 +64,7 @@
         </li>
         @endif
                
-        @if(auth()->user()->can('read-noticia') || auth()->user()->can('read-pagina')) 
+        @if(auth()->user()->can('read-noticia') || auth()->user()->can('read-pagina') || auth()->user()->can('read-curso')) 
         <!-- Divider -->
         <hr class="sidebar-divider">
         <!-- Heading -->        
@@ -78,7 +78,7 @@
             $show = '';
 
             //expandiu o menu
-            if(Request::segment(1) == 'admin' && Request::segment(2) == 'noticia') {
+            if(Request::segment(1) == 'admin' && (Request::segment(2) == 'noticia' || Request::segment(2) == 'curso' )) {
               $collapsed = '';
               $show = 'show';
               $active = 'active';
@@ -95,6 +95,9 @@
           <div id="collapseContentPortal" class="collapse {{ $show }}" aria-labelledby="headingAcl" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Menu de Opções:</h6>
+              @can('read-curso')
+                <a class="collapse-item {{ Request::segment(2) == 'curso' ? 'active' : '' }}" href="{{ route('curso.index') }}"><i class="fas fa-graduation-cap"></i> Cursos</a>  
+              @endcan
               @can('read-noticia')
                 <a class="collapse-item {{ Request::segment(2) == 'noticia' ? 'active' : '' }}" href="{{ route('noticia.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
               @endcan              

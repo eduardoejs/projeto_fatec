@@ -39,25 +39,52 @@
                     </ul>                        
                 </li>
 
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Cursos
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
+                        <li class="dropdown-submenu">                            
                             <a class="dropdown-item dropdown-toggle" href="#">Graduação (Presencial)</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="curso_alimentos.html">Tecnologia em Alimentos</a></li>
+                                <li><a class="dropdown-item" href="{{route('ver.curso', ['id' => '5'])}}">Tecnologia em Alimentos</a></li>
+                                <li><a class="dropdown-item" href="{{route('ver.curso', ['id' => '6'])}}">Tecnologia em Gestão Comercial</a></li>
                             </ul>                                    
                         </li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">Graduação à distância (EaD)</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Gestão Empresarial</a></li>
+                                <li><a class="dropdown-item" href="{{route('ver.curso', ['id' => '7'])}}">Gestão Empresarial</a></li>
                             </ul>                                    
                         </li>
                     </ul>                        
+                </li> -->
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cursos
+                    </a>
+                    <ul class="dropdown-menu">                    
+                        @foreach ($tipos as $tipo)
+                            @foreach ($cursos->getTipoCursoMenu($tipo->id) as $tipoMenu)
+                                <li class="dropdown-submenu">                            
+                                    <a class="dropdown-item dropdown-toggle" href="#">{{$tipoMenu->descricao}}</a>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($cursos->getModalidadesCursoMenu($tipo->id) as $modalidadeMenu)                                                                  
+                                            <a class="dropdown-item dropdown-toggle" href="#">{{$modalidadeMenu->descricao}}</a>
+                                            <ul class="dropdown-menu">
+                                                @foreach ($cursos->getCursosMenu($tipo->id, $modalidadeMenu->id) as $curso)
+                                                    <li><a class="dropdown-item" href="{{route('ver.curso', ['id' => $curso->id])}}">{{$curso->nome}}</a></li>
+                                                @endforeach                                                
+                                            </ul> 
+                                        @endforeach                                        
+                                    </ul>
+                                </li>                            
+                            @endforeach                            
+                        @endforeach
+                    </ul>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#">Biblioteca</a>
                 </li>
