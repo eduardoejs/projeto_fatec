@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Site\Publico;
 
-
 use App\Models\Acl\User;
 use App\Models\Cursos\Curso;
 use Illuminate\Http\Request;
@@ -14,7 +13,16 @@ use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
-{
+{   
+    private $tipos = null; 
+    private $cursos = null; 
+
+    public function __construct()
+    {
+        $this->tipos = TipoCurso::all();
+        $this->cursos = new Curso();
+    }
+
     public function index()
     {        
         $avisos = Aviso::where('data_exibicao','>=', date('Y-m-d'))->get();        
@@ -87,14 +95,16 @@ class SiteController extends Controller
 
     public function lerNoticia($id)
     {
+        $tipos = $this->tipos;
+        $cursos = $this->cursos;
         $noticia = Noticia::with('imagens', 'arquivos')->findOrFail($id);
-        return view('site.publico.noticias.ler_noticia', compact('noticia'));
+        return view('site.publico.noticias.ler_noticia', compact('tipos', 'cursos', 'noticia'));
     }
 
     public function verCurso($id)
-    {
-        $tipos = TipoCurso::all();
-        $cursos = new Curso();
+    {        
+        $tipos = $this->tipos;
+        $cursos = $this->cursos;
         //$curso = Curso::with('arquivos')->findOrFail($id);
         $curso = Curso::findOrFail($id);
         return view('site.publico.cursos.ver_curso', compact('curso', 'tipos', 'cursos'));

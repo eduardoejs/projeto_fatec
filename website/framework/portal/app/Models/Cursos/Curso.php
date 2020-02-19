@@ -48,6 +48,7 @@ class Curso extends Model
                               ->join('modalidades', 'modalidades.id', '=', 'cursos.modalidade_id')
                               ->select('tipo_cursos.id', 'tipo_cursos.descricao')
                               ->where('tipo_cursos.id', '=', $tipo->id)
+                              ->where('cursos.ativo', '=', 'S')
                               ->groupBy('tipo_cursos.id')                              
                               ->get();
     }
@@ -60,6 +61,7 @@ class Curso extends Model
                               ->join('modalidades', 'modalidades.id', '=', 'cursos.modalidade_id')
                               ->select('modalidades.id', 'modalidades.descricao')
                               ->where('tipo_cursos.id', '=', $tipo->id)
+                              ->where('cursos.ativo', '=', 'S')
                               ->groupBy('modalidades.id')                              
                               ->get();
     }
@@ -73,6 +75,7 @@ class Curso extends Model
                               ->select('cursos.id', 'cursos.nome')
                               ->where('tipo_cursos.id', '=', $tipo->id)
                               ->where('modalidades.id', '=', $modalidade->id)
+                              ->where('cursos.ativo', '=', 'S')
                               ->getQuery()
                               ->get();
     }

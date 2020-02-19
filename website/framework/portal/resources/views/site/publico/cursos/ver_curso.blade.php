@@ -1,10 +1,15 @@
-@extends('layouts.site.publico.app')
+@extends('layouts.site.publico.app', ['exibeMenu' => true])
 
 @section('conteudo')
     <div class="container">
         @if (isset($curso))
             <div class="mt-3 p-3 bg-light text-dark ">
-                <h1 class="text-dark">Curso Superior de Graduação em {{$curso->nome}}</h1>            
+
+                @if ($curso->tipoCurso->id == 2)
+                    <h1 class="text-dark">Curso de Pós-Graduação em {{$curso->nome}}</h1>
+                @else
+                    <h1 class="text-dark">Curso Superior de Graduação em {{$curso->nome}}</h1>            
+                @endif                
                 
                 <div class="mt-2">
                     <ul class="list-group">
@@ -59,15 +64,13 @@
 @section('css')
     @parent 
     <style>
-    #corpo p {
-        text-indent: 4em;
-    }   
+        #corpo p {
+            text-indent: 2em;
+        }   
     </style>
 @endsection
 
-@section('modais')         
-    
-        
+@section('modais')
 @endsection
 
 @section('js')

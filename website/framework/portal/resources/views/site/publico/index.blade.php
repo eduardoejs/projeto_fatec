@@ -1,4 +1,4 @@
-@extends('layouts.site.publico.app')
+@extends('layouts.site.publico.app', ['exibeMenu' => true])
 
 @section('conteudo')
     @include('includes.layout.site.publico.avisos') 
@@ -15,7 +15,8 @@
 @endsection
 
 @section('css')
-    @parent    
+    @parent
+    <link rel="stylesheet" href="{{ asset('site/css/navbar/nav.css') }}"> 
 @endsection
 
 @section('modais')         
@@ -51,5 +52,5 @@
         $(function(){
             $('[data-toggle="popover"]').popover()
         }); 
-    </script>    
+    </script>       
 @endsection

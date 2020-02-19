@@ -1,7 +1,11 @@
-@import 'menu.css';
+/*@import './navbar/nav.css';*/
 
 body{
     font-family: 'Ubuntu', 'Bree Serif', sans-serif;
+}
+
+body #corpo{
+    font-family: 'Ubuntu', 'Bree Serif', sans-serif;    
 }
 
 .text-font{
