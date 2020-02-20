@@ -35,15 +35,15 @@
         @endif
         <div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="periodos[]" value="M">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="periodos[]" @if (Str::contains($registro->periodo, 'M')) checked @endif value="M">
                 <label class="form-check-label" for="inlineCheckbox1">Manhã</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="periodos[]" value="T">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="periodos[]" @if (Str::contains($registro->periodo, 'T')) checked @endif value="T">
                 <label class="form-check-label" for="inlineCheckbox2">Tarde</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="periodos[]" value="N">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="periodos[]" @if (Str::contains($registro->periodo, 'N')) checked @endif value="N">
                 <label class="form-check-label" for="inlineCheckbox3">Noite</label>
             </div>
         </div>
@@ -61,7 +61,7 @@
         <label for="tipoCurso">Tipo de curso</label>
         <select name="tipoCurso" class="custom-select">
             @foreach ($tipos as $tipo)
-                <option {{ (old('tipoCurso') == $tipo->id ? 'selected' : '') }} value="{{$tipo->id}}">{{$tipo->descricao}}</option>
+                <option {{ (old('tipoCurso') == $tipo->id ? 'selected' : '') }} @if (isset($registro) && $registro->tipo_curso_id == $tipo->id) selected @endif value="{{$tipo->id}}">{{$tipo->descricao}}</option>
             @endforeach
         </select>            
     </div>
@@ -69,7 +69,7 @@
         <label for="modalidade">Modalidade de curso</label>
         <select name="modalidade" class="custom-select">
             @foreach ($modalidades as $modalidade)
-                <option {{ (old('modalidade') == $modalidade->id ? 'selected' : '') }} value="{{$modalidade->id}}">{{$modalidade->descricao}}</option>
+                <option {{ (old('modalidade') == $modalidade->id ? 'selected' : '') }} @if (isset($registro) && $registro->modalidade_id == $modalidade->id) selected @endif value="{{$modalidade->id}}">{{$modalidade->descricao}}</option>
             @endforeach
         </select>            
     </div>
@@ -77,13 +77,13 @@
         <label for="coodenador">Coordenador do curso</label>
         <select name="coordenador" class="custom-select">
             @foreach ($docentes as $docente)                        
-                <option {{ (old('coordenador') == $docente->id ? 'selected' : '') }} value="{{$docente->id}}">{{$docente->nome}}</option>
+                <option {{ (old('coordenador') == $docente->id ? 'selected' : '') }} @if (isset($registro) && $registro->docente_id == $docente->id) selected @endif value="{{$docente->id}}">{{$docente->nome}}</option>
             @endforeach
         </select>            
     </div>
     <div class="form-group col-md-4">
         <label for="email">E-Mail do coordenação</label>
-        <input type="email" name="email" value="{{ old('email') ?? ($registro->email ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="" required>
+        <input type="email" name="email" value="{{ old('email') ?? ($registro->email_coordenador ?? '') }}" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="" required>
         @if ($errors->has('email'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('email') }}</strong>

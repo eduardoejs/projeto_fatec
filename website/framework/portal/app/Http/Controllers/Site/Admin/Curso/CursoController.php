@@ -110,7 +110,7 @@ class CursoController extends Controller
             session()->flash('msg', 'Registro cadastrado com sucesso!');
             session()->flash('status', 'success');
         }
-        return redirect()->back();
+        return redirect()->route($this->route.'.index');
     }
 
     /**
@@ -163,7 +163,26 @@ class CursoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('edit-curso');
+
+        $registro = Curso::findOrFail($id); 
+        //dd($registro);       
+        $page = 'Alterar';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Alterar Curso';
+        $descricaoPagina = 'Edição de curso da unidade';
+        
+        $breadcrumb = [
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
+            (object)['url' => route($this->route.'.index'), 'title' => 'Cursos'],
+            (object)['url' => '', 'title' => $page],
+        ]; 
+        
+        $tipos = TipoCurso::all();
+        $modalidades = Modalidade::all();        
+        $docentes = User::join('docentes', 'users.id', '=', 'docentes.user_id')->orderBy('nome', 'ASC')->select('users.*')->get();        
+
+        return view('site.admin.'.$this->route.'.edit', compact('registro','tipos', 'modalidades', 'docentes', 'breadcrumb', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
     }
 
     /**
@@ -175,7 +194,35 @@ class CursoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('edit-curso');
+
+        if(!isset($request->periodos)) {
+            session()->flash('msg', 'Você deve informar pelo menos um dos períodos do curso');
+            session()->flash('status', 'error');
+            return redirect()->back()->withInput();
+        }
+        
+        $formValidate = ValidaFormCurso::validateForm($request)->validate();
+        
+        if($formValidate) {  
+            $curso = Curso::findOrFail($id);
+            $curso->update([
+                'nome' => $request->nome,
+                'duracao' => $request->duracao,
+                'conteudo' => $request->conteudo,
+                'periodo' => implode(',', $request->periodos),
+                'qtde_vagas' => $request->qtde_vagas,
+                'email_coordenador' => $request->email,
+                'ativo' => $request->ativo,
+                'tipo_curso_id' =>  $request->tipoCurso,
+                'modalidade_id' =>  $request->modalidade,
+                'docente_id' =>  $request->coordenador,
+            ]);
+
+            session()->flash('msg', 'Registro alterado com sucesso!');
+            session()->flash('status', 'success');
+        }
+        return redirect()->route($this->route.'.index');
     }
 
     /**

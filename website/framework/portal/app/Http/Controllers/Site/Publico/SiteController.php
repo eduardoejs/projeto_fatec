@@ -105,8 +105,9 @@ class SiteController extends Controller
     {        
         $tipos = $this->tipos;
         $cursos = $this->cursos;
-        //$curso = Curso::with('arquivos')->findOrFail($id);
-        $curso = Curso::findOrFail($id);
+        //$curso = Curso::with('arquivos', 'docentes')->findOrFail($id);
+        $curso = Curso::where('ativo', 'S')->findOrFail($id);
+        
         return view('site.publico.cursos.ver_curso', compact('curso', 'tipos', 'cursos'));
     }
 }

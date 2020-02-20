@@ -28,9 +28,32 @@
                         @if ($curso->modalidade->id == 2)
 
                         @else
+
+                        @php                                    
+                                    $arrayPeriodos = explode(',', $curso->periodo);
+                                    $str = '';
+                                    $periodos = '';
+                                    foreach ($arrayPeriodos as $key => $value) {
+                                        switch ($value) {
+                                            case 'M':
+                                                $str = 'Manhã';
+                                                break;
+                                            case 'T':
+                                                $str = 'Tarde';
+                                                break;
+                                            case 'N':
+                                                $str = 'Noite';
+                                                break;
+                                            default:
+                                                $str = '-';
+                                                break;
+                                        }
+                                        $periodos .= ' <span class="badge badge-primary badge-pill">'.$str.'</span>';
+                                    }
+                                @endphp
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Período do curso:
-                                <span class="badge badge-primary badge-pill">{{$curso->periodo}}</span>
+                                <div>{!!$periodos!!}</div>                                
                             </li>    
                         @endif
                         
@@ -49,9 +72,10 @@
                 </div>
             </div>
 
-            <div class="mt-2 p-3 bg-light text-dark ">
+            <div class="mt-2 p-3 bg-light text-primary">
+                
                 <h5>Coordenador do Curso: Prof. MSc. {{$curso->getCoordenador($curso->id)->first()->nome}}</h5>
-                <h6>E-Mail: {{$curso->email_coordenador}}</h6>
+                <h6><i class="fas fa-envelope"></i> {{$curso->email_coordenador}}</h6>
             </div>
 
             <div class="text-justify mt-3" id="corpo">

@@ -17,5 +17,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about', groups: [ 'about' ] }
 	];
 
-	config.removeButtons = 'Smiley,Styles,Font,NewPage,Preview,Print,Save,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Flash,Image,About';
+	config.removeButtons = 'FontSize,Smiley,Styles,Font,NewPage,Preview,Print,Save,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Flash,Image,About';
 };

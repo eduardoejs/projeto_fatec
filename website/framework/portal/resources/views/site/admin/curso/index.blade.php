@@ -107,8 +107,9 @@
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <div class="d-none dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-header">Opções:</div>                        
+                        {{--  --}}
                         <a href="{{ route($rotaTipo.'.create') }}" class="btn btn-outline-success btn-sm btn-icon-split dropdown-item">
                             <span class="icon text-white bg-success">
                                 <i class="fas fa-plus"></i>
@@ -127,7 +128,7 @@
                                 <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Descricao</th>
-                                <th scope="col">Ações</th>
+                                <th class="d-none" scope="col">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +137,7 @@
                                         <th scope="row">{{$tipo->id}}</th>
                                         <td>{{$tipo->descricao}}</td>                                        
                                         <td>
-                                            <div class="dropdown">
+                                            <div class="d-none dropdown">
                                                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa fa-wrench"></i>
                                                 </button>
@@ -166,7 +167,7 @@
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <div class="d-none dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-header">Opções:</div>                        
                         <a href="{{ route($rotaModalidade.'.create') }}" class="btn btn-outline-success btn-sm btn-icon-split dropdown-item">
                             <span class="icon text-white bg-success">
@@ -186,7 +187,7 @@
                                 <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Descricao</th>
-                                <th scope="col">Ações</th>
+                                <th class="d-none" scope="col">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -196,7 +197,7 @@
                                         <td>{{$modalidade->descricao}}</td>
                                         
                                         <td>
-                                            <div class="dropdown">
+                                            <div class="d-none dropdown">
                                                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa fa-wrench"></i>
                                                 </button>
