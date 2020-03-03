@@ -234,13 +234,21 @@ class CursoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, FileRepository $repositoryFile)
     {
         $this->authorize('delete-curso');
 
         $curso = Curso::findOrFail($id);
         try{
             if($curso) {
+                //remove os arquivos do diretorio
+                $repositoryFile->removeFiles('cursos', $curso);
+
+                //remove os arquivos no banco de dados associadas ao curso
+                foreach($curso->arquivos as $arquivo) {
+                    $arquivo->delete();
+                }
+                //remove o curso
                 $curso->delete();
                 session()->flash('msg', 'Registro excluído do banco de dados');
                 session()->flash('title', 'Sucesso');

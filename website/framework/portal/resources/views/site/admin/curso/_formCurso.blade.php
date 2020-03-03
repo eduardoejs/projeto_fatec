@@ -35,15 +35,15 @@
         @endif
         <div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="periodos[]" @if (Str::contains($registro->periodo, 'M')) checked @endif value="M">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="periodos[]" @if (isset($registro) && Str::contains($registro->periodo, 'M')) checked @endif value="M">
                 <label class="form-check-label" for="inlineCheckbox1">Manhã</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="periodos[]" @if (Str::contains($registro->periodo, 'T')) checked @endif value="T">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="periodos[]" @if (isset($registro) && Str::contains($registro->periodo, 'T')) checked @endif value="T">
                 <label class="form-check-label" for="inlineCheckbox2">Tarde</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="periodos[]" @if (Str::contains($registro->periodo, 'N')) checked @endif value="N">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="periodos[]" @if (isset($registro) && Str::contains($registro->periodo, 'N')) checked @endif value="N">
                 <label class="form-check-label" for="inlineCheckbox3">Noite</label>
             </div>
         </div>
