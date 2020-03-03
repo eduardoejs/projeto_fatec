@@ -76,7 +76,6 @@
                 @php
                     $genero = '';
                     $titulacao = '';
-
                     switch ($curso->getCoordenador($curso->id)->first()->sexo) {
                         case 'F':
                             $genero = 'Profª.';
@@ -97,10 +96,9 @@
                                     $titulacao = 'Bel.';
                                     break;
                             }
-                            break;
-                        
+                        break;                        
                         default:
-                        $genero = 'Prof.';
+                            $genero = 'Prof.';
                             switch ($curso->getCoordenador($curso->id)->first()->titulacao) {
                                 case 'D':
                                     $titulacao = 'Dr';
@@ -118,7 +116,7 @@
                                     $titulacao = 'Bel.';
                                     break;
                             }
-                            break;
+                        break;
                     }                     
                 @endphp
                 <h5>Coordenador do Curso: {{$genero}} {{$titulacao}} {{$curso->getCoordenador($curso->id)->first()->nome}}</h5>

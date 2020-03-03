@@ -94,6 +94,14 @@ class SiteController extends Controller
         return redirect()->route('admin');
     }    
 
+    public function allNoticia()
+    {        
+        $tipos = $this->tipos;
+        $cursos = $this->cursos;
+        $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->get();
+        return view('site.publico.noticias.noticias', compact('noticias', 'tipos', 'cursos'));
+    }
+
     public function lerNoticia($id)
     {
         $tipos = $this->tipos;

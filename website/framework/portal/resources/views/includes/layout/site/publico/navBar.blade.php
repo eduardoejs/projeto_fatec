@@ -65,7 +65,7 @@
           
         <li class="nav-item"><a class="nav-link" href="#">Biblioteca</a></li>
 
-        <li class="nav-item"><a class="nav-link" href="#">Notícias</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('todas.noticias') }}">Notícias</a></li>
 
         <li class="nav-item"><a class="nav-link" href="#">Eventos</a></li>
 

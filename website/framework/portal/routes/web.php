@@ -50,6 +50,7 @@ Route::namespace('Site\Publico')->group(function () {
     Route::get('/ativar/conta/{token}/{email}', 'SiteController@showFormAtivacao')->name('ativar.conta');
     Route::post('/validar/conta', 'SiteController@validarConta')->name('validar.conta');
     Route::get('/show/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
+    Route::get('/show/noticias', 'SiteController@allNoticia')->name('todas.noticias');
     Route::get('/show/curso/{id}', 'SiteController@verCurso')->name('ver.curso');
     Route::get('/noticia/{id}/download/{fileId}', 'SiteController@downloadFileNoticia')->name('site.noticia.download.file');
     Route::get('/curso/{id}/download/{fileId}', 'SiteController@downloadFileCurso')->name('site.curso.download.file');
