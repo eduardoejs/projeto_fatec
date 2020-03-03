@@ -9,6 +9,7 @@ use App\Models\Cursos\TipoCurso;
 use App\Models\Cursos\Modalidade;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Avisos\Aviso;
+use App\Repositories\FileRepository;
 use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 
@@ -97,7 +98,7 @@ class SiteController extends Controller
     {
         $tipos = $this->tipos;
         $cursos = $this->cursos;
-        $noticia = Noticia::with('imagens', 'arquivos')->findOrFail($id);
+        $noticia = Noticia::with('imagens', 'arquivos')->where('ativo', 'S')->findOrFail($id);
         return view('site.publico.noticias.ler_noticia', compact('tipos', 'cursos', 'noticia'));
     }
 
@@ -109,5 +110,11 @@ class SiteController extends Controller
         $curso = Curso::where('ativo', 'S')->findOrFail($id);
         
         return view('site.publico.cursos.ver_curso', compact('curso', 'tipos', 'cursos'));
+    }
+
+    public function downloadFileNoticia($id, $fileId, FileRepository $repository)
+    {        
+        $noticia = Noticia::findOrFail($id);
+        return $repository->download('noticias', $noticia, $noticia->arquivos()->where('arquivo_noticia.arquivo_id', $fileId)->first()->nome_arquivo);
     }
 }

@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('componentes.page_header', 'pageheader_component');
         Blade::component('componentes.busca', 'busca_component');
         Blade::component('componentes.card_menu', 'card_menu_component');
+        Blade::component('componentes.cardArquivosDownload', 'card_arquivos_component');
 
         User::observe(UserObserver::class);
     }
