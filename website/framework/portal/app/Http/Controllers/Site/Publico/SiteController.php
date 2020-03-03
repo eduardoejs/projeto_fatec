@@ -117,4 +117,10 @@ class SiteController extends Controller
         $noticia = Noticia::findOrFail($id);
         return $repository->download('noticias', $noticia, $noticia->arquivos()->where('arquivo_noticia.arquivo_id', $fileId)->first()->nome_arquivo);
     }
+
+    public function downloadFileCurso($id, $fileId, FileRepository $repository)
+    {        
+        $curso = Curso::findOrFail($id);
+        return $repository->download('cursos', $curso, $curso->arquivos()->where('arquivo_curso.arquivo_id', $fileId)->first()->nome_arquivo);
+    }
 }

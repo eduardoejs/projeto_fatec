@@ -219,21 +219,9 @@
                 </div>
               </div>
             </div>
-
-                        
-            
-          
-          
-          
-          
-          
-          
           
             </div>
-          
 
         @endbodypage_component
-                
     @endpage_component
-      
 @endsection

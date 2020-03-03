@@ -33,6 +33,7 @@ class CreateArquivosTable extends Migration
         Schema::dropIfExists('arquivo_vestibular');
         Schema::dropIfExists('arquivo_pagina');
         Schema::dropIfExists('arquivo_noticia');
+        Schema::dropIfExists('arquivo_curso');
         Schema::dropIfExists('arquivos');
     }
 }

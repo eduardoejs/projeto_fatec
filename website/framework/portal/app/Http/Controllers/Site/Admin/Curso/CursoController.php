@@ -10,7 +10,10 @@ use App\Classes\ValidaFormCurso;
 use App\Models\Cursos\TipoCurso;
 use App\Models\Cursos\Modalidade;
 use App\Http\Controllers\Controller;
+use App\Repositories\FileRepository;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Institucional\TiposUsuarios\Docente;
+use App\Models\Sistema\Gerenciamento\Arquivos\Arquivo;
 
 class CursoController extends Controller
 {
@@ -249,5 +252,72 @@ class CursoController extends Controller
             session()->flash('status', 'error');
         }
         return redirect()->route($this->route.'.index');
+    }
+
+    public function uploadFileForm($id)
+    {   
+        $curso = Curso::findOrFail($id);
+        $page = 'Anexar Arquivos';
+        $rotaNome = $this->route;
+        $tituloPagina = 'Envio de arquivos';
+        $descricaoPagina = 'Uploads de arquivos do curso: <strong>' . $curso->nome . '</strong>';
+
+        $breadcrumb = [
+            (object)['url' => route('admin'), 'title' => 'Dashboard'],                     
+            (object)['url' => route($this->route.'.index'), 'title' => 'Curso'],
+            (object)['url' => '', 'title' => $page],
+        ];          
+        
+        $colunas = ['id' => 'ID', 'titulo' =>'Arquivo', 'created_at' => 'Enviado em', 'tamanho_arquivo' => 'Tamanho', 'tipo' => 'Tipo'];        
+        $list = Curso::with('arquivos')->findOrFail($id);         
+        
+        return view('site.admin.'.$this->route.'.upload.file', compact('curso', 'page', 'tituloPagina', 'descricaoPagina', 'rotaNome', 'breadcrumb', 'colunas', 'list'));
+    }
+
+    public function uploadFile(Request $request, FileRepository $repository)
+    {
+        $file = $request->file('arquivo');        
+        $rules = [
+            'arquivo' => 'required|mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,rar,zip|max:2048'
+        ];
+
+        if($request->hasFile('arquivo')) {            
+            $validator = Validator::make($request->all(), $rules);
+            if($validator->fails()) {
+                return redirect()->back()->withErrors($validator->messages())->withInput();
+            }
+          
+            //transaction            
+            $filename = time().random_int(100, 999).'.'.$file->getClientOriginalExtension();
+            $curso = Curso::findOrFail($request->cursoId);
+            $arquivo = Arquivo::firstOrCreate(['titulo' => $request->titulo_arquivo, 
+                                                'descricao' => $request->descricao_arquivo,
+                                                'nome_arquivo' => $filename,
+                                                'tamanho_arquivo' => $file->getSize()]);
+
+            $fileRepository = $repository->moveFile($file, $curso, 'cursos', $filename);
+            
+            // 3 - Associar o arquivo criado com a curso
+            $arquivo->cursos()->attach($curso);
+            session()->flash('msg', 'Arquivo enviado com sucesso!');
+            session()->flash('status', 'success');
+            
+        } else {
+            session()->flash('msg', 'Você deve selecionar um arquivo!');
+            session()->flash('status', 'error');
+        }
+        return redirect()->back();
+    }
+    
+    public function destroySingleFile($id, $fileId, FileRepository $repository)
+    {      
+        $curso = Curso::findOrFail($id);
+        $file = Arquivo::with('cursos')->findOrFail($fileId);         
+        $file->cursos()->detach($curso);
+        $file->delete();
+        $repository->removeFiles('cursos', $curso, $file->nome_arquivo);
+        session()->flash('msg', 'Arquivo removido com sucesso!');
+        session()->flash('status', 'success');
+        return redirect()->back();
     }
 }

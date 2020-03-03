@@ -10,7 +10,7 @@
             <div class="text-justify" id="corpo">
                 {!! $noticia->conteudo !!}
             </div>
-            @card_arquivos_component(['model' => $noticia])
+            @card_arquivos_component(['model' => $noticia, 'url' => 'noticia'])
             @endcard_arquivos_component
         @endif
     </div>    

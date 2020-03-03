@@ -15,15 +15,15 @@
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Tipo do curso:
-                            <span class="badge badge-primary badge-pill">{{$curso->tipoCurso->descricao}}</span>
+                            <span class="badge badge-secondary badge-pill">{{$curso->tipoCurso->descricao}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Modalidade:
-                            <span class="badge badge-primary badge-pill">{{$curso->modalidade->descricao}}</span>
+                            <span class="badge badge-secondary badge-pill">{{$curso->modalidade->descricao}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             Duração do curso:
-                            <span class="badge badge-primary badge-pill">{{$curso->duracao}} anos</span>
+                            <span class="badge badge-secondary badge-pill">{{$curso->duracao}} anos</span>
                         </li>
                         @if ($curso->modalidade->id == 2)
 
@@ -48,7 +48,7 @@
                                                 $str = '-';
                                                 break;
                                         }
-                                        $periodos .= ' <span class="badge badge-primary badge-pill">'.$str.'</span>';
+                                        $periodos .= ' <span class="badge badge-secondary badge-pill">'.$str.'</span>';
                                     }
                                 @endphp
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -60,26 +60,75 @@
                         @if ($curso->modalidade->id == 2)
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Quantidade de vagas:
-                                <span class="badge badge-primary badge-pill">{{$curso->qtde_vagas}} vagas</span>
+                                <span class="badge badge-secondary badge-pill">{{$curso->qtde_vagas}} vagas</span>
                             </li>
                         @else
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Quantidade de vagas por período:
-                                <span class="badge badge-primary badge-pill">{{$curso->qtde_vagas}} vagas</span>
+                                <span class="badge badge-secondary badge-pill">{{$curso->qtde_vagas}} vagas</span>
                             </li>
                         @endif
                     </ul>
                 </div>
             </div>
 
-            <div class="mt-2 p-3 bg-light text-primary">
-                
-                <h5>Coordenador do Curso: Prof. MSc. {{$curso->getCoordenador($curso->id)->first()->nome}}</h5>
+            <div class="mt-2 p-3 bg-dark text-white">
+                @php
+                    $genero = '';
+                    $titulacao = '';
+
+                    switch ($curso->getCoordenador($curso->id)->first()->sexo) {
+                        case 'F':
+                            $genero = 'Profª.';
+                            switch ($curso->getCoordenador($curso->id)->first()->titulacao) {
+                                case 'D':
+                                    $titulacao = 'Drª.';
+                                    break;
+                                case 'M':
+                                    $titulacao = 'MSc.';
+                                    break;
+                                case 'PG':
+                                    $titulacao = 'Esp.';
+                                    break;
+                                case 'L':
+                                    $titulacao = 'Lda.';
+                                    break;
+                                default:
+                                    $titulacao = 'Bel.';
+                                    break;
+                            }
+                            break;
+                        
+                        default:
+                        $genero = 'Prof.';
+                            switch ($curso->getCoordenador($curso->id)->first()->titulacao) {
+                                case 'D':
+                                    $titulacao = 'Dr';
+                                    break;
+                                case 'M':
+                                    $titulacao = 'MSc.';
+                                    break;
+                                case 'PG':
+                                    $titulacao = 'Esp.';
+                                    break;
+                                case 'L':
+                                    $titulacao = 'Ldo.';
+                                    break;
+                                default:
+                                    $titulacao = 'Bel.';
+                                    break;
+                            }
+                            break;
+                    }                     
+                @endphp
+                <h5>Coordenador do Curso: {{$genero}} {{$titulacao}} {{$curso->getCoordenador($curso->id)->first()->nome}}</h5>
                 <h6><i class="fas fa-envelope"></i> {{$curso->email_coordenador}}</h6>
             </div>
 
             <div class="text-justify mt-3" id="corpo">
                 {!! $curso->conteudo !!}
+                @card_arquivos_component(['model' => $curso, 'url' => 'curso'])
+                @endcard_arquivos_component
             </div>
         @endif
     </div>    

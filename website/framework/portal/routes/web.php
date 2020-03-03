@@ -49,14 +49,16 @@ Route::namespace('Site\Publico')->group(function () {
     Route::get('/', 'SiteController@index')->name('site');
     Route::get('/ativar/conta/{token}/{email}', 'SiteController@showFormAtivacao')->name('ativar.conta');
     Route::post('/validar/conta', 'SiteController@validarConta')->name('validar.conta');
-    Route::get('/site/view/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
-    Route::get('/view/curso/{id}', 'SiteController@verCurso')->name('ver.curso');
+    Route::get('/show/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
+    Route::get('/show/curso/{id}', 'SiteController@verCurso')->name('ver.curso');
     Route::get('/noticia/{id}/download/{fileId}', 'SiteController@downloadFileNoticia')->name('site.noticia.download.file');
+    Route::get('/curso/{id}/download/{fileId}', 'SiteController@downloadFileCurso')->name('site.curso.download.file');
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function(){
     Route::get('/noticia/{id}/download-image/{imageId}', 'NoticiaController@downloadImage')->name('noticia.download.image');
     Route::get('/noticia/{id}/download-file/{fileId}', 'NoticiaController@downloadFile')->name('noticia.download.file');
+    Route::get('/curso/{id}/download-file/{fileId}', 'Curso\CursoController@downloadFile')->name('curso.download.file');
 });
 
 Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
@@ -72,7 +74,9 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');    
     Route::resource('/noticia', 'NoticiaController');
     Route::resource('/curso', 'Curso\CursoController');
-    Route::get('/curso/{id}/upload/file', 'CursoController@uploadFileForm')->name('curso.upload.file');    
+    Route::get('/curso/{id}/upload/file', 'Curso\CursoController@uploadFileForm')->name('curso.upload.file');    
+    Route::post('/curso/upload/file', 'Curso\CursoController@uploadFile')->name('curso.store.upload.file');
+    Route::delete('/curso/{id}/destroy/file/{FileId}', 'Curso\CursoController@destroySingleFile')->name('curso.destroy.file');
     Route::resource('/curso/tipocurso', 'Curso\TipoCursoController');
     Route::resource('curso/modalidade', 'Curso\ModalidadeController');
     

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Institucional\TiposUsuarios\Aluno;
 use App\Models\Institucional\TiposUsuarios\Docente;
+use App\Models\Sistema\Gerenciamento\Arquivos\Arquivo;
 
 class Curso extends Model
 {
@@ -34,7 +35,7 @@ class Curso extends Model
     {
         return $result = User::join('docentes', 'docentes.user_id', '=', 'users.id')
                                ->join('cursos', 'cursos.docente_id', '=', 'docentes.user_id')
-                               ->select('users.nome')
+                               ->select('users.nome', 'users.sexo', 'docentes.titulacao')
                                ->where('cursos.id', '=', $id)
                                ->getQuery()
                                ->get();
@@ -93,5 +94,10 @@ class Curso extends Model
     public function alunos() 
     {
         return $this->hasMany(Aluno::class);
+    }
+
+    public function arquivos()
+    {
+        return $this->belongsToMany(Arquivo::class, 'arquivo_curso', 'curso_id', 'arquivo_id')->withTimestamps();
     }
 }
