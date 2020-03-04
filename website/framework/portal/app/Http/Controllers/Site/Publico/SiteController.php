@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Validator;
 class SiteController extends Controller
 {   
     private $tipos = null; 
-    private $cursos = null; 
+    private $cursos = null;
+    private $paginate = 30; 
 
     public function __construct()
     {
@@ -98,7 +99,7 @@ class SiteController extends Controller
     {        
         $tipos = $this->tipos;
         $cursos = $this->cursos;
-        $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->get();
+        $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->paginate($this->paginate);
         return view('site.publico.noticias.noticias', compact('noticias', 'tipos', 'cursos'));
     }
 
@@ -106,7 +107,7 @@ class SiteController extends Controller
     {
         $tipos = $this->tipos;
         $cursos = $this->cursos;
-        $noticia = Noticia::with('imagens', 'arquivos')->where('ativo', 'S')->findOrFail($id);
+        $noticia = Noticia::with('imagens', 'arquivos')->where('ativo', 'S')->findOrFail($id);        
         return view('site.publico.noticias.ler_noticia', compact('tipos', 'cursos', 'noticia'));
     }
 
