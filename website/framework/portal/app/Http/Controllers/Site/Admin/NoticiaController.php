@@ -25,7 +25,7 @@ class NoticiaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('read-noticias');
+        $this->authorize('read-noticia');
         $search = "";        
         if(isset($request->search)) 
         {   
@@ -58,7 +58,7 @@ class NoticiaController extends Controller
      */
     public function create()
     {
-        $this->authorize('create-noticias');
+        $this->authorize('create-noticia');
 
         $page = 'Adicionar';
         $rotaNome = $this->route;
@@ -82,7 +82,7 @@ class NoticiaController extends Controller
      */
     public function store(Request $request)
     {     
-        $this->authorize('create-noticias'); 
+        $this->authorize('create-noticia'); 
                 
         $validacao = \Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
@@ -138,6 +138,10 @@ class NoticiaController extends Controller
                     (object)['url' => '', 'title' => $page],
                 ];
             }
+
+            if($delete) {
+                $this->authorize('delete', $registro);
+            }
             return view('site.admin.'.$this->route.'.show', compact('registro', 'delete', 'breadcrumb', 'page', 'delete', 'tituloPagina', 'descricaoPagina', 'rotaNome'));
         }
         return redirect()->back();
@@ -151,8 +155,8 @@ class NoticiaController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('edit-noticias');
         $registro = Noticia::findOrFail($id);
+        $this->authorize('update', $registro); 
                 
         $page = 'Alterar';
         $rotaNome = $this->route;
@@ -177,7 +181,9 @@ class NoticiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('edit-noticias');
+        $noticia = Noticia::findOrFail($id);
+        $this->authorize('update', $noticia); 
+        //$this->authorize('edit-noticias');
 
         $validacao = \Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
@@ -185,7 +191,7 @@ class NoticiaController extends Controller
         ])->validate();
 
         if($validacao) {
-            $noticia = Noticia::findOrFail($id);            
+                        
             if(isset($request->data_exibicao)) {
                 $date = date('Y-m-d', strtotime(str_replace("/", "-", $request->data_exibicao)));
             }        
@@ -204,10 +210,9 @@ class NoticiaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, ImageRepository $repositoryImage, FileRepository $repositoryFile)
-    {
-        $this->authorize('delete-noticia');
-        
+    {        
         $noticia = Noticia::findOrFail($id);
+        $this->authorize('delete', $noticia);
 
         try {
             if($noticia) {
@@ -245,6 +250,8 @@ class NoticiaController extends Controller
     public function uploadFileForm($id)
     {   
         $noticia = Noticia::find($id);
+        $this->authorize('uploads', $noticia);
+
         $page = 'Anexar Arquivos';
         $rotaNome = $this->route;
         $tituloPagina = 'Envio de arquivos';
@@ -265,6 +272,8 @@ class NoticiaController extends Controller
     public function uploadImageForm($id)
     {  
         $noticia = Noticia::findOrFail($id);
+        $this->authorize('uploads', $noticia);
+
         $page = 'Anexar Imagens';
         $rotaNome = $this->route;
         $tituloPagina = 'Envio de imagens';
@@ -367,6 +376,8 @@ class NoticiaController extends Controller
     public function destroySingleFile($id, $fileId, FileRepository $repository)
     {      
         $noticia = Noticia::findOrFail($id);
+        $this->authorize('delete', $noticia);
+
         $file = Arquivo::with('noticias')->findOrFail($fileId);         
         $file->noticias()->detach($noticia);
         $file->delete();
@@ -379,6 +390,8 @@ class NoticiaController extends Controller
     public function destroySingleImage($id, $imagemId, ImageRepository $repository)
     {      
         $noticia = Noticia::findOrFail($id);
+        $this->authorize('delete', $noticia);
+
         $imagem = Imagem::with('noticias')->findOrFail($imagemId);         
         $imagem->noticias()->detach($noticia);
         $imagem->delete();

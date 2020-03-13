@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Acl\Permissao;
+use App\Policies\NoticiaPolicy;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
+        Noticia::class => NoticiaPolicy::class,
     ];
 
     /**
@@ -27,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        //Se usuario for ADMINISTRADOR é liberado antes 
         Gate::before(function($user){
             if($user->isAdmin())
                 return true;
