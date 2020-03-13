@@ -40,6 +40,7 @@
             @else                
                 <p class="card-text">Dados da notícia:</p>
                 <p>Título: {{ $registro->titulo }}</p>                
+                <p>{!! $registro->conteudo !!}</p>
             @endif            
         @endbodypage_component
     @endpage_component    

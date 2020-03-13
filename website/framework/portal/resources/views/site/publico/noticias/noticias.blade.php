@@ -15,7 +15,7 @@
                     @if (isset($noticia->imagens()->where('ordem', 1)->first()->nome_arquivo))
                         <img src="{{ url('storage/imagens/noticias/'.$noticia->id.'/thumbnail/medium/'. $noticia->imagens()->where('ordem',1)->first()->nome_arquivo) }}" alt="news" class="card-img-top img-fluid img-thumbnail">
                     @else
-                        <img src="{{ url('storage/imagens/default/no_image.jpeg') }}" alt="news" class="card-img-top img-fluid img-thumbnail">        
+                        <img src="{{ url('storage/imagens/default/no_image_medium.png') }}" alt="news" class="card-img-top img-fluid img-thumbnail">        
                     @endif
                     </div>
                     <div class="col-md-8">

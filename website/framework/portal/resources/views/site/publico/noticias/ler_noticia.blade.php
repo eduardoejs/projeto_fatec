@@ -2,10 +2,15 @@
 
 @section('conteudo')
     <div class="container">
-        @if (isset($noticia))                        
-            <img class="float-right ml-2 img-thumbnail" src="{{ url('storage/imagens/noticias/'.$noticia->id.'/thumbnail/medium/'. $noticia->imagens()->where('ordem',1)->first()->nome_arquivo) }}" alt="news">
-                <h1>{{$noticia->titulo}}</h1>
-                <small class="text-muted">Publicado em: {{ \Carbon\Carbon::parse($noticia->created_at)->format('d/m/Y H:i') }}</small>
+        @if (isset($noticia))            
+            @if (isset($noticia->imagens()->where('ordem',1)->first()->nome_arquivo))
+                <img class="float-right ml-2 img-thumbnail" src="{{ url('storage/imagens/noticias/'.$noticia->id.'/thumbnail/medium/'. $noticia->imagens()->where('ordem',1)->first()->nome_arquivo) }}" alt="news">    
+            @else
+                <img class="float-right ml-2 img-thumbnail" src="{{ url('storage/imagens/default/no_image_medium.png') }}" alt="news">    
+            @endif 
+            
+            <h1>{{$noticia->titulo}}</h1>
+            <small class="text-muted">Publicado em: {{ \Carbon\Carbon::parse($noticia->created_at)->format('d/m/Y H:i') }}</small>
             <div class="text-justify mt-3" id="corpo">                    
                 {!! $noticia->conteudo !!}
             </div>
