@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Acl\User;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,5 +43,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('componentes.cardArquivosDownload', 'card_arquivos_component');
 
         User::observe(UserObserver::class);
+
+        Route::resourceVerbs([
+            'create' => 'cadastrar',
+            'edit' => 'alterar',
+        ]);
     }
 }

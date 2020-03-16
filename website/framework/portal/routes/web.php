@@ -52,13 +52,15 @@ Route::namespace('Site\Publico')->group(function () {
     Route::get('/show/noticia/{id}', 'SiteController@lerNoticia')->name('ler.noticia');
     Route::get('/show/noticias', 'SiteController@allNoticia')->name('todas.noticias');
     Route::get('/show/curso/{id}', 'SiteController@verCurso')->name('ver.curso');
-    Route::get('/noticia/{id}/download/{fileId}', 'SiteController@downloadFileNoticia')->name('site.noticia.download.file');
+    Route::get('/noticias/{id}/download/{fileId}', 'SiteController@downloadFileNoticia')->name('site.noticia.download.file');
     Route::get('/curso/{id}/download/{fileId}', 'SiteController@downloadFileCurso')->name('site.curso.download.file');
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function(){
-    Route::get('/noticia/{id}/download-image/{imageId}', 'NoticiaController@downloadImage')->name('noticia.download.image');
-    Route::get('/noticia/{id}/download-file/{fileId}', 'NoticiaController@downloadFile')->name('noticia.download.file');
+    //Route::get('/noticia/{id}/download-image/{imageId}', 'NoticiaController@downloadImage')->name('noticia.download.image');
+    //Route::get('/noticia/{id}/download-file/{fileId}', 'NoticiaController@downloadFile')->name('noticia.download.file');
+    
+    Route::get('/noticias/{news}/download/{typeDownload}/{fileId}', 'NoticiaController@downloadFile')->name('news.download.file');
     Route::get('/curso/{id}/download-file/{fileId}', 'Curso\CursoController@downloadFile')->name('curso.download.file');
 });
 
@@ -66,18 +68,25 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');    
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');    
-    Route::get('/noticia/{id}/upload/image', 'NoticiaController@uploadImageForm')->name('noticia.upload.image');
-    Route::post('/noticia/upload/image', 'NoticiaController@uploadImage')->name('noticia.store.upload.image');
-    Route::post('/noticia/upload/file', 'NoticiaController@uploadFile')->name('noticia.store.upload.file');
-    Route::delete('/noticia/{id}/destroy/image/{imageId}', 'NoticiaController@destroySingleImage')->name('noticia.destroy.image');
-    Route::delete('/noticia/{id}/destroy/file/{FileId}', 'NoticiaController@destroySingleFile')->name('noticia.destroy.file');
-    Route::post('/noticia/{id}/capa/image/{imageId}', 'NoticiaController@setCapa')->name('noticia.image.capa');
-    Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');    
-    Route::resource('/noticia', 'NoticiaController');
-    Route::resource('/curso', 'Curso\CursoController');
-    Route::get('/curso/{id}/upload/file', 'Curso\CursoController@uploadFileForm')->name('curso.upload.file');    
-    Route::post('/curso/upload/file', 'Curso\CursoController@uploadFile')->name('curso.store.upload.file');
-    Route::delete('/curso/{id}/destroy/file/{FileId}', 'Curso\CursoController@destroySingleFile')->name('curso.destroy.file');
+    
+    // Route::get('/noticia/{id}/upload/image', 'NoticiaController@uploadImageForm')->name('noticia.upload.image');
+    // Route::post('/noticia/upload/image', 'NoticiaController@uploadImage')->name('noticia.store.upload.image');
+    // Route::post('/noticia/upload/file', 'NoticiaController@uploadFile')->name('noticia.store.upload.file');
+    // Route::delete('/noticia/{id}/destroy/image/{imageId}', 'NoticiaController@destroySingleImage')->name('noticia.destroy.image');
+    // Route::delete('/noticia/{id}/destroy/file/{FileId}', 'NoticiaController@destroySingleFile')->name('noticia.destroy.file');
+    // Route::post('/noticia/{id}/capa/image/{imageId}', 'NoticiaController@setCapa')->name('noticia.image.capa');
+    // Route::get('/noticia/{id}/upload/file', 'NoticiaController@uploadFileForm')->name('noticia.upload.file');    
+    // Route::resource('/noticia', 'NoticiaController');
+    Route::get('noticias/{news}/upload/{typeUpload}', 'NoticiaController@uploadForm')->name('news.uploads');
+    Route::post('noticias/upload/{typeUpload}/store', 'NoticiaController@uploadStore')->name('news.uploads.store');
+    Route::post('noticias/{news}/capa/{imageId}', 'NoticiaController@setCapa')->name('news.setcapa');
+    Route::delete('noticias/{news}/delete/{typeUpload}/{fileId}', 'NoticiaController@deleteFile')->name('news.delete.file');
+    Route::resource('noticias', 'NoticiaController')->names('news')->parameters(['noticias' => 'news']);
+    
+    Route::get('curso/{id}/upload/file', 'Curso\CursoController@uploadFileForm')->name('curso.upload.file');    
+    Route::post('curso/upload/file', 'Curso\CursoController@uploadFile')->name('curso.store.upload.file');
+    Route::delete('curso/{id}/destroy/file/{FileId}', 'Curso\CursoController@destroySingleFile')->name('curso.destroy.file');
+    Route::resource('curso', 'Curso\CursoController');
     Route::resource('/curso/tipocurso', 'Curso\TipoCursoController');
     Route::resource('curso/modalidade', 'Curso\ModalidadeController');
     
@@ -86,9 +95,8 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
         Route::resource('/perfil', 'PerfilController');    
         Route::resource('/permissao', 'PermissaoController');    
         Route::resource('/user', 'UserController');                    
-    });    
+    }); 
 });
-
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

@@ -64,7 +64,7 @@
         </li>
         @endif
                
-        @if(auth()->user()->can('read-noticia') || auth()->user()->can('read-pagina') || auth()->user()->can('read-curso')) 
+        @if(auth()->user()->can('read-news') || auth()->user()->can('read-pagina') || auth()->user()->can('read-curso')) 
         <!-- Divider -->
         <hr class="sidebar-divider">
         <!-- Heading -->        
@@ -78,7 +78,7 @@
             $show = '';
 
             //expandiu o menu
-            if(Request::segment(1) == 'admin' && (Request::segment(2) == 'noticia' || Request::segment(2) == 'curso' )) {
+            if(Request::segment(1) == 'admin' && (Request::segment(2) == 'noticias' || Request::segment(2) == 'curso' )) {
               $collapsed = '';
               $show = 'show';
               $active = 'active';
@@ -98,8 +98,8 @@
               @can('read-curso')
                 <a class="collapse-item {{ Request::segment(2) == 'curso' ? 'active' : '' }}" href="{{ route('curso.index') }}"><i class="fas fa-graduation-cap"></i> Cursos</a>  
               @endcan
-              @can('read-noticia')
-                <a class="collapse-item {{ Request::segment(2) == 'noticia' ? 'active' : '' }}" href="{{ route('noticia.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
+              @can('read-news')
+                <a class="collapse-item {{ Request::segment(2) == 'noticias' ? 'active' : '' }}" href="{{ route('news.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
               @endcan              
               @can('read-pagina')
                 <a class="collapse-item {{ Request::segment(2) == 'pagina' ? 'active' : '' }}" href="#"><i class="fas fa-chalkboard"></i> Páginas</a>  

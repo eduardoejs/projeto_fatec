@@ -48,8 +48,8 @@
                                 @endcan                                
                                 @can('uploads', $value)                                    
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.upload.image',[$value->id]) }}"><i class="fa fa-images"></i> Anexar Imagens</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.upload.file',[$value->id]) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'image']) }}"><i class="fa fa-images"></i> Anexar Imagens</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'file']) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
                                 @endcan
                                 @else
                                 <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
