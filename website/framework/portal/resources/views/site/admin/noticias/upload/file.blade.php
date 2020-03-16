@@ -43,7 +43,7 @@
                                     <td class="align-middle">{{ File::extension($arquivo->nome_arquivo) }}</td>
                                     
                                     <td class="align-middle">
-                                        <div class="dropdown  align-middle">
+                                        <div class="dropdown align-middle">
                                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-wrench"></i>
                                             </button>

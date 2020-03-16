@@ -59,8 +59,8 @@
                                             </button>
                                         @endform_component
                                     </td>
-                                    <td class="text-center align-middle">
-                                        <div class="dropdown text-center align-middle">
+                                    <td class="align-middle">
+                                        <div class="dropdown align-middle">
                                             <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-wrench"></i>
                                             </button>
