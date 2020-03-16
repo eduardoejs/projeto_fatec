@@ -68,24 +68,26 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
     Route::get('/', 'AdminController@index')->name('admin');
     Route::get('/acl', 'AdminController@indexACL')->name('admin.acl');    
     Route::get('/user/profile', 'ACL\UserController@profile')->name('user.profile');    
-        
-    Route::get('noticias/{news}/upload/{typeUpload}', 'NoticiaController@uploadForm')->name('news.uploads');
-    Route::post('noticias/upload/{typeUpload}/store', 'NoticiaController@uploadStore')->name('news.uploads.store');
-    Route::post('noticias/{news}/capa/{imageId}', 'NoticiaController@setCapa')->name('news.setcapa');
-    Route::delete('noticias/{news}/delete/{typeUpload}/{fileId}', 'NoticiaController@deleteFile')->name('news.delete.file');
-    Route::resource('noticias', 'NoticiaController')->names('news')->parameters(['noticias' => 'news']);
     
-    Route::get('curso/{id}/upload/file', 'Curso\CursoController@uploadFileForm')->name('curso.upload.file');    
-    Route::post('curso/upload/file', 'Curso\CursoController@uploadFile')->name('curso.store.upload.file');
-    Route::delete('curso/{id}/destroy/file/{FileId}', 'Curso\CursoController@destroySingleFile')->name('curso.destroy.file');
-    Route::resource('curso', 'Curso\CursoController');
-
     Route::resource('/curso/tipocurso', 'Curso\TipoCursoController');
     Route::resource('curso/modalidade', 'Curso\ModalidadeController');
-
-    Route::resource('paginas', 'PaginaController');
     
-    Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function(){
+    Route::prefix('sistema')->namespace('Sistema')->middleware('auth', 'revalidate')->group(function() {
+        Route::get('curso/{id}/upload/file', 'Curso\CursoController@uploadFileForm')->name('curso.upload.file');    
+        Route::post('curso/upload/file', 'Curso\CursoController@uploadFile')->name('curso.store.upload.file');
+        Route::delete('curso/{id}/destroy/file/{FileId}', 'Curso\CursoController@destroySingleFile')->name('curso.destroy.file');
+        Route::resource('curso', 'Curso\CursoController');
+
+        Route::get('noticias/{news}/upload/{typeUpload}', 'Noticia\NoticiaController@uploadForm')->name('news.uploads');
+        Route::post('noticias/upload/{typeUpload}/store', 'Noticia\NoticiaController@uploadStore')->name('news.uploads.store');
+        Route::post('noticias/{news}/capa/{imageId}', 'Noticia\NoticiaController@setCapa')->name('news.setcapa');
+        Route::delete('noticias/{news}/delete/{typeUpload}/{fileId}', 'Noticia\NoticiaController@deleteFile')->name('news.delete.file');
+        Route::resource('noticias', 'Noticia\NoticiaController')->names('news')->parameters(['noticias' => 'news']);
+
+        Route::resource('paginas', 'Pagina\PaginaController');
+    });
+    
+    Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function() {
         Route::get('user/send-email', 'UserController@sendEMail');
         Route::resource('perfil', 'PerfilController');    
         Route::resource('permissao', 'PermissaoController');    

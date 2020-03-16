@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Site\Admin\Curso;
+namespace App\Http\Controllers\Site\Admin\Sistema\Curso;
 
 
 use App\Models\Acl\User;
