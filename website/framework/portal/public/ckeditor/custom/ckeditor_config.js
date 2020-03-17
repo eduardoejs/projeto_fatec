@@ -18,4 +18,5 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	config.removeButtons = 'FontSize,Smiley,Styles,Font,NewPage,Preview,Print,Save,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Language,Flash,Image,About';
+	config.allowedContent = true; //habilita resgatar tags salva no DB
 };

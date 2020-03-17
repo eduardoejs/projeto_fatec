@@ -15,8 +15,7 @@
 @endsection
 
 @section('css')
-    @parent
-    <link rel="stylesheet" href="{{ asset('site/css/navbar/nav.css') }}"> 
+    @parent 
 @endsection
 
 @section('modais')         
@@ -51,6 +50,6 @@
         });
         $(function(){
             $('[data-toggle="popover"]').popover()
-        }); 
+        });
     </script>       
 @endsection

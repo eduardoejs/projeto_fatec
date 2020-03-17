@@ -72,8 +72,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="menuPublicacoes" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Publicações</a>                  
           <ul class="dropdown-menu" aria-labelledby="menuPublicacoes">
-            <li class="dropdown-item"><a href="#">Revista Alimentus</a></li>
-            <li class="dropdown-item"><a href="#">Tecnólogos em Foco</a></li>
+            <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'revista-alimentus']) }}">Revista Alimentus</a></li>
+            <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'tecnologos-em-foco']) }}">Tecnólogos em Foco</a></li>
           </ul>
         </li>
 

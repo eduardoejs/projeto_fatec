@@ -15,7 +15,7 @@ class PaginaController extends Controller
     private $pathBlade = 'paginas';
     private $route = 'paginas';
     private $pagination = 30;
-    private $search = ['titulo'];
+    private $search = ['parametro_rota'];
     /**
      * Display a listing of the resource.
      *
@@ -141,7 +141,7 @@ class PaginaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Pagina $pagina)
-    {
+    {        
         $this->authorize('update', $pagina);                 
         $page = 'Alterar';
         $routeName = $this->route;

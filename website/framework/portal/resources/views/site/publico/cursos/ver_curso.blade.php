@@ -136,7 +136,7 @@
     @parent 
     <style>
         #corpo p {
-            text-indent: 2em;
+            /*text-indent: 2em;*/
         }   
     </style>
 @endsection

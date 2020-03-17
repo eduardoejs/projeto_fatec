@@ -70,7 +70,7 @@
                 @endbusca_component            
             @endsection
             
-            @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome])
+            @table_component(['colunas' => $colunas, 'list' => $list, 'rotaNome' => $rotaNome, 'page' => $page])
             @endtable_component
 
             {{ $list->appends(request()->query())->links() }}

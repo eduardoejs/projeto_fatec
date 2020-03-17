@@ -6,7 +6,16 @@
             <div class="text-justify mt-3" id="corpo">                    
                 {!! $pagina->conteudo !!}
             </div>            
-            @card_arquivos_component(['model' => $pagina, 'url' => 'pagina'])
+            
+            @php
+                if (Request::segment(2) == 'revista-alimentus' || Request::segment(2) == 'tecnologos-em-foco') {
+                    $titulo = 'Edições para download';    
+                } else {
+                    $titulo = null;
+                }                   
+            @endphp
+                        
+            @card_arquivos_component(['model' => $pagina, 'url' => 'pagina', 'titulo' => $titulo])
             @endcard_arquivos_component
             
         @endif
