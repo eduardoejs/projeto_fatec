@@ -1,4 +1,4 @@
-<div class="table-responsive" style="min-height: 18rem">
+<div class="table-responsive" style="min-height: 21rem">
     <table class="table table-sm table-striped">
         <thead>
             <tr>
@@ -38,23 +38,28 @@
                                 <i class="fa fa-wrench"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton">
-                                @if (isset($page) && $page == 'Notícias')
-                                <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
-                                @can('update', $value)
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>    
-                                @endcan
-                                @can('delete', $value)                                
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                    
-                                @endcan                                
-                                @can('uploads', $value)                                    
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'image']) }}"><i class="fa fa-images"></i> Anexar Imagens</a>
-                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'file']) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
-                                @endcan
+                                @if (isset($page) && $page == 'Notícias' || $page == 'Páginas')
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
+                                    @can('update', $value)
+                                        <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>    
+                                    @endcan
+                                    @can('delete', $value)                                
+                                        <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                    
+                                    @endcan                                
+                                    @can('uploads', $value) 
+                                        @if ($page == 'Páginas')
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'file']) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>    
+                                        @else
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'image']) }}"><i class="fa fa-images"></i> Anexar Imagens</a>
+                                            <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.uploads',['news' => $value->id, 'typeUpload' => 'file']) }}"><i class="fa fa-file"></i> Anexar Arquivos</a>
+                                        @endif                                        
+                                    @endcan
                                 @else
-                                <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
-                                <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>
-                                <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                        
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',$value->id) }}"><i class="fa fa-info-circle"></i> Detalhes</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.edit', $value->id) }}"><i class="fa fa-edit"></i> Editar</a>
+                                    <a class="dropdown-item text-secondary" href="{{ route($rotaNome.'.show',[$value->id, 'delete=true']) }}"><i class="fa fa-trash"></i> Excluir</a>                                        
                                 @endif
                             </div>
                         </div>                                                  

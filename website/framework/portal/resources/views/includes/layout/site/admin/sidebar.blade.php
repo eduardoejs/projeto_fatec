@@ -78,7 +78,7 @@
             $show = '';
 
             //expandiu o menu
-            if(Request::segment(1) == 'admin' && (Request::segment(2) == 'noticias' || Request::segment(2) == 'curso' )) {
+            if(Request::segment(1) == 'admin' && (Request::segment(3) == 'noticias' || Request::segment(3) == 'curso' || Request::segment(3) == 'paginas')) {
               $collapsed = '';
               $show = 'show';
               $active = 'active';
@@ -96,13 +96,13 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Menu de Opções:</h6>
               @can('read-curso')
-                <a class="collapse-item {{ Request::segment(2) == 'curso' ? 'active' : '' }}" href="{{ route('curso.index') }}"><i class="fas fa-graduation-cap"></i> Cursos</a>  
+                <a class="collapse-item {{ Request::segment(3) == 'curso' ? 'active' : '' }}" href="{{ route('curso.index') }}"><i class="fas fa-graduation-cap"></i> Cursos</a>  
               @endcan
               @can('read-news')
-                <a class="collapse-item {{ Request::segment(2) == 'noticias' ? 'active' : '' }}" href="{{ route('news.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
+                <a class="collapse-item {{ Request::segment(3) == 'noticias' ? 'active' : '' }}" href="{{ route('news.index') }}"><i class="fas fa-book-open"></i> Notícias</a>  
               @endcan              
               @can('read-pagina')
-                <a class="collapse-item {{ Request::segment(2) == 'pagina' ? 'active' : '' }}" href="{{ route('paginas.index') }}"><i class="fas fa-chalkboard"></i> Páginas</a>  
+                <a class="collapse-item {{ Request::segment(3) == 'paginas' ? 'active' : '' }}" href="{{ route('paginas.index') }}"><i class="fas fa-chalkboard"></i> Páginas</a>  
               @endcan              
             </div>
           </div>

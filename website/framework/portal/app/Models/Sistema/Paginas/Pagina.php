@@ -4,6 +4,7 @@ namespace App\Models\Sistema\Paginas;
 
 use App\Models\Acl\Perfil;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sistema\Gerenciamento\Arquivos\Arquivo;
 
 class Pagina extends Model
 {
@@ -15,5 +16,10 @@ class Pagina extends Model
     public function perfis()
     {
         return $this->belongsToMany(Perfil::class);
+    }
+
+    public function arquivos()
+    {
+        return $this->belongsToMany(Arquivo::class, 'arquivo_pagina', 'pagina_id', 'arquivo_id')->withTimestamps();
     }
 }

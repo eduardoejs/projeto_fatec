@@ -15,7 +15,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="menuInstitucional" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Institucional</a>
           <ul class="dropdown-menu" aria-labelledby="menuInstitucional">
-            <li class="dropdown-item"><a href="#">Histórico</a></li>
+            <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'historico']) }}">Histórico</a></li>
             <li class="dropdown-item"><a href="#">Corpo Administrativo</a></li>
             <li class="dropdown-item"><a href="#">Corpo Docente</a></li>
             <li class="dropdown-item"><a href="#">Congregação</a></li>
@@ -63,7 +63,7 @@
           </ul>
         </li>         
           
-        <li class="nav-item"><a class="nav-link" href="#">Biblioteca</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ route('ver.pagina', ['parametro' => 'biblioteca']) }}">Biblioteca</a></li>
 
         <li class="nav-item"><a class="nav-link" href="{{ route('todas.noticias') }}">Notícias</a></li>
 
@@ -80,13 +80,15 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="menuAlunos" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Alunos</a>
           <ul class="dropdown-menu" aria-labelledby="menuAlunos">
-            <li class="dropdown-item"><a href="#">Acesso ao SIGA</a></li>
+            <li class="dropdown-item"><a target="_blank" href="{{ url('https://siga.cps.sp.gov.br/aluno/login.aspx') }}">Acesso ao SIGA</a></li>
             <li class="dropdown-divider"></li>
-            <li class="dropdown-item dropdown">                    
+            <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'estagio']) }}">Área de Estágios</a></li>
+            
+            <li class="dropdown-item dropdown d-none">
               <a class="dropdown-toggle" id="menuAlunos-n1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Área de Estágios</a>
               <ul class="dropdown-menu" aria-labelledby="menuAlunos-n1">
-                <li class="dropdown-item"><a href="#">Estágio na FATEC</a></li>
-                <li class="dropdown-item"><a href="#">Estágio em EMPRESAS</a></li>
+                <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'estagio-na-fatec']) }}">Estágio na FATEC</a></li>
+                <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'estagio-em-empresas']) }}">Estágio em EMPRESAS</a></li>
               </ul>                                    
             </li>
             <li class="dropdown-divider"></li>
@@ -103,15 +105,15 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="menuVestibular-n1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Vestibular</a>
           <ul class="dropdown-menu" aria-labelledby="menuVestibular-n1">
-            <li class="dropdown-item"><a href="#">Como ingressar na Fatec</a></li>
-            <li class="dropdown-item"><a href="#">Documentos para matrícula</a></li>
+            <li class="dropdown-item"><a href="{{ route('ver.pagina', ['parametro' => 'como-ingressar-via-vestibular']) }}">Como ingressar na Fatec</a></li>
+            <li class="dropdown-item d-none"><a href="#">Documentos para matrícula</a></li>
             <li class="dropdown-divider"></li>
-            <li class="dropdown-item"><a href="#">Calendário</a></li>                            
+            <li class="dropdown-item"><a target="_blank" href="{{ url('https://www.vestibularfatec.com.br/calendario/') }}">Calendário</a></li>                            
             <li class="dropdown-divider"></li>
-            <li class="dropdown-item"><a href="#">Provas e Gabaritos</a></li>
-            <li class="dropdown-item"><a href="#">Dúvidas Frequentes</a></li>                            
+            <li class="dropdown-item"><a target="_blank" href="{{ url('https://www.vestibularfatec.com.br/provas-gabaritos/') }}">Provas e Gabaritos</a></li>
+            <li class="dropdown-item"><a target="_blank" href="{{ url('https://www.vestibularfatec.com.br/duvidas-frequentes/') }}">Dúvidas Frequentes</a></li>                            
             <li class="dropdown-divider"></li>
-            <li class="dropdown-item"><a href="#">Guia de Profissões</a></li>                            
+            <li class="dropdown-item"><a target="_blank" href="{{ url('http://www.portal.cps.sp.gov.br/publicacoes/guia-profissoes-tecnologicas.pdf') }}">Guia de Profissões</a></li>                            
           </ul>          
         </li>
 

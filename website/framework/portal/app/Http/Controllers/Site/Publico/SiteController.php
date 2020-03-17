@@ -10,6 +10,7 @@ use App\Models\Cursos\Modalidade;
 use App\Http\Controllers\Controller;
 use App\Models\Sistema\Avisos\Aviso;
 use App\Repositories\FileRepository;
+use App\Models\Sistema\Paginas\Pagina;
 use App\Models\Sistema\Noticias\Noticia;
 use Illuminate\Support\Facades\Validator;
 
@@ -131,5 +132,22 @@ class SiteController extends Controller
     {        
         $curso = Curso::findOrFail($id);
         return $repository->download('cursos', $curso, $curso->arquivos()->where('arquivo_curso.arquivo_id', $fileId)->first()->nome_arquivo);
+    }
+
+    public function downloadFilePagina($id, $fileId, FileRepository $repository)
+    {        
+        $pagina = Pagina::findOrFail($id);
+        return $repository->download('paginas', $pagina, $pagina->arquivos()->where('arquivo_pagina.arquivo_id', $fileId)->first()->nome_arquivo);
+    }
+
+    public function verPagina($parametro)
+    {
+        $tipos = $this->tipos;
+        $cursos = $this->cursos;
+        $pagina = Pagina::where('parametro_rota', $parametro)->first();
+        if(is_null($pagina)) {
+            abort(404);
+        }
+        return view('site.publico.paginas.ver_pagina', compact('pagina', 'tipos', 'cursos'));
     }
 }

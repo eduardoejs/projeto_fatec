@@ -3,6 +3,7 @@
 namespace App\Models\Sistema\Gerenciamento\Arquivos;
 
 use App\Models\Cursos\Curso;
+use App\Models\Sistema\Paginas\Pagina;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Sistema\Noticias\Noticia;
 use App\Models\Sistema\Vestibular\Vestibular;
@@ -24,5 +25,10 @@ class Arquivo extends Model
     public function cursos()
     {
         return $this->belongsToMany(Curso::class);
+    }
+
+    public function paginas()
+    {
+        return $this->belongsToMany(Pagina::class);
     }
 }

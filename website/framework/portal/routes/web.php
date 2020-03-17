@@ -57,11 +57,15 @@ Route::namespace('Site\Publico')->group(function () {
     
     Route::get('cursos/{id}', 'SiteController@verCurso')->name('ver.curso');    
     Route::get('cursos/{id}/download/{fileId}', 'SiteController@downloadFileCurso')->name('site.curso.download.file');
+
+    Route::get('paginas/{id}/download/{fileId}', 'SiteController@downloadFilePagina')->name('site.pagina.download.file');
+    Route::get('paginas/{parametro}', 'SiteController@verPagina')->name('ver.pagina');
 });
 
 Route::prefix('admin')->middleware('auth')->namespace('Site\Admin')->group(function() {    
-    Route::get('noticias/{news}/download/{typeDownload}/{fileId}', 'NoticiaController@downloadFile')->name('news.download.file');
-    Route::get('curso/{id}/download/{fileId}', 'Curso\CursoController@downloadFile')->name('curso.download.file');
+    Route::get('noticias/{news}/download/{typeDownload}/{fileId}', 'Sistema\Noticia\NoticiaController@downloadFile')->name('news.download.file');
+    Route::get('curso/{id}/download/{fileId}', 'Sistema\Curso\CursoController@downloadFile')->name('curso.download.file');
+    Route::get('paginas/{pagina}/download/{typeDownload}/{fileId}', 'Sistema\Pagina\PaginaController@downloadFile')->name('paginas.download.file');
 });
 
 Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->namespace('Site\Admin')->group(function () {
@@ -84,6 +88,9 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
         Route::delete('noticias/{news}/delete/{typeUpload}/{fileId}', 'Noticia\NoticiaController@deleteFile')->name('news.delete.file');
         Route::resource('noticias', 'Noticia\NoticiaController')->names('news')->parameters(['noticias' => 'news']);
 
+        Route::get('paginas/{pagina}/upload/{typeUpload}', 'Pagina\PaginaController@uploadForm')->name('paginas.uploads');
+        Route::post('paginas/upload/{typeUpload}/store', 'Pagina\PaginaController@uploadStore')->name('paginas.uploads.store');
+        Route::delete('paginas/{nepaginaws}/delete/{typeUpload}/{fileId}', 'Pagina\PaginaController@deleteFile')->name('paginas.delete.file');
         Route::resource('paginas', 'Pagina\PaginaController');
     });
     
