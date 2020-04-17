@@ -30,20 +30,27 @@ class SiteController extends Controller
     {        
         $avisos = Aviso::where('data_exibicao','>=', date('Y-m-d'))->get();
         $avisos = (count($avisos) > 0) ? $avisos : null;
+        $estilos = null;
         
-        $efeito = true;
-        $modal_size = 'lg';
-        $scrolling = false;
-        $centralized = true;
-        $upper = true;  
-               
+        if($avisos) {
+            $estilos = ['efeito' => 'fade', 
+                            'dimensao_modal' => 'modal-lg', 
+                            'scroll' => 'modal-dialog-scrollable', 
+                            'cor_fonte' => 'text-dark',
+                            'posicao_modal' => 'modal-dialog-centered', 
+                            'text_transform' => 'text-uppercase',
+                            'static' => 'data-backdrop=static',
+                            'botao_fechar' => ''//se quiser sumir com o botão fechar => d-none, senao deixe em branco
+                        ];
+        }       
+
         $tipos = TipoCurso::all();
         $cursos = new Curso();
         
         //retornar apenas as 3 últimas noticias        
         $noticias = Noticia::with('imagens')->where('ativo','S')->whereRaw('(data_exibicao is null or data_exibicao >= curdate())')->orderBy('id', 'DESC')->take(3)->get();         
             
-        return view('site.publico.index', compact('tipos', 'cursos', 'efeito', 'modal_size', 'scrolling', 'centralized', 'upper', 'avisos', 'noticias'));
+        return view('site.publico.index', compact('tipos', 'cursos', 'estilos' , 'avisos', 'noticias'));
     }
     
     public function showFormAtivacao($token, $email)

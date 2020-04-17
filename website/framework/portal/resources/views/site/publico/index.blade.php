@@ -23,16 +23,14 @@
         {{-- retorna lista de avisos para montar modais --}}   
         @if ($avisos)
             @foreach ($avisos as $aviso)
-                @modal_component(['modal_id' => 'avisoModal'.$aviso->id, //id modal será passado por variavel
-                    'efeito' => $efeito, 
-                    'dimensao_modal' => $modal_size, //sm lg xl
-                    'cor_fonte' => 'text-dark', //color-bg-modal-alert                          
-                    'scroll' => $scrolling,
-                    'centralizado' => $centralized,
-                    'titulo' => $aviso->titulo, //variavel titulo será enviada aqui
-                    'uppercase_titulo' => $upper,
+                @modal_component([
+                    'modal_id' => 'avisoModal'.$aviso->id, //id modal será passado por variavel                    
+                    'titulo' => $aviso->titulo, //variavel titulo será enviada aqui                    
+                    'estilos' => $estilos,
                     'conteudo' => $aviso->conteudo
-                    ])                        
+                    ])  
+                    
+                    {{-- slot aqui --}}   
                 @endmodal_component            
             @endforeach  
         @endif        
