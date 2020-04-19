@@ -22,7 +22,7 @@
                     
                     <div class="card-body">
                         <h4 class="card-title text-center"><strong>{{ $noticia->titulo }}</strong></h4>
-                        <p class="card-text text-justify">{!! $noticia->conteudo_resumido !!}</p>
+                        <div class="card-text text-justify">{!! $noticia->conteudo_resumido !!}</div>
                     </div>
                     <div class="card-footer">
                         <div class="row d-flex flex-row">
