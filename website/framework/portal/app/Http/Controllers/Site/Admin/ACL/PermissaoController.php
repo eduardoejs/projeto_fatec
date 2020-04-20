@@ -39,7 +39,7 @@ class PermissaoController extends Controller
         $colunas = ['id' => 'ID', 'nome' => 'Nome', 'descricao' => 'Descrição'];
         
         $rotaNome = $this->route;        
-        $page = 'Permissao';        
+        $page = 'Permissão';        
         $tituloPagina = 'Permissões do Sistema';
         $descricaoPagina = 'Gerenciamento das permissões do sistema';
 

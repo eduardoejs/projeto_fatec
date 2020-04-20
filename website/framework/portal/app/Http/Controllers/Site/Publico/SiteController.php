@@ -28,7 +28,7 @@ class SiteController extends Controller
 
     public function index()
     {        
-        $avisos = Aviso::where('data_exibicao','>=', date('Y-m-d'))->get();
+        $avisos = Aviso::where('data_exibicao','>=', date('Y-m-d'))->orderBy('created_at', 'DESC')->get();
         $avisos = (count($avisos) > 0) ? $avisos : null;
         $estilos = null;
         
