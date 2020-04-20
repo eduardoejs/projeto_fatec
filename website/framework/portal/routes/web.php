@@ -92,6 +92,8 @@ Route::prefix('admin')->middleware(['auth', 'revalidate', 'login.unique'])->name
         Route::post('paginas/upload/{typeUpload}/store', 'Pagina\PaginaController@uploadStore')->name('paginas.uploads.store');
         Route::delete('paginas/{nepaginaws}/delete/{typeUpload}/{fileId}', 'Pagina\PaginaController@deleteFile')->name('paginas.delete.file');
         Route::resource('paginas', 'Pagina\PaginaController');
+
+        Route::resource('avisos', 'Aviso\AvisoController');
     });
     
     Route::prefix('acl')->namespace('ACL')->middleware('auth', 'revalidate')->group(function() {

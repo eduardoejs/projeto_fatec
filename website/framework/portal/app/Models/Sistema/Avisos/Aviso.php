@@ -2,6 +2,7 @@
 
 namespace App\Models\Sistema\Avisos;
 
+use Carbon\Carbon;
 use App\Models\Acl\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,4 +14,14 @@ class Aviso extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getExibirAteDataAttribute() 
+    {
+        return Carbon::parse($this->data_exibicao)->format('d/m/Y');
+    } 
+    
+    public function getDataCriacaoAttribute() 
+    {
+        return Carbon::parse($this->created_at)->format('d/m/Y');
+    } 
 }

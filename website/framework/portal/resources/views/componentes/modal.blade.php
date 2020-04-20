@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="modal-footer {{ $estilos['botao_fechar'] }}">
-                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                <button class="btn btn-light btn-sm" data-dismiss="modal"><i class="far fa-window-close"></i> Fechar</button>
             </div>
         </div>
     </div>
