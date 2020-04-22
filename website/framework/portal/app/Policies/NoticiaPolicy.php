@@ -21,12 +21,12 @@ class NoticiaPolicy
     }
 
     //Verifica se o usuário é o dono da Noticia que será atualizada
-    public function update(User $user, Noticia $noticia)
+    public function updateNews(User $user, Noticia $noticia)
     {
         return $user->id === $noticia->user_id;
     }
 
-    public function delete(User $user, Noticia $noticia)
+    public function deleteNews(User $user, Noticia $noticia)
     {
         return $user->id === $noticia->user_id;
     }

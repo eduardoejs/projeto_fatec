@@ -132,7 +132,7 @@ class NoticiaController extends Controller
             }
 
             if($delete) {
-                $this->authorize('delete', $news);
+                $this->authorize('deleteNews', $news);
             }
             return view('site.admin.'.$this->pathBlade.'.show', compact('delete', 'breadcrumb', 'page', 'delete', 'pageTitle', 'pageDescription', 'routeName'), ['registro' => $news]);
         }
@@ -147,7 +147,7 @@ class NoticiaController extends Controller
      */
     public function edit(Noticia $news)
     {        
-        $this->authorize('update', $news);                 
+        $this->authorize('updateNews', $news);                 
         $page = 'Alterar';
         $routeName = $this->route;
         $pageTitle = 'Alterar notícia: '.$news->nome;
@@ -170,7 +170,7 @@ class NoticiaController extends Controller
      */
     public function update(Request $request, Noticia $news)
     {        
-        $this->authorize('update', $news);    
+        $this->authorize('updateNews', $news);    
         $validacao = \Validator::make($request->all(), [
             'titulo' => 'required|string|max:255',
             'conteudo' => 'required',
@@ -196,7 +196,7 @@ class NoticiaController extends Controller
      */
     public function destroy(Noticia $news)
     {        
-        $this->authorize('delete', $news);        
+        $this->authorize('deleteNews', $news);        
         try {
             if($news) {                
                 //remove os arquivos do diretorio
