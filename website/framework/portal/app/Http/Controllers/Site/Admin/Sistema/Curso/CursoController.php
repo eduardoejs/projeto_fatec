@@ -139,7 +139,7 @@ class CursoController extends Controller
                $descricaoPagina = '';
                $breadcrumb = [
                     (object)['url' => route('admin'), 'title' => 'Dashboard'],                              
-                    (object)['url' => route('user.index'), 'title' => 'Cursos'],
+                    (object)['url' => route($this->route.'.index'), 'title' => 'Cursos'],
                     (object)['url' => '', 'title' => $page],
                 ];
             } else {
