@@ -78,7 +78,9 @@
             $show = '';
 
             //expandiu o menu
-            if(Request::segment(1) == 'admin' && (Request::segment(3) == 'noticias' || Request::segment(3) == 'curso' || Request::segment(3) == 'paginas')) {
+            if(Request::segment(1) == 'admin' && (Request::segment(3) == 'noticias' || 
+               Request::segment(3) == 'curso' || Request::segment(3) == 'paginas' || 
+               Request::segment(3) == 'avisos' )) {
               $collapsed = '';
               $show = 'show';
               $active = 'active';
@@ -103,7 +105,10 @@
               @endcan              
               @can('read-paginas')
                 <a class="collapse-item {{ Request::segment(3) == 'paginas' ? 'active' : '' }}" href="{{ route('paginas.index') }}"><i class="fas fa-chalkboard"></i> Páginas</a>  
-              @endcan              
+              @endcan 
+              @can('read-avisos')
+                <a class="collapse-item {{ Request::segment(3) == 'avisos' ? 'active' : '' }}" href="{{ route('avisos.index') }}"><i class="fas fa-bullhorn"></i> Painel de Avisos</a>  
+              @endcan             
             </div>
           </div>
         </li>

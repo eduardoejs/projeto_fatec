@@ -26,9 +26,9 @@ class AvisoController extends Controller
             foreach($this->search as $key => $value) {    
                 $aviso = Aviso::orWhere($value, 'like', '%'.$search.'%');                
             }            
-            $list = $aviso->orderBy('created_at', 'ASC')->orderBy('id', 'DESC')->paginate($this->pagination);
+            $list = $aviso->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->paginate($this->pagination);
         }else{
-            $list = Aviso::orderBy('created_at', 'ASC')->orderBy('id', 'DESC')->paginate($this->pagination);
+            $list = Aviso::orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->paginate($this->pagination);
         }
         $routeName = $this->route;        
         $page = 'Avisos';        
@@ -97,9 +97,41 @@ class AvisoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, Aviso $aviso)
     {
-        //
+        $this->authorize('read-'.$this->route);
+        if($aviso) {
+            $page = 'Show';
+            $delete = false;
+            if($request->delete ?? false) {                
+                $delete = true;
+                $page = 'Excluir';
+                $routeName = $this->route;
+                $pageTitle = '';
+                $pageDescription = '';
+                $breadcrumb = [
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                              
+                    (object)['url' => route($this->route.'.index'), 'title' => 'Avisos'],
+                    (object)['url' => '', 'title' => $page],
+                ];
+            } else {
+                $page = 'Detalhes';
+                $routeName = $this->route;                        
+                $pageTitle = 'Aviso: ' . $aviso->titulo;
+                $pageDescription = '';
+                $breadcrumb = [
+                    (object)['url' => route('admin'), 'title' => 'Dashboard'],                    
+                    (object)['url' => route($this->route.'.index'), 'title' => 'Avisos'],
+                    (object)['url' => '', 'title' => $page],
+                ];
+            }
+
+            if($delete) {
+                $this->authorize('deleteAviso', $aviso);
+            }
+            return view('site.admin.'.$this->route.'.show', compact('delete', 'breadcrumb', 'page', 'delete', 'pageTitle', 'pageDescription', 'routeName'), ['registro' => $aviso]);
+        }
+        return redirect()->back();
     }
 
     /**
@@ -159,8 +191,21 @@ class AvisoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Aviso $aviso)
     {
-        //
+        $this->authorize('deleteAviso', $aviso);
+
+        if($aviso) {
+            $aviso->delete();
+            session()->flash('msg', 'Registro excluído do banco de dados.');
+            session()->flash('title', 'Sucesso');
+            session()->flash('status', 'success');
+        } else {
+            session()->flash('msg', 'Não foi possível excluir registro.');
+            session()->flash('title', 'Erro');
+            session()->flash('status', 'error');
+        }
+
+        return redirect()->route($this->route.'.index');
     }
 }
